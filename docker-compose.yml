@@ -40,22 +40,5 @@ services:
       - ./ParkManager-Service:/src
       - ~/.nuget/packages:/root/.nuget/packages:ro
 
-  tests:
-    container_name: parkmanager_service_tests
-    build:
-      context: .
-      dockerfile: tests/ParkManager.Service.Tests/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Test
-      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
-    depends_on:
-      - db
-      - api
-    volumes:
-      - ./ParkManager-Service:/src/ParkManager-Service
-      - ./tests/ParkManager.Service.Tests:/src/tests/ParkManager.Service.Tests
-      - ./TestResults:/src/TestResults
-      - ~/.nuget/packages:/root/.nuget/packages:ro
-
 volumes:
   postgres_data:

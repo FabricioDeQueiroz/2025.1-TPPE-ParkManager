@@ -10,13 +10,17 @@ COPY ["ParkManager-Service/ParkManager-Service.csproj", "ParkManager-Service/"]
 RUN dotnet restore "ParkManager-Service/ParkManager-Service.csproj"
 COPY . .
 WORKDIR "/src/"
+RUN dotnet restore "ParkManager-Service/ParkManager-Service.csproj"
 RUN dotnet build "ParkManager-Service/ParkManager-Service.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet test "ParkManager-Service/ParkManager-Service.csproj" -l "console;verbosity=detailed" --logger:trx
+CMD ["/bin/sh", "-c", "dotnet watch --project ParkManager-Service.csproj run --urls=http://0.0.0.0:8080"]
 
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "ParkManager-Service/ParkManager-Service.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# Usar futuramente para Docker de build
+# FROM build AS publish
+# ARG BUILD_CONFIGURATION=Release
+# RUN dotnet publish "ParkManager-Service/ParkManager-Service.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ParkManager-Service.dll"]
+# FROM base AS final
+# WORKDIR /app
+# COPY --from=publish /app/publish .
+# ENTRYPOINT ["dotnet", "ParkManager-Service.dll"]
