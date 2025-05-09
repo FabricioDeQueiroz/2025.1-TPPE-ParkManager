@@ -15,4 +15,4 @@ ParkManager-Service/.idea/
 tests/ParkManager.Service.Tests/.idea/
 tests/ParkManager.Service.Tests/bin/
 tests/ParkManager.Service.Tests/obj/
-tests/ParkManager.Service.Tests/TestResults/*.*
+tests/ParkManager.Service.Tests/TestResults/
