@@ -16,4 +16,4 @@ docker-lint:
 	docker exec -it parkmanager_service dotnet format ParkManager-Service.csproj --verify-no-changes --verbosity d --no-restore
 
 docker-test:
-	docker exec -it parkmanager_service dotnet test -l "console;verbosity=detailed"
+	docker exec -it parkmanager_service dotnet test -l "console;verbosity=normal" --no-restore
