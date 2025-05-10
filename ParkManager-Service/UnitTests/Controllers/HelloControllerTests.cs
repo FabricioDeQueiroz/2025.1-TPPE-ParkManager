@@ -7,15 +7,14 @@ public class HelloControllerTests
     private readonly HelloController _controller = new();
 
     [Fact(DisplayName = "Hello World")]
-    public void Get_ReturnsExpectedMessage()
+    public void GetReturnsExpectedMessage()
     {
         var result = _controller.Get();
-        
         Assert.Equal("Olá Mundo!", result);
     }
-    
+    //
     [Fact(DisplayName = "Ignorado 1", Skip = "Ignorado")]
-    public void Get_Ignorado()
+    public void GetIgnorado()
     {
         // Implementar depois
     }

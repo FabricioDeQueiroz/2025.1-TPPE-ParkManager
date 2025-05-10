@@ -7,7 +7,7 @@
         <RootNamespace>ParkManager_Service</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <AnalysisMode>AllEnabledByDefault</AnalysisMode>
-	    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+	      <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     </PropertyGroup>
 
@@ -18,7 +18,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
         <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
-	      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
