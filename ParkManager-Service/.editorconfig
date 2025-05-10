@@ -1,0 +1,12 @@
+root = true
+
+# C# files
+[*.cs]
+
+#### Core EditorConfig Options ####
+
+#### .NET Coding Conventions ####
+
+#### Diagnostic configuration ####
+dotnet_diagnostic.CA1707.severity = silent
+dotnet_diagnostic.CA1515.severity = silent

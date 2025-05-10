@@ -1,0 +1,14 @@
+# Geral:
+*.log
+*.cache
+.env
+
+# Service:
+*.sln.DotSettings.user
+ParkManager-Service/bin/
+ParkManager-Service/obj/
+ParkManager-Service/Properties/
+ParkManager-Service/TestResults/
+ParkManager-Service/appsettings.Development.json
+ParkManager-Service/.idea/
+TestResults/

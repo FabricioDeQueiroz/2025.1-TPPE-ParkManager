@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17
+    container_name: parkmanager_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+
+  api:
+    image: parkmanager-api:1
+    container_name: parkmanager_service
+    build:
+      context: .
+      dockerfile: ParkManager-Service/Dockerfile
+      args:
+        BUILD_CONFIGURATION: Release
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./ParkManager-Service:/src
+      - ~/.nuget/packages:/root/.nuget/packages:ro
+
+volumes:
+  postgres_data:

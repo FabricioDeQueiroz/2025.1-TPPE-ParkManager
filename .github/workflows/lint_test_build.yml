@@ -1,0 +1,57 @@
+name: Lint and Test ParkManager - Pipeline
+
+on:
+    push:
+        branches:
+            - main
+            - ci_cd_test
+    pull_request:
+        branches:
+            - main
+            - ci_cd_test
+
+jobs:
+    # db:
+    #     runs-on: ubuntu-latest
+    #     services:
+    #         postgres:
+    #             image: postgres:17
+    #             ports:
+    #                 - 5432:5432
+    #             env:
+    #                 POSTGRES_USER: postgres
+    #                 POSTGRES_PASSWORD: postgres
+    #                 POSTGRES_DB: ParkManager
+    #             options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 10
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup .NET 9.x
+              uses: actions/setup-dotnet@v4
+              with:
+                dotnet-version: '9.x'
+
+            - name: Run dotnet linter
+              run: |
+                dotnet restore ParkManager-Service/ParkManager-Service.csproj
+                dotnet format ParkManager-Service/ParkManager-Service.csproj --verify-no-changes --verbosity d --no-restore
+
+    test:
+        runs-on: ubuntu-latest
+        needs: lint
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup .NET 9.x
+              uses: actions/setup-dotnet@v4
+              with:
+                dotnet-version: '9.x'
+
+            - name: Run tests
+              run: |
+                dotnet restore ParkManager-Service/ParkManager-Service.csproj
+                dotnet test ParkManager-Service/ParkManager-Service.csproj -l "console;verbosity=normal" --no-restore
