@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   parkmanager-postgres:
     image: postgres:17
@@ -33,7 +31,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
     depends_on:
-      db:
+      parkmanager-postgres:
         condition: service_healthy
     volumes:
       - ./ParkManager-Service:/src
