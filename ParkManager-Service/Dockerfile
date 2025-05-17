@@ -12,8 +12,8 @@ COPY . .
 WORKDIR "/src/"
 RUN dotnet restore "ParkManager-Service/ParkManager-Service.csproj"
 RUN dotnet build "ParkManager-Service/ParkManager-Service.csproj" -c $BUILD_CONFIGURATION -o /app/build
-RUN dotnet test "ParkManager-Service/ParkManager-Service.csproj" -l "console;verbosity=detailed" --logger:trx
-CMD ["/bin/sh", "-c", "dotnet watch --project ParkManager-Service.csproj run --urls=http://0.0.0.0:8080"]
+RUN dotnet test "ParkManager-Service/ParkManager-Service.csproj" -l "console;verbosity=normal" --logger:trx
+CMD ["/bin/sh", "-c", "dotnet test ParkManager-Service.csproj -l 'console;verbosity=normal' --logger:trx && dotnet watch --project ParkManager-Service.csproj run --urls=http://0.0.0.0:8080"]
 
 # Usar futuramente para Docker de build
 # FROM build AS publish
