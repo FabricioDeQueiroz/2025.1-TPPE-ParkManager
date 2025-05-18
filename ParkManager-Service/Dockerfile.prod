@@ -20,6 +20,4 @@ RUN dotnet publish "ParkManager-Service/ParkManager-Service.csproj" -c $BUILD_CO
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY --from=build /ParkManager-Service/Data /app/Data
-RUN ls /app/Data && echo "Database file exists!" || echo "Database file not found!"
 ENTRYPOINT ["dotnet", "ParkManager-Service.dll"]
