@@ -20,14 +20,50 @@ Sistema de Gerenciamento de Estacionamento. Utilizando .NET 9.0 para o backend, 
 
 Backlog do projeto pode ser encontrado [aqui](https://github.com/users/FabricioDeQueiroz/projects/4) ou na aba "Projects" do repositório.
 
+## Modelagem do Banco de Dados
+
+Documentação do Banco de Dados do projeto pode ser encontrada [aqui](docs/MerDld.md) ou no diretório `docs/MerDld.md` do repositório.
+
+## Arquiteura de Pastas do Projeto
+
+```plaintext
+2025.1-TPPE-ParkManager/
+├── .github/
+├── ParkManager-Service/
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Data/
+│   ├── Migrations/
+│   ├── Helpers/
+│   ├── UnitTests/
+│   │   ├── Controllers/
+│   │   ├── Parameters/
+│   │   └── Integration/
+│   └── wwwroot/swagger-ui/
+└── docs/
+        └── assets/
+```
+
+* **`2025.1-TPPE-ParkManager/` (Raiz do Repositório)**: Contém todo o código-fonte, configurações e arquivos de gerenciamento do projeto.
+
+* **`.github/`**: Arquivos de configuração para **GitHub Actions**, e Template de Pull Requests.
+
+* **`ParkManager-Service/`**: Backend da aplicação.
+    * **`Controllers/`**: Recebe requisições HTTP e delega as operações da API.
+    * **`Models/`**: Define as estruturas de dados e entidades de negócio.
+    * **`Data/`**: Gerencia o acesso e a interação com o banco de dados.
+    * **`Migrations/`**: Contém os scripts para gerenciar as alterações no schema do banco de dados.
+    * **`UnitTests/`**: Armazena todos os testes do serviço (unitários e de integração).
+    * **`wwwroot/swagger-ui/`**: Arquivos de estilização para o Swagger.
+
+* **`docs/`**: Dedicada à **documentação** do projeto.
+
 ---
 
 ## Requisitos para executar o projeto
 
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
-
----
 
 ## Como executar o projeto
 
