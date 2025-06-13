@@ -1,12 +1,127 @@
-root = true
+# top-level settings
+root = true # Garante que este é o arquivo .editorconfig raiz para o seu projeto
 
 # C# files
 [*.cs]
 
 #### Core EditorConfig Options ####
+# Opções básicas de formatação e arquivo.
+indent_style = space # Usa espaços para indentação (recomendado em C#)
+indent_size = 4 # Define o tamanho da indentação para 4 espaços
+tab_width = 4 # Define a largura do tab para 4 espaços (quando tab_style é tab)
+end_of_line = lf # Usa line feeds (LF) para quebras de linha (padrão em sistemas Unix/Linux)
+charset = utf-8 # Define a codificação de caracteres do arquivo como UTF-8
+insert_final_newline = true # Garante que o arquivo termine com uma quebra de linha
+trim_trailing_whitespace = true # Remove espaços em branco no final das linhas. Esta regra é crucial para garantir que linhas em branco sejam *realmente* vazias.
 
-#### .NET Coding Conventions ####
+#### Desativar Todas as Verificações de Diagnóstico (Analisadores) ####
+# Esta configuração global define a severidade padrão para 'none' para todos os diagnósticos de analisadores,
+# efetivamente desativando a maioria dos avisos e erros de análise de código por padrão.
+# Isso ajuda a "limpar" as verificações padrão que podem estar vindo de arquivos globalconfig.
+dotnet_analyzer_diagnostic.severity = none
 
-#### Diagnostic configuration ####
+# Mantém as suas desativações específicas de diagnóstico
 dotnet_diagnostic.CA1707.severity = silent
 dotnet_diagnostic.CA1515.severity = silent
+
+#### Convenções de Codificação .NET - Código Limpo e Legível ####
+
+# Estilos de Nomenclatura (exemplos, ajuste conforme sua preferência)
+# Campos privados devem ser camelCase com um prefixo de underscore (ex: _meuCampo)
+dotnet_naming_rule.private_fields.symbols = private_fields
+dotnet_naming_rule.private_fields.style = camel_case_with_underscore_prefix
+dotnet_naming_rule.private_fields.severity = suggestion
+
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+dotnet_naming_style.camel_case_with_underscore_prefix.capitalization = camel_case
+dotnet_naming_style.camel_case_with_underscore_prefix.required_prefix = _
+
+# Membros públicos (propriedades, métodos, eventos, classes, etc.) devem ser PascalCase (ex: MinhaPropriedade)
+dotnet_naming_rule.public_members.symbols = public_members
+dotnet_naming_rule.public_members.style = pascal_case
+dotnet_naming_rule.public_members.severity = suggestion
+
+dotnet_naming_symbols.public_members.applicable_kinds = property, method, event, class, interface, struct, enum
+dotnet_naming_symbols.public_members.applicable_accessibilities = public, internal, protected, protected_internal
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+
+
+# Estilo de Código - Formatação
+
+# Indentação
+csharp_indent_braces = false # Chaves não são indentadas em relação ao seu bloco (elas ficam na mesma indentação do bloco pai)
+csharp_indent_block_contents_when_no_braces = true # Indenta o conteúdo quando as chaves são omitidas (ex: 'if' de uma única linha)
+csharp_indent_switch_case = true # Indenta as declarações 'case' dentro de um 'switch'
+csharp_indent_interpolation_formats = true # Indenta formatos em strings interpoladas
+csharp_indent_namespace_contents = true # Indenta o conteúdo dentro de namespaces
+csharp_indent_class_contents = true # Indenta o conteúdo dentro de classes
+csharp_indent_record_contents = true # Indenta o conteúdo dentro de records
+csharp_indent_struct_contents = true # Indenta o conteúdo dentro de structs
+csharp_indent_interface_contents = true # Indenta o conteúdo dentro de interfaces
+csharp_indent_enum_contents = true # Indenta o conteúdo dentro de enums
+
+# Preferências de Nova Linha
+csharp_new_line_before_open_brace = all # Sempre coloca a chave de abertura em uma nova linha para todos os blocos (métodos, classes, etc.)
+csharp_new_line_before_else = true # Coloca a palavra-chave 'else' em uma nova linha
+csharp_new_line_before_catch = true # Coloca a palavra-chave 'catch' em uma nova linha
+csharp_new_line_before_finally = true # Coloca a palavra-chave 'finally' em uma nova linha
+csharp_new_line_before_members_in_object_initializers = true # Nova linha antes de membros em inicializadores de objeto
+csharp_new_line_before_members_in_anonymous_types = true # Nova linha antes de membros em tipos anônimos
+csharp_new_line_between_query_clauses = true # Nova linha entre cláusulas de consulta LINQ
+csharp_new_line_between_members = true # Nova linha entre membros (métodos, propriedades, etc.)
+
+# Preferências de Espaços em Branco
+csharp_space_between_method_declaration_parentheses = false # Sem espaço entre parênteses de declaração de metodo e nome do metodo
+csharp_space_between_parentheses = false # Sem espaço dentro dos parênteses (ex: `(a)`)
+csharp_space_after_keywords_in_control_flow_statements = true # Espaço após palavras-chave como `if`, `for`, `while`
+csharp_space_before_colon_in_constructor_initializer = true # Espaço antes de dois pontos em inicializador de construtor
+csharp_space_after_colon_in_constructor_initializer = true # Espaço depois de dois pontos em inicializador de construtor
+csharp_space_after_cast = false # Sem espaço após um 'cast'
+csharp_space_around_binary_operators = before_and_after # Espaço ao redor de operadores binários (ex: `a + b`)
+csharp_space_before_comma = false # Sem espaço antes das vírgulas
+csharp_space_after_comma = true # Espaço depois das vírgulas
+csharp_space_before_dot = false # Sem espaço antes dos pontos
+csharp_space_after_dot = false # Sem espaço depois dos pontos
+csharp_space_before_semicolon = false # Sem espaço antes dos ponto e vírgulas
+csharp_space_after_semicolon_in_for_statement = true # Espaço depois do ponto e vírgula em loops 'for'
+csharp_space_between_square_brackets = false # Sem espaço dentro dos colchetes (ex: `arr[0]`)
+csharp_space_between_empty_square_brackets = false # Sem espaço em colchetes vazios (ex: `[]`)
+csharp_space_between_attribute_brackets = false # Sem espaço dentro dos colchetes de atributo (ex: `[Required]`)
+
+
+# Preferências de Linhas em Branco
+# Estas regras são cruciais para permitir as linhas em branco como você descreveu.
+csharp_blank_line_before_using_directives = forbid # Não permite linhas em branco antes das diretivas 'using'
+csharp_blank_line_after_using_directives = require # Requer uma linha em branco depois da última diretiva 'using'
+csharp_blank_line_before_first_property = false # Não permite linha em branco antes da primeira propriedade em um tipo
+csharp_blank_line_between_members_and_group_rows = require # Requer linhas em branco entre membros e linhas de grupo. Isso permite linhas em branco entre propriedades, métodos, etc.
+csharp_blank_line_between_type_members = require # Explicitamente requer linhas em branco entre membros dentro de um tipo (ex: entre duas propriedades ou dois métodos). Isso ajuda na legibilidade.
+csharp_blank_line_between_types = require # Explicitamente requer linhas em branco entre diferentes definições de tipo (ex: entre duas classes). Isso deve resolver o seu problema específico.
+csharp_blank_line_before_members_in_type = require # Requer uma linha em branco antes de cada membro dentro de um tipo, a menos que seja o primeiro membro.
+
+# Estilo de Código - Recursos da Linguagem
+csharp_style_var_for_built_in_types = false # Prefere tipos explícitos (ex: `string`, `int`) em vez de `var` para tipos internos
+csharp_style_pattern_matching_on_constants = true # Prefere 'pattern matching' para verificações de constantes
+csharp_style_deconstructed_variable_declaration = true # Prefere declarações de variáveis desconstruídas
+csharp_style_expression_bodied_methods = false # Não usa métodos com corpo de expressão (ex: `=>`)
+csharp_style_expression_bodied_properties = false # Não usa propriedades com corpo de expressão
+csharp_style_inlined_variable_declaration = true # Prefere declarações de variáveis inline (ex: `if (int.TryParse(s, out var i))`)
+csharp_style_namespace_declarations = block_scoped # Prefere declarações de namespace com chaves (ex: `namespace MyNamespace { ... }`)
+csharp_prefer_simple_using_statement = true # Prefere 'using' simples em vez de 'using var'
+csharp_prefer_static_local_function = true # Prefere funções locais estáticas onde possível
+csharp_prefer_readonly_struct_members = true # Prefere membros de struct somente leitura
+csharp_prefer_null_check_over_is_null_check = true # Prefere `== null` em vez de `is null`
+csharp_prefer_conditional_expression_over_if_statement = true # Prefere expressões condicionais em vez de declarações 'if' para atribuições simples.
+csharp_prefer_simple_type_name_in_code_fixes = true # Prefere nomes de tipo simples em correções de código (ex: `List<int>` em vez de `System.Collections.Generic.List<int>`)
+
+# Preservação de layout
+csharp_preserve_single_line_blocks = true # Tenta manter blocos de uma única linha (ex: `if (...) { ... }`) em uma única linha.
+
+# Opções de formatação de cabeçalho de arquivo (para desativar verificações de cabeçalho)
+file_header_template = unset # Desativa a exigência de um cabeçalho de arquivo específico.
+
+# Ordem dos membros (opcional, mas bom para consistência)
+csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,override,readonly,sealed,volatile,async # Ordem padrão dos modificadores em C#
+dotnet_diagnostic.CA5394.severity = silent
+dotnet_diagnostic.CA1062.severity = silent

@@ -7,7 +7,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["ParkManager-Service/ParkManager-Service.csproj", "ParkManager-Service/"]
 RUN dotnet restore "ParkManager-Service/ParkManager-Service.csproj"
-RUN rm -rf /src/ParkManager-Service/UnitTests
+RUN rm -rf /src/ParkManager-Service/Tests
 COPY . /ParkManager-Service
 WORKDIR /ParkManager-Service
 RUN mkdir -p /app/build/publish
