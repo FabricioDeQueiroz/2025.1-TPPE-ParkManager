@@ -20,3 +20,12 @@ docker-lint:
 
 docker-test:
 	docker exec -it parkmanager_service dotnet test -l "console;verbosity=normal" --no-restore
+
+# Adicionar migration no Banco de Dados
+# dotnet ef database update NomeDaSuaMigration
+
+# Resetar o Banco de Dados
+# dotnet ef database update 0
+
+# Remover a ultima migration (apaga os arquivos)
+# dotnet ef migrations remove

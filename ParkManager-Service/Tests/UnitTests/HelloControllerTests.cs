@@ -1,6 +1,6 @@
-﻿using ParkManager_Service.Controllers;
+using ParkManager_Service.Controllers;
 
-namespace ParkManager_Service.UnitTests.Controllers;
+namespace ParkManager_Service.Tests.UnitTests;
 
 public class HelloControllerTests
 {
@@ -12,7 +12,7 @@ public class HelloControllerTests
         var result = _controller.Get();
         Assert.Equal("Olá Mundo!", result);
     }
-    //
+
     [Fact(DisplayName = "Ignorado 1", Skip = "Ignorado")]
     public void GetIgnorado()
     {
