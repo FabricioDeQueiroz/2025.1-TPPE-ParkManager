@@ -1,4 +1,5 @@
-﻿using Bogus;
+using System.Globalization;
+using Bogus;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -8,6 +9,20 @@ namespace ParkManager_Service.Migrations
     /// <inheritdoc />
     public partial class FakesMigration : Migration
     {
+        private static readonly string[] nomesEventos = new[] { "Nenhum", "Show de Rock", "Feira Tech", "Festa Anual" };
+        private static readonly string[] columnsEvento = new[] { "id_evento", "nome", "data_hora_inicio", "data_hora_fim", "id_estacionamento" };
+        private static readonly string[] columnsUsuario = new[] { "id_usuario", "nome", "email", "senha", "tipo" };
+        private static readonly string[] columnsAcesso = new[] {
+            "id_acesso", "placa_veiculo", "valor_acesso", "data_hora_entrada",
+            "data_hora_saida", "nome_evento", "tipo", "id_cliente", "id_estacionamento"
+        };
+        private static readonly string[] columnsEstacionamento = new[] {
+            "id_estacionamento", "nome", "nome_contratante", "vagas_totais", "vagas_ocupadas",
+            "faturamento", "retorno_contratante", "valor_fracao", "desconto_hora",
+            "valor_mensal", "valor_diaria", "adicional_noturno", "valor_evento",
+            "hora_abertura", "hora_fechamento", "tipo", "id_gerente"
+        };
+
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,11 +71,11 @@ namespace ParkManager_Service.Migrations
             {
                 migrationBuilder.InsertData(
                     table: "USUARIO",
-                    columns: new[] { "id_usuario", "nome", "email", "senha", "tipo" },
+                    columns: columnsUsuario,
                     values: usersToInsert.ToArray()[i - 1]
                 );
             }
-            
+
             // 2. Inserir ESTACIONAMENTO (100 estacionamentos)
             var estacionamentosToInsert = new List<object[]>();
             var estacionamentoIds = new List<int>();
@@ -118,12 +133,7 @@ namespace ParkManager_Service.Migrations
             {
                 migrationBuilder.InsertData(
                     table: "ESTACIONAMENTO",
-                    columns: new[] {
-                        "id_estacionamento", "nome", "nome_contratante", "vagas_totais", "vagas_ocupadas",
-                        "faturamento", "retorno_contratante", "valor_fracao", "desconto_hora",
-                        "valor_mensal", "valor_diaria", "adicional_noturno", "valor_evento",
-                        "hora_abertura", "hora_fechamento", "tipo", "id_gerente"
-                    },
+                    columns: columnsEstacionamento,
                     values: estacionamentosToInsert.ToArray()[i - 1]
                 );
             }
@@ -152,7 +162,7 @@ namespace ParkManager_Service.Migrations
             {
                 migrationBuilder.InsertData(
                     table: "EVENTO",
-                    columns: new[] { "id_evento", "nome", "data_hora_inicio", "data_hora_fim", "id_estacionamento" },
+                    columns: columnsEvento,
                     values: eventosToInsert.ToArray()[i - 1]
                 );
             }
@@ -168,12 +178,12 @@ namespace ParkManager_Service.Migrations
 
                 var clienteDoAcesso = faker.PickRandom(clienteIds);
                 var estacionamentoDoAcesso = faker.PickRandom(estacionamentoIds);
-                var nomeEventoAcesso = faker.PickRandom(new[] { "Nenhum", "Show de Rock", "Feira Tech", "Festa Anual" });
+                var nomeEventoAcesso = faker.PickRandom(nomesEventos);
 
                 acessosToInsert.Add(new object[]
                 {
                     acessoId,
-                    faker.Random.AlphaNumeric(3).ToUpper() + "-" + faker.Random.Number(1000, 9999),
+                    faker.Random.AlphaNumeric(3).ToUpper(CultureInfo.CurrentCulture) + "-" + faker.Random.Number(1000, 9999),
                     faker.Finance.Amount(5m, 100m),
                     dataEntrada.ToUniversalTime(),
                     dataSaida.ToUniversalTime(),
@@ -188,10 +198,7 @@ namespace ParkManager_Service.Migrations
             {
                 migrationBuilder.InsertData(
                     table: "ACESSO",
-                    columns: new[] {
-                        "id_acesso", "placa_veiculo", "valor_acesso", "data_hora_entrada",
-                        "data_hora_saida", "nome_evento", "tipo", "id_cliente", "id_estacionamento"
-                    },
+                    columns: columnsAcesso,
                     values: acessosToInsert.ToArray()[i - 1]
                 );
             }
