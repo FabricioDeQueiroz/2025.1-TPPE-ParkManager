@@ -10,7 +10,7 @@ public class HelloControllerTests
     public void GetReturnsExpectedMessage()
     {
         var result = _controller.Get();
-        Assert.Equal("Olá Mundo!", result);
+        Assert.Equal("ParkManager API!", result);
     }
 
     [Fact(DisplayName = "Ignorado 1", Skip = "Ignorado")]
