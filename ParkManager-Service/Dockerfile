@@ -1,17 +1,19 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0.6 AS base
 WORKDIR /app
 EXPOSE 8080
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0.301 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["ParkManager-Service/ParkManager-Service.csproj", "ParkManager-Service/"]
 RUN dotnet restore "ParkManager-Service/ParkManager-Service.csproj"
 COPY . .
 WORKDIR "/src/"
+# RUN dotnet tool install --global dotnet-ef
+# ENV PATH="${PATH}:/root/.dotnet/tools"
 RUN dotnet restore "ParkManager-Service/ParkManager-Service.csproj"
 RUN dotnet build "ParkManager-Service/ParkManager-Service.csproj" -c $BUILD_CONFIGURATION -o /app/build
-RUN dotnet test "ParkManager-Service/ParkManager-Service.csproj" -l "console;verbosity=normal" --logger:trx
+# RUN dotnet ef database update 0 --project "ParkManager-Service/ParkManager-Service.csproj" --startup-project "ParkManager-Service/ParkManager-Service.csproj"
 CMD ["/bin/sh", "-c", "dotnet test ParkManager-Service.csproj -l 'console;verbosity=normal' --logger:trx && dotnet watch --project ParkManager-Service.csproj run --urls=http://0.0.0.0:8080"]
 
 # Usar futuramente para Docker de build
