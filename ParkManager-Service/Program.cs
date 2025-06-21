@@ -6,6 +6,17 @@ using ParkManager_Service.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Limita os logs durante o Teste para não ficar poluído:
+if (builder.Environment.IsEnvironment("Test"))
+{
+    builder.Logging.ClearProviders();
+    builder.Logging.AddConsole();
+    builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.None);
+    builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Infrastructure", LogLevel.None);
+    builder.Logging.AddFilter("Microsoft.Hosting.Lifetime", LogLevel.None);
+    builder.Logging.SetMinimumLevel(LogLevel.Warning);
+}
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -42,3 +53,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Para ser visível nos Testes
+public abstract partial class Program { }
