@@ -19,7 +19,13 @@ docker-lint:
 	docker exec -it parkmanager_service dotnet format ParkManager-Service.csproj --verify-no-changes --verbosity d --no-restore
 
 docker-test:
-	docker exec -it parkmanager_service dotnet test -l "console;verbosity=normal" --no-restore
+	docker exec -e ASPNETCORE_ENVIRONMENT=Test -it parkmanager_service dotnet test -l "console;verbosity=normal" --no-restore
+
+docker-backend-restore:
+	docker exec -it parkmanager_service dotnet restore
+
+# docker-coverage:
+# 	docker exec -it parkmanager_service dotnet test --collect:"XPlat Code Coverage"
 
 # Adicionar migration no Banco de Dados
 # dotnet ef database update NomeDaSuaMigration
