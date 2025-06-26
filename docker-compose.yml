@@ -30,6 +30,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - DB_HOST=parkmanager-postgres
       - DB_PORT=5432
+      - JWT_KEY=${JWT_KEY}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_AUDIENCE=${JWT_AUDIENCE}
       - ConnectionStrings__DefaultConnection=Host=parkmanager-postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
     depends_on:
       parkmanager-postgres:

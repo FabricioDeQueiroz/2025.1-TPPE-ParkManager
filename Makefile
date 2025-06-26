@@ -27,6 +27,9 @@ docker-backend-restore:
 # docker-coverage:
 # 	docker exec -it parkmanager_service dotnet test --collect:"XPlat Code Coverage"
 
+# Criar migration
+# dotnet ef migrations add NomeDaSuaMigration
+
 # Adicionar migration no Banco de Dados
 # dotnet ef database update NomeDaSuaMigration
 

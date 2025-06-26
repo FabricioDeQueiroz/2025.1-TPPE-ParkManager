@@ -29,8 +29,10 @@ WORKDIR /app
 
 COPY --from=publish /app/publish .
 
-RUN chmod +x "src/ParkManager-Service/entrypoint.sh"
+COPY --from=build /src/entrypoint.sh .
+
+RUN chmod +x "entrypoint.sh"
 
 COPY --from=build /src/ParkManager-Service/ParkManager-Service.csproj ParkManager-Service/ParkManager-Service.csproj
 
-ENTRYPOINT ["/bin/bash", "src/ParkManager-Service/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
