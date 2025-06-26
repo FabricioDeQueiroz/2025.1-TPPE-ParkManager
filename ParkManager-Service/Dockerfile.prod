@@ -29,7 +29,7 @@ WORKDIR /app
 
 COPY --from=publish /app/publish .
 
-COPY --from=build /src/entrypoint.sh .
+COPY --from=build /src/ParkManager-Service/entrypoint.sh/entrypoint.sh .
 
 RUN chmod +x "entrypoint.sh"
 
