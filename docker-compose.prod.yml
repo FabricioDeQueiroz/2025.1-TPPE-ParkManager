@@ -18,7 +18,6 @@ services:
       retries: 10
 
   parkmanager-service-prod:
-    image: parkmanager-api:1
     container_name: parkmanager_service_prod
     build:
       context: .
@@ -29,13 +28,16 @@ services:
       - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Host=parkmanager_postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - DB_HOST=parkmanager-postgres-prod
+      - DB_PORT=5432
+      - ConnectionStrings__DefaultConnection=Host=parkmanager-postgres-prod;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
     depends_on:
       parkmanager-postgres-prod:
         condition: service_healthy
     volumes:
       - ./ParkManager-Service:/src
       - ~/.nuget/packages:/root/.nuget/packages:ro
+    restart: always
 
 volumes:
   postgres_data:

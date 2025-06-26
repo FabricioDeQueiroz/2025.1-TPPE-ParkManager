@@ -7,6 +7,7 @@
 *.sln.DotSettings.user
 ParkManager-Service/bin/
 ParkManager-Service/obj/
+ParkManager-Service/ParkManager-Service/obj/
 ParkManager-Service/Properties/
 ParkManager-Service/TestResults/
 ParkManager-Service/appsettings.Development.json

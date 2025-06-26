@@ -3,25 +3,19 @@ WORKDIR /app
 EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0.301 AS build
-ARG BUILD_CONFIGURATION=Release
+ARG BUILD_CONFIGURATION=Debug
+
+RUN dotnet tool install --global dotnet-ef --version 9.0.3
+ENV PATH="${PATH}:/root/.dotnet/tools"
+
 WORKDIR /src
+
 COPY ["ParkManager-Service/ParkManager-Service.csproj", "ParkManager-Service/"]
 RUN dotnet restore "ParkManager-Service/ParkManager-Service.csproj"
+
 COPY . .
-WORKDIR "/src/"
-# RUN dotnet tool install --global dotnet-ef
-# ENV PATH="${PATH}:/root/.dotnet/tools"
-RUN dotnet restore "ParkManager-Service/ParkManager-Service.csproj"
-RUN dotnet build "ParkManager-Service/ParkManager-Service.csproj" -c $BUILD_CONFIGURATION -o /app/build
-# RUN dotnet ef database update 0 --project "ParkManager-Service/ParkManager-Service.csproj" --startup-project "ParkManager-Service/ParkManager-Service.csproj"
-CMD ["/bin/sh", "-c", "dotnet test ParkManager-Service.csproj -l 'console;verbosity=normal' --logger:trx && dotnet watch --project ParkManager-Service.csproj run --urls=http://0.0.0.0:8080"]
+WORKDIR "/src/ParkManager-Service/"
 
-# Usar futuramente para Docker de build
-# FROM build AS publish
-# ARG BUILD_CONFIGURATION=Release
-# RUN dotnet publish "ParkManager-Service/ParkManager-Service.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN chmod +x "entrypoint.sh"
 
-# FROM base AS final
-# WORKDIR /app
-# COPY --from=publish /app/publish .
-# ENTRYPOINT ["dotnet", "ParkManager-Service.dll"]
+ENTRYPOINT ["/bin/bash", "entrypoint.sh"]

@@ -18,23 +18,24 @@ services:
       retries: 10
 
   parkmanager-service:
-    image: parkmanager-api:1
     container_name: parkmanager_service
     build:
       context: .
       dockerfile: ParkManager-Service/Dockerfile
       args:
-        BUILD_CONFIGURATION: Release
+        BUILD_CONFIGURATION: Debug
     ports:
       - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Host=parkmanager_postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - DB_HOST=parkmanager-postgres
+      - DB_PORT=5432
+      - ConnectionStrings__DefaultConnection=Host=parkmanager-postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
     depends_on:
       parkmanager-postgres:
         condition: service_healthy
     volumes:
-      - ./ParkManager-Service:/src
+      - ./ParkManager-Service:/src/ParkManager-Service
       - ~/.nuget/packages:/root/.nuget/packages:ro
 
 volumes:
