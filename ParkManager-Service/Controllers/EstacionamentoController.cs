@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ParkManager_Service.Models;
 using ParkManager_Service.Services.Interfaces;
@@ -9,6 +10,7 @@ namespace ParkManager_Service.Controllers
     [Route("[controller]")]
     public class EstacionamentoController(IEstacionamento estacionamentoService) : ControllerBase
     {
+        [Authorize(Roles = "Cliente, Gerente")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EstacionamentoGetDto>>> GetEstacionamentos()
         {
@@ -17,6 +19,7 @@ namespace ParkManager_Service.Controllers
             return Ok(estacionamentos);
         }
 
+        [Authorize(Roles = "Cliente, Gerente")]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<EstacionamentoGetDto>> GetEstacionamento(int id)
         {
@@ -30,6 +33,7 @@ namespace ParkManager_Service.Controllers
             return Ok(estacionamento);
         }
 
+        [Authorize(Roles = "Gerente")]
         [HttpPost]
         public async Task<ActionResult<EstacionamentoGetDto>> PostEstacionamento([FromBody] EstacionamentoCreateDto estacionamentoCreateDto)
         {
@@ -63,6 +67,7 @@ namespace ParkManager_Service.Controllers
             return CreatedAtAction(nameof(GetEstacionamento), new { id = estacionamentoCriado.IdEstacionamento }, estacionamentoCriado);
         }
 
+        [Authorize(Roles = "Gerente")]
         [HttpPut("{id:int}")]
         public async Task<ActionResult<EstacionamentoGetDto>> PutEstacionamento(int id, [FromBody] EstacionamentoUpdateDto estacionamentoUpdateDto)
         {
@@ -114,6 +119,7 @@ namespace ParkManager_Service.Controllers
             return Ok(estacionamentoAtualizado);
         }
 
+        [Authorize(Roles = "Gerente")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteEstacionamento(int id)
         {

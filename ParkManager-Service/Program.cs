@@ -3,8 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using ParkManager_Service.Data;
 using ParkManager_Service.Services;
 using ParkManager_Service.Services.Interfaces;
+using ParkManager_Service.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddEnvironmentVariables();
 
 // Limita os logs durante o Teste para não ficar poluído:
 if (builder.Environment.IsEnvironment("Test"))
@@ -31,6 +38,30 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connect
 
 builder.Services.AddScoped<IEstacionamento, EstacionamentoService>();
 
+builder.Services.AddIdentity<Usuario, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["JWT_ISSUER"],
+        ValidAudience = builder.Configuration["JWT_AUDIENCE"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["JWT_KEY"] ??  throw new InvalidOperationException("JWT_KEY is not configured.")))
+    };
+});
+
 var app = builder.Build();
 
 // Para que o Swagger funcione também no ambiente de produção
@@ -48,6 +79,7 @@ app.UseStaticFiles();
 
 // app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
