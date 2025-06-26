@@ -21,7 +21,7 @@ namespace ParkManager_Service.Views
         public TimeSpan? HoraAbertura { get; set; }
         public TimeSpan? HoraFechamento { get; set; }
         public TipoEstacionamento Tipo { get; set; }
-        public int IdGerente { get; set; }
+        public string IdGerente { get; set; } = string.Empty;
     }
 
     public class EstacionamentoCreateDto
@@ -82,7 +82,7 @@ namespace ParkManager_Service.Views
         public TipoEstacionamento Tipo { get; set; }
 
         [Required]
-        public int IdGerente { get; set; }
+        public string IdGerente { get; set; } = string.Empty;
     }
 
     public class EstacionamentoUpdateDto
@@ -146,6 +146,6 @@ namespace ParkManager_Service.Views
         public TipoEstacionamento Tipo { get; set; }
 
         [Required]
-        public int IdGerente { get; set; }
+        public string IdGerente { get; set; } = string.Empty;
     }
 }

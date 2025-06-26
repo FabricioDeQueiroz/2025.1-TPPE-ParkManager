@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using Bogus;
 using Microsoft.EntityFrameworkCore.Migrations;
 
@@ -11,7 +11,7 @@ namespace ParkManager_Service.Migrations
     {
         private static readonly string[] nomesEventos = new[] { "Nenhum", "Show de Rock", "Feira Tech", "Festa Anual" };
         private static readonly string[] columnsEvento = new[] { "id_evento", "nome", "data_hora_inicio", "data_hora_fim", "id_estacionamento" };
-        private static readonly string[] columnsUsuario = new[] { "id_usuario", "nome", "email", "senha", "tipo" };
+        private static readonly string[] columnsUsuario = new[] { "Id", "nome", "tipo", "UserName", "Email", "EmailConfirmed", "PasswordHash", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnabled", "AccessFailedCount" };
         private static readonly string[] columnsAcesso = new[] {
             "id_acesso", "placa_veiculo", "valor_acesso", "data_hora_entrada",
             "data_hora_saida", "nome_evento", "tipo", "id_cliente", "id_estacionamento"
@@ -34,20 +34,27 @@ namespace ParkManager_Service.Migrations
 
             // 1. Inserir USUARIO (100 usuários: 20 gerentes, 80 clientes)
             var usersToInsert = new List<object[]>();
-            var gerenteIds = new List<int>();
-            var clienteIds = new List<int>();
+            var gerenteIds = new List<string>();
+            var clienteIds = new List<string>();
 
             // Gerentes
             for (int i = 1; i <= 20; i++)
             {
                 var userId = 1000 + i;
-                gerenteIds.Add(userId);
+                var email = faker.Internet.Email();
+                gerenteIds.Add(userId.ToString(CultureInfo.InvariantCulture));
                 usersToInsert.Add(new object[]
                 {
-                    userId,
+                    userId.ToString(CultureInfo.InvariantCulture),
                     faker.Name.FullName(),
-                    faker.Internet.Email(),
+                    0,
+                    email,
+                    email,
+                    true,
                     faker.Internet.Password(),
+                    true,
+                    true,
+                    true,
                     0
                 });
             }
@@ -56,21 +63,28 @@ namespace ParkManager_Service.Migrations
             for (int i = 1; i <= 80; i++)
             {
                 var userId = 1000 + 20 + i;
-                clienteIds.Add(userId);
+                var email = faker.Internet.Email();
+                clienteIds.Add(userId.ToString(CultureInfo.InvariantCulture));
                 usersToInsert.Add(new object[]
                 {
-                    userId,
+                    userId.ToString(CultureInfo.InvariantCulture),
                     faker.Name.FullName(),
-                    faker.Internet.Email(),
+                    1,
+                    email,
+                    email,
+                    true,
                     faker.Internet.Password(),
-                    1
+                    true,
+                    true,
+                    true,
+                    0
                 });
             }
 
             for (int i = 1; i <= 100; i++)
             {
                 migrationBuilder.InsertData(
-                    table: "USUARIO",
+                    table: "AspNetUsers",
                     columns: columnsUsuario,
                     values: usersToInsert.ToArray()[i - 1]
                 );
@@ -245,9 +259,9 @@ namespace ParkManager_Service.Migrations
             for (int i = 1; i <= 100; i++)
             {
                 migrationBuilder.DeleteData(
-                    table: "USUARIO",
-                    keyColumn: "id_usuario",
-                    keyValue: 1000 + i
+                    table: "AspNetUsers",
+                    keyColumn: "Id",
+                    keyValue: (1000 + i).ToString(CultureInfo.InvariantCulture)
                 );
             }
         }

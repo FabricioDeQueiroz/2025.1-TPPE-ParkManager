@@ -43,7 +43,7 @@ public class Acesso
 
     [Required]
     [Column("id_cliente")]
-    public int IdCliente { get; set; }
+    public string IdCliente { get; set; } = string.Empty;
 
     [Required]
     [Column("id_estacionamento")]

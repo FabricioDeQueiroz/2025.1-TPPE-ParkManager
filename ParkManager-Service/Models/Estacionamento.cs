@@ -87,7 +87,7 @@ public class Estacionamento
 
     [Required]
     [Column("id_gerente")]
-    public int IdGerente { get; set; }
+    public string IdGerente { get; set; } = string.Empty;
 
     [ForeignKey("IdGerente")]
     public Usuario Gerente { get; set; } = null!;
