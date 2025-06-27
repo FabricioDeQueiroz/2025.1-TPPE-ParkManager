@@ -26,19 +26,24 @@ Documentação do Banco de Dados do projeto pode ser encontrada [aqui](docs/MerD
 
 ## Arquiteura de Pastas do Projeto
 
+A arquitetura do projeto segue o padrão **MVC** e está organizada da seguinte forma:
+
 ```plaintext
 2025.1-TPPE-ParkManager/
 ├── .github/
 ├── ParkManager-Service/
-│   ├── Controllers/
-│   ├── Models/
 │   ├── Data/
 │   ├── Migrations/
+│   ├── Controllers/
+│   ├── Services/
+│   │   ├── Interfaces/
+│   ├── Views/
+│   ├── Models/
 │   ├── Helpers/
-│   ├── UnitTests/
-│   │   ├── Controllers/
-│   │   ├── Parameters/
-│   │   └── Integration/
+│   ├── Tests/
+│   │   ├── UnitTests/
+│   │   ├── ParametersTests/
+│   │   └── IntegrationTests/
 │   └── wwwroot/swagger-ui/
 └── docs/
         └── assets/
@@ -49,11 +54,14 @@ Documentação do Banco de Dados do projeto pode ser encontrada [aqui](docs/MerD
 * **`.github/`**: Arquivos de configuração para **GitHub Actions**, e Template de Pull Requests.
 
 * **`ParkManager-Service/`**: Backend da aplicação.
-    * **`Controllers/`**: Recebe requisições HTTP e delega as operações da API.
-    * **`Models/`**: Define as estruturas de dados e entidades de negócio.
     * **`Data/`**: Gerencia o acesso e a interação com o banco de dados.
     * **`Migrations/`**: Contém os scripts para gerenciar as alterações no schema do banco de dados.
-    * **`UnitTests/`**: Armazena todos os testes do serviço (unitários e de integração).
+    * **`Controllers/`**: Recebe requisições HTTP e delega as operações da API.
+    * **`Services/`**: Contém a lógica de negócio da aplicação.
+       * **`Interfaces/`**: Define as interfaces dos serviços, promovendo a separação de responsabilidades.
+    * **`Views/`**: Contém as views, que são as interfaces de usuário.
+    * **`Models/`**: Define as estruturas de dados e entidades de negócio.
+    * **`Tests/`**: Armazena todos os testes do serviço (unitários e de integração).
     * **`wwwroot/swagger-ui/`**: Arquivos de estilização para o Swagger.
 
 * **`docs/`**: Dedicada à **documentação** do projeto.
