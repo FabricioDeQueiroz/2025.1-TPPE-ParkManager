@@ -8,17 +8,6 @@ namespace ParkManager_Service.Tests
         {
             // Corrige o ContentRootPath, essencial para evitar DirectoryNotFoundException
             builder.UseContentRoot(Directory.GetCurrentDirectory());
-
-            builder.Configure(app =>
-            {
-                app.UseRouting();
-                app.UseAuthorization();
-                app.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllers();
-                });
-            });
-
             builder.UseEnvironment("Test");
         }
     }
