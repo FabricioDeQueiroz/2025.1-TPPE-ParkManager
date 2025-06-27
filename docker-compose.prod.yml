@@ -30,9 +30,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - DB_HOST=parkmanager-postgres-prod
       - DB_PORT=5432
-      - JWT_KEY=${JWT_KEY}
-      - JWT_ISSUER=${JWT_ISSUER}
-      - JWT_AUDIENCE=${JWT_AUDIENCE}
+      - JWT__Key=${JWT_KEY}
+      - JWT__Issuer=${JWT_ISSUER}
+      - JWT__Audience=${JWT_AUDIENCE}
       - ConnectionStrings__DefaultConnection=Host=parkmanager-postgres-prod;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
     depends_on:
       parkmanager-postgres-prod:
