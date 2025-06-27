@@ -4,7 +4,7 @@ using ParkManager_Service.Models;
 
 namespace ParkManager_Service.Data
 {
-    public class AppDbContext(DbContextOptions<AppDbContext> options): IdentityDbContext<Usuario>(options)
+    public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<Usuario>(options)
     {
         public DbSet<Estacionamento> Estacionamentos { get; set; } = null!;
         public DbSet<Usuario> Usuarios { get; set; } = null!;
