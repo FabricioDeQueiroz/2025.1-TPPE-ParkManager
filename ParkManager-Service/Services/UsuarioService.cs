@@ -37,7 +37,7 @@ namespace ParkManager_Service.Services
 
             if (usuario == null) return null;
 
-            var resultado = await _userManager.CheckPasswordAsync(usuario, user.Password).ConfigureAwait(false);
+            var resultado = await _userManager.CheckPasswordAsync(usuario, user.Senha).ConfigureAwait(false);
 
             if (!resultado) return null;
 
@@ -71,6 +71,7 @@ namespace ParkManager_Service.Services
             return new UsuarioLoginResponseDto
             {
                 Token = tokenString,
+                Id = usuario.Id,
                 Nome = usuario.Nome,
                 Email = usuario.Email!,
                 Tipo = usuario.Tipo
@@ -87,7 +88,7 @@ namespace ParkManager_Service.Services
                 Tipo = user.Tipo
             };
 
-            var resultado = await _userManager.CreateAsync(usuario, user.Password).ConfigureAwait(false);
+            var resultado = await _userManager.CreateAsync(usuario, user.Senha).ConfigureAwait(false);
 
             if (!resultado.Succeeded)
             {
@@ -95,6 +96,19 @@ namespace ParkManager_Service.Services
             }
 
             return null;
+        }
+
+        public async Task<bool> DeleteUsuarioByEmailAsync(string email)
+        {
+            var usuario = await _userManager.FindByEmailAsync(email).ConfigureAwait(false);
+
+            if (usuario == null) return false;
+
+            var resultado = await _userManager.DeleteAsync(usuario).ConfigureAwait(false);
+
+            if (resultado.Succeeded) return true;
+
+            return false;
         }
     }
 }

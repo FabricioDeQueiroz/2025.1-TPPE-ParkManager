@@ -7,5 +7,6 @@ namespace ParkManager_Service.Services.Interfaces
         Task<UsuarioGetDto?> GetUsuarioByIdAsync(string id);
         Task<UsuarioLoginResponseDto?> LoginAsync(UsuarioLoginDto user);
         Task<string?> RegisterAsync(UsuarioRegisterDto user);
+        Task<bool> DeleteUsuarioByEmailAsync(string email);
     }
 }

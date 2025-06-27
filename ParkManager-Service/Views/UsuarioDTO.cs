@@ -15,7 +15,7 @@ namespace ParkManager_Service.Views
 
         [Required]
         [StringLength(100, MinimumLength = 8)]
-        public string Password { get; set; } = string.Empty;
+        public string Senha { get; set; } = string.Empty;
 
         [Required]
         [EnumDataType(typeof(TipoUsuario))]
@@ -30,12 +30,13 @@ namespace ParkManager_Service.Views
 
         [Required]
         [StringLength(100, MinimumLength = 8)]
-        public string Password { get; set; } = string.Empty;
+        public string Senha { get; set; } = string.Empty;
     }
 
     public class UsuarioLoginResponseDto
     {
         public string Token { get; set; } = string.Empty;
+        public string Id { get; set; } = string.Empty;
         public string Nome { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public TipoUsuario Tipo { get; set; }
