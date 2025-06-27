@@ -125,3 +125,4 @@ file_header_template = unset # Desativa a exigência de um cabeçalho de arquivo
 csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,override,readonly,sealed,volatile,async # Ordem padrão dos modificadores em C#
 dotnet_diagnostic.CA5394.severity = silent
 dotnet_diagnostic.CA1062.severity = silent
+dotnet_diagnostic.CS7022.severity = none

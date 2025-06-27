@@ -40,6 +40,8 @@ services:
     volumes:
       - ./ParkManager-Service:/src/ParkManager-Service
       - ~/.nuget/packages:/root/.nuget/packages:ro
+      - ./data-protection-keys:/root/.aspnet/DataProtection-Keys
+    restart: always
 
 volumes:
   postgres_data:

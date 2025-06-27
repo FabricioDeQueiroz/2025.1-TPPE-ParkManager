@@ -13,3 +13,4 @@ ParkManager-Service/TestResults/
 ParkManager-Service/appsettings.Development.json
 ParkManager-Service/.idea/
 TestResults/
+data-protection-keys/

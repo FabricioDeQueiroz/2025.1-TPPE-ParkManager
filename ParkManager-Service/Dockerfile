@@ -5,7 +5,7 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:9.0.301 AS build
 ARG BUILD_CONFIGURATION=Debug
 
-RUN dotnet tool install --global dotnet-ef --version 9.0.3
+RUN dotnet tool install --global dotnet-ef --version 9.0.6
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
 WORKDIR /src

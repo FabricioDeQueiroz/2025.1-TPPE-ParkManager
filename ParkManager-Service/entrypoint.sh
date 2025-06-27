@@ -22,17 +22,21 @@ if [ "$ASPNETCORE_ENVIRONMENT" = "Development" ]; then
   echo "DB está disponível. Aplicando migrations com Fakes para testes..."
 
   dotnet ef database update --project ParkManager-Service.csproj
+
+  echo "Migrations aplicadas com sucesso. Iniciando a aplicação..."
 elif [ "$ASPNETCORE_ENVIRONMENT" = "Production" ]; then
   echo "DB está disponível. Aplicando migrations..."
 
-  dotnet ef database update SchemaMigration --project ParkManager-Service.csproj
+  dotnet ef database update SchemaMigration --project ParkManager-Service/ParkManager-Service.csproj
+
+  echo "Migrations aplicadas com sucesso. Iniciando a aplicação..."
 else
   echo "ASPNETCORE_ENVIRONMENT não setado ou não definido. Aplicando migrations padrão..."
-  
-  dotnet ef database update SchemaMigration --project ParkManager-Service.csproj
-fi
 
-echo "Migrations aplicadas com sucesso. Iniciando a aplicação..."
+  dotnet ef database update SchemaMigration --project ParkManager-Service.csproj
+
+  echo "Migrations aplicadas com sucesso. Iniciando a aplicação..."
+fi
 
 if [ "$ASPNETCORE_ENVIRONMENT" = "Development" ]; then
   echo "Iniciando aplicação em modo de desenvolvimento com dotnet watch run..."
