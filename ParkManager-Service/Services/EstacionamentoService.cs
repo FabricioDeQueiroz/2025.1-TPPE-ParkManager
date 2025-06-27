@@ -44,10 +44,7 @@ namespace ParkManager_Service.Services
                 .FirstOrDefaultAsync(e => e.IdEstacionamento == id)
                 .ConfigureAwait(false);
 
-            if (estacionamento == null)
-            {
-                return null;
-            }
+            if (estacionamento == null) return null;
 
             return new EstacionamentoGetDto
             {
@@ -127,10 +124,7 @@ namespace ParkManager_Service.Services
                 .FindAsync(id)
                 .ConfigureAwait(false);
 
-            if (estacionamento == null)
-            {
-                return false;
-            }
+            if (estacionamento == null) return false;
 
             db.Estacionamentos.Remove(estacionamento);
 
