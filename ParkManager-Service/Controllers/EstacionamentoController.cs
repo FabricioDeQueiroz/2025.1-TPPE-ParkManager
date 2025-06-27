@@ -10,7 +10,7 @@ namespace ParkManager_Service.Controllers
     [Route("[controller]")]
     public class EstacionamentoController(IEstacionamento estacionamentoService) : ControllerBase
     {
-        [Authorize(Roles = "Cliente, Gerente")]
+        [Authorize(Roles = "Cliente,Gerente")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EstacionamentoGetDto>>> GetEstacionamentos()
         {
@@ -19,7 +19,7 @@ namespace ParkManager_Service.Controllers
             return Ok(estacionamentos);
         }
 
-        [Authorize(Roles = "Cliente, Gerente")]
+        [Authorize(Roles = "Cliente,Gerente")]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<EstacionamentoGetDto>> GetEstacionamento(int id)
         {

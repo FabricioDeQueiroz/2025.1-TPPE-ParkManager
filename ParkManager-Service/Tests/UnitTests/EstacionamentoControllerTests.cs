@@ -1,6 +1,8 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using ParkManager_Service.Helpers;
 using ParkManager_Service.Models;
 using ParkManager_Service.Views;
 
@@ -15,9 +17,13 @@ namespace ParkManager_Service.Tests.UnitTests
             PropertyNameCaseInsensitive = true
         };
 
-        [Fact(DisplayName = "PostEstacionamento", Skip = "Ignorar")]
+        [Fact(DisplayName = "PostEstacionamento")]
         public async Task CadastrarEstacionamento()
         {
+            // Gerar token de teste
+            var (tokenUsuario, IdUsuario) = await AuthHelper.GetGerenteJwtTokenAsync(_client).ConfigureAwait(false);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenUsuario);
+
             var novoEstacionamento = new
             {
                 nome = "Estacionamento 1 do Teste Automatizado",
@@ -33,7 +39,7 @@ namespace ParkManager_Service.Tests.UnitTests
                 adicionalNoturno = 20,
                 valorEvento = 50,
                 tipo = TipoEstacionamento._24H,
-                idGerente = 1003
+                idGerente = IdUsuario
             };
 
             // Conteúdo
@@ -55,9 +61,13 @@ namespace ParkManager_Service.Tests.UnitTests
             await _client.DeleteAsync(new Uri($"/Estacionamento/{id}", UriKind.Relative)).ConfigureAwait(false);
         }
 
-        [Fact(DisplayName = "GetEstacionamentos", Skip = "Ignorar")]
+        [Fact(DisplayName = "GetEstacionamentos")]
         public async Task ListarEstacionamentos()
         {
+            // Gerar token de teste
+            var (tokenUsuario, IdUsuario) = await AuthHelper.GetGerenteJwtTokenAsync(_client).ConfigureAwait(false);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenUsuario);
+
             var novoEstacionamento = new
             {
                 nome = "Estacionamento 2 do Teste Automatizado",
@@ -75,7 +85,7 @@ namespace ParkManager_Service.Tests.UnitTests
                 horaAbertura = new TimeSpan(7, 0, 0),
                 horaFechamento = new TimeSpan(23, 59, 59),
                 tipo = TipoEstacionamento.Comum,
-                idGerente = 1003
+                idGerente = IdUsuario
             };
 
             // Conteúdo
@@ -97,22 +107,26 @@ namespace ParkManager_Service.Tests.UnitTests
             var responseGet = await _client.GetAsync(new Uri("/Estacionamento", UriKind.Relative)).ConfigureAwait(false);
             responseGet.EnsureSuccessStatusCode();
 
-            string body = await responseGet.Content.ReadAsStringAsync();
+            string body = await responseGet.Content.ReadAsStringAsync().ConfigureAwait(false);
             var estacionamentos = JsonSerializer.Deserialize<List<EstacionamentoGetDto>>(body, _jsonOptions);
 
             // Asserts (Listagem)
             Assert.Equal(HttpStatusCode.OK, responseGet.StatusCode);
             Assert.NotNull(estacionamentos);
             Assert.True(estacionamentos.Count >= 0);
-            Assert.Contains(estacionamentos, e => e.Nome  == "Estacionamento 2 do Teste Automatizado");
+            Assert.Contains(estacionamentos, e => e.Nome == "Estacionamento 2 do Teste Automatizado");
 
             // Limpar
             await _client.DeleteAsync(new Uri($"/Estacionamento/{id}", UriKind.Relative)).ConfigureAwait(false);
         }
 
-        [Fact(DisplayName = "GetEstacionamento", Skip = "Ignorar")]
+        [Fact(DisplayName = "GetEstacionamento")]
         public async Task ListarEstacionamento()
         {
+            // Gerar token de teste
+            var (tokenUsuario, IdUsuario) = await AuthHelper.GetGerenteJwtTokenAsync(_client).ConfigureAwait(false);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenUsuario);
+
             var novoEstacionamento = new
             {
                 nome = "Estacionamento 3 do Teste Automatizado",
@@ -130,7 +144,7 @@ namespace ParkManager_Service.Tests.UnitTests
                 horaAbertura = new TimeSpan(7, 0, 0),
                 horaFechamento = new TimeSpan(23, 59, 59),
                 tipo = TipoEstacionamento.Comum,
-                idGerente = 1003
+                idGerente = IdUsuario
             };
 
             // Conteúdo
@@ -163,9 +177,13 @@ namespace ParkManager_Service.Tests.UnitTests
             await _client.DeleteAsync(new Uri($"/Estacionamento/{id}", UriKind.Relative)).ConfigureAwait(false);
         }
 
-        [Fact(DisplayName = "PutEstacionamento", Skip = "Ignorar")]
+        [Fact(DisplayName = "PutEstacionamento")]
         public async Task AtualizarEstacionamento()
         {
+            // Gerar token de teste
+            var (tokenUsuario, IdUsuario) = await AuthHelper.GetGerenteJwtTokenAsync(_client).ConfigureAwait(false);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenUsuario);
+
             var novoEstacionamento = new
             {
                 nome = "Estacionamento 4 do Teste Automatizado",
@@ -183,7 +201,7 @@ namespace ParkManager_Service.Tests.UnitTests
                 horaAbertura = new TimeSpan(5, 0, 0),
                 horaFechamento = new TimeSpan(23, 0, 0),
                 tipo = TipoEstacionamento.Comum,
-                idGerente = 1005
+                idGerente = IdUsuario
             };
 
             // Conteúdo
@@ -219,7 +237,7 @@ namespace ParkManager_Service.Tests.UnitTests
                 horaAbertura = new TimeSpan(5, 0, 0),
                 horaFechamento = new TimeSpan(23, 59, 59),
                 tipo = TipoEstacionamento.Comum,
-                idGerente = 1005
+                idGerente = IdUsuario
             };
 
             // Conteúdo
@@ -240,9 +258,13 @@ namespace ParkManager_Service.Tests.UnitTests
             await _client.DeleteAsync(new Uri($"/Estacionamento/{id}", UriKind.Relative)).ConfigureAwait(false);
         }
 
-        [Fact(DisplayName = "DeleteEstacionamento", Skip = "Ignorar")]
+        [Fact(DisplayName = "DeleteEstacionamento")]
         public async Task DeletarEstacionamento()
         {
+            // Gerar token de teste
+            var (tokenUsuario, IdUsuario) = await AuthHelper.GetGerenteJwtTokenAsync(_client).ConfigureAwait(false);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenUsuario);
+
             var novoEstacionamento = new
             {
                 nome = "Estacionamento 5 do Teste Automatizado",
@@ -258,7 +280,7 @@ namespace ParkManager_Service.Tests.UnitTests
                 adicionalNoturno = 20,
                 valorEvento = 50,
                 tipo = TipoEstacionamento._24H,
-                idGerente = 1005
+                idGerente = IdUsuario
             };
 
             // Conteúdo
