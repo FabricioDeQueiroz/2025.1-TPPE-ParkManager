@@ -8,89 +8,73 @@ public static class AuthHelper
 {
     public static async Task<(string token, string id)> GetGerenteJwtTokenAsync(HttpClient client)
     {
-        //  Pré-condição: Registrar um gerente se não existir
-        var gerente = new
-        {
-            nome = "Gerente dos Testes Automatizados",
-            email = "gerentegeral@gmail.com",
-            senha = "Gerente12!",
-            tipo = TipoUsuario.Gerente
-        };
-
-        using var contentRegister = new StringContent(JsonSerializer.Serialize(gerente), Encoding.UTF8, "application/json");
-
-        var responseRegister = await client.PostAsync(new Uri("/Usuario/register", UriKind.Relative), contentRegister).ConfigureAwait(false);
-
-        // Login do gerente
         var gerenteLogin = new UsuarioLoginDto
         {
             Email = "gerentegeral@gmail.com",
             Senha = "Gerente12!"
         };
 
-        using var contentLogin = new StringContent(JsonSerializer.Serialize(gerenteLogin), Encoding.UTF8, "application/json");
+        var (token, id) = await TentarLoginAsync(client, gerenteLogin).ConfigureAwait(false);
 
-        var response = await client.PostAsync(new Uri("/Usuario/login", UriKind.Relative), contentLogin).ConfigureAwait(false);
-        response.EnsureSuccessStatusCode();
+        if (!string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(id))
+            return (token, id);
 
-        string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-        string token = JsonDocument.Parse(responseBody).RootElement.GetProperty("token").GetString() ?? "";
-        string id = JsonDocument.Parse(responseBody).RootElement.GetProperty("id").GetString() ?? "";
-
-        if (string.IsNullOrEmpty(token))
+        // Tenta registrar se o login falhou
+        var gerente = new
         {
-            throw new InvalidOperationException("Token de autenticação de gerente não foi gerado corretamente.");
-        }
+            nome = "Gerente dos Testes Automatizados",
+            email = gerenteLogin.Email,
+            senha = gerenteLogin.Senha,
+            tipo = TipoUsuario.Gerente
+        };
 
-        if (string.IsNullOrEmpty(id))
-        {
-            throw new InvalidOperationException("ID de gerente não foi retornado corretamente.");
-        }
+        using var contentRegister = new StringContent(JsonSerializer.Serialize(gerente), Encoding.UTF8, "application/json");
+        await client.PostAsync(new Uri("/Usuario/register", UriKind.Relative), contentRegister).ConfigureAwait(false);
 
-        return (token, id);
+        return await TentarLoginAsync(client, gerenteLogin).ConfigureAwait(false);
     }
 
     public static async Task<(string token, string id)> GetClienteJwtTokenAsync(HttpClient client)
     {
-        // Pré-condição: Registrar um cliente se não existir
-        var cliente = new
-        {
-            nome = "Cliente dos Testes Automatizados",
-            email = "clientegeral@gmail.com",
-            senha = "Cliente12!",
-            tipo = TipoUsuario.Cliente
-        };
-
-        using var contentRegister = new StringContent(JsonSerializer.Serialize(cliente), Encoding.UTF8, "application/json");
-
-        var responseRegister = await client.PostAsync(new Uri("/Usuario/register", UriKind.Relative), contentRegister).ConfigureAwait(false);
-
-        // Login do cliente
         var clienteLogin = new UsuarioLoginDto
         {
             Email = "clientegeral@gmail.com",
             Senha = "Cliente12!"
         };
 
-        using var contentLogin = new StringContent(JsonSerializer.Serialize(clienteLogin), Encoding.UTF8, "application/json");
+        var (token, id) = await TentarLoginAsync(client, clienteLogin).ConfigureAwait(false);
 
+        if (!string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(id))
+            return (token, id);
+
+        // Tenta registrar se o login falhou
+        var cliente = new
+        {
+            nome = "Cliente dos Testes Automatizados",
+            email = clienteLogin.Email,
+            senha = clienteLogin.Senha,
+            tipo = TipoUsuario.Cliente
+        };
+
+        using var contentRegister = new StringContent(JsonSerializer.Serialize(cliente), Encoding.UTF8, "application/json");
+        await client.PostAsync(new Uri("/Usuario/register", UriKind.Relative), contentRegister).ConfigureAwait(false);
+
+        return await TentarLoginAsync(client, clienteLogin).ConfigureAwait(false);
+    }
+
+    private static async Task<(string token, string id)> TentarLoginAsync(HttpClient client, UsuarioLoginDto loginDto)
+    {
+        using var contentLogin = new StringContent(JsonSerializer.Serialize(loginDto), Encoding.UTF8, "application/json");
         var response = await client.PostAsync(new Uri("/Usuario/login", UriKind.Relative), contentLogin).ConfigureAwait(false);
 
-        response.EnsureSuccessStatusCode();
+        if (!response.IsSuccessStatusCode)
+            return ("", "");
 
-        string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-        string token = JsonDocument.Parse(responseBody).RootElement.GetProperty("token").GetString() ?? "";
-        string id = JsonDocument.Parse(responseBody).RootElement.GetProperty("id").GetString() ?? "";
+        var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        var json = JsonDocument.Parse(responseBody).RootElement;
 
-        if (string.IsNullOrEmpty(token))
-        {
-            throw new InvalidOperationException("Token de autenticação de cliente não foi gerado corretamente.");
-        }
-
-        if (string.IsNullOrEmpty(id))
-        {
-            throw new InvalidOperationException("ID de cliente não foi retornado corretamente.");
-        }
+        string token = json.GetProperty("token").GetString() ?? "";
+        string id = json.GetProperty("id").GetString() ?? "";
 
         return (token, id);
     }
