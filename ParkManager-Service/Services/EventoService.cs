@@ -99,33 +99,43 @@ namespace ParkManager_Service.Services
             await db.SaveChangesAsync()
                 .ConfigureAwait(false);
 
-            return new EventoGetDto
+            // Carrega o estacionamento relacionado para retornar no DTO
+            novoEvento.Estacionamento = await db.Estacionamentos
+                .FirstOrDefaultAsync(e => e.IdEstacionamento == evento.IdEstacionamento)
+                .ConfigureAwait(false);
+
+            if (novoEvento.Estacionamento == null) 
             {
-                IdEvento = novoEvento.IdEvento,
-                Nome = novoEvento.Nome,
-                DataHoraInicio = novoEvento.DataHoraInicio,
-                DataHoraFim = novoEvento.DataHoraFim,
-                Estacionamento = new EstacionamentoGetDto
+                throw new InvalidOperationException("Estacionamento não encontrado.");
+            }
+
+            return new EventoGetDto
                 {
-                    IdEstacionamento = novoEvento.Estacionamento.IdEstacionamento,
-                    Nome = novoEvento.Estacionamento.Nome,
-                    NomeContratante = novoEvento.Estacionamento.NomeContratante,
-                    VagasTotais = novoEvento.Estacionamento.VagasTotais,
-                    VagasOcupadas = novoEvento.Estacionamento.VagasOcupadas,
-                    Faturamento = novoEvento.Estacionamento.Faturamento,
-                    RetornoContratante = novoEvento.Estacionamento.RetornoContratante,
-                    ValorFracao = novoEvento.Estacionamento.ValorFracao,
-                    DescontoHora = novoEvento.Estacionamento.DescontoHora,
-                    ValorMensal = novoEvento.Estacionamento.ValorMensal,
-                    ValorDiaria = novoEvento.Estacionamento.ValorDiaria,
-                    AdicionalNoturno = novoEvento.Estacionamento.AdicionalNoturno,
-                    ValorEvento = novoEvento.Estacionamento.ValorEvento,
-                    HoraAbertura = novoEvento.Estacionamento.HoraAbertura,
-                    HoraFechamento = novoEvento.Estacionamento.HoraFechamento,
-                    Tipo = novoEvento.Estacionamento.Tipo,
-                    IdGerente = novoEvento.Estacionamento.IdGerente
-                }
-            };
+                    IdEvento = novoEvento.IdEvento,
+                    Nome = novoEvento.Nome,
+                    DataHoraInicio = novoEvento.DataHoraInicio,
+                    DataHoraFim = novoEvento.DataHoraFim,
+                    Estacionamento = new EstacionamentoGetDto
+                    {
+                        IdEstacionamento = novoEvento.Estacionamento.IdEstacionamento,
+                        Nome = novoEvento.Estacionamento.Nome,
+                        NomeContratante = novoEvento.Estacionamento.NomeContratante,
+                        VagasTotais = novoEvento.Estacionamento.VagasTotais,
+                        VagasOcupadas = novoEvento.Estacionamento.VagasOcupadas,
+                        Faturamento = novoEvento.Estacionamento.Faturamento,
+                        RetornoContratante = novoEvento.Estacionamento.RetornoContratante,
+                        ValorFracao = novoEvento.Estacionamento.ValorFracao,
+                        DescontoHora = novoEvento.Estacionamento.DescontoHora,
+                        ValorMensal = novoEvento.Estacionamento.ValorMensal,
+                        ValorDiaria = novoEvento.Estacionamento.ValorDiaria,
+                        AdicionalNoturno = novoEvento.Estacionamento.AdicionalNoturno,
+                        ValorEvento = novoEvento.Estacionamento.ValorEvento,
+                        HoraAbertura = novoEvento.Estacionamento.HoraAbertura,
+                        HoraFechamento = novoEvento.Estacionamento.HoraFechamento,
+                        Tipo = novoEvento.Estacionamento.Tipo,
+                        IdGerente = novoEvento.Estacionamento.IdGerente
+                    }
+                };
         }
 
         public async Task<bool> UpdateEventoAsync(EventoUpdateDto evento)
