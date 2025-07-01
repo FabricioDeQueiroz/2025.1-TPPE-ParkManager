@@ -37,7 +37,6 @@ namespace ParkManager_Service.Tests.UnitTests
                 valorMensal = 6000,
                 valorDiaria = 200,
                 adicionalNoturno = 20,
-                valorEvento = 50,
                 tipo = TipoEstacionamento._24H,
                 idGerente = IdUsuario
             };
@@ -81,7 +80,6 @@ namespace ParkManager_Service.Tests.UnitTests
                 valorMensal = 6000,
                 valorDiaria = 200,
                 adicionalNoturno = 20,
-                valorEvento = 50,
                 horaAbertura = new TimeSpan(7, 0, 0),
                 horaFechamento = new TimeSpan(23, 59, 59),
                 tipo = TipoEstacionamento.Comum,
@@ -140,7 +138,6 @@ namespace ParkManager_Service.Tests.UnitTests
                 valorMensal = 6000,
                 valorDiaria = 200,
                 adicionalNoturno = 20,
-                valorEvento = 50,
                 horaAbertura = new TimeSpan(7, 0, 0),
                 horaFechamento = new TimeSpan(23, 59, 59),
                 tipo = TipoEstacionamento.Comum,
@@ -197,7 +194,6 @@ namespace ParkManager_Service.Tests.UnitTests
                 valorMensal = 6000,
                 valorDiaria = 200,
                 adicionalNoturno = 20,
-                valorEvento = 50,
                 horaAbertura = new TimeSpan(5, 0, 0),
                 horaFechamento = new TimeSpan(23, 0, 0),
                 tipo = TipoEstacionamento.Comum,
@@ -233,7 +229,6 @@ namespace ParkManager_Service.Tests.UnitTests
                 valorMensal = 7000,
                 valorDiaria = 250,
                 adicionalNoturno = 30,
-                valorEvento = 55,
                 horaAbertura = new TimeSpan(5, 0, 0),
                 horaFechamento = new TimeSpan(23, 59, 59),
                 tipo = TipoEstacionamento.Comum,
@@ -278,7 +273,6 @@ namespace ParkManager_Service.Tests.UnitTests
                 valorMensal = 6000,
                 valorDiaria = 200,
                 adicionalNoturno = 20,
-                valorEvento = 50,
                 tipo = TipoEstacionamento._24H,
                 idGerente = IdUsuario
             };

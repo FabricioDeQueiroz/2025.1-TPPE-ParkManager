@@ -38,7 +38,6 @@ namespace ParkManager_Service.Tests.UnitTests
                 valorMensal = 6000,
                 valorDiaria = 200,
                 adicionalNoturno = 20,
-                valorEvento = 50,
                 tipo = TipoEstacionamento._24H,
                 idGerente = IdUsuario
             };
@@ -55,6 +54,7 @@ namespace ParkManager_Service.Tests.UnitTests
             var novoEvento = new
             {
                 nome = "Evento Teste Automatizado",
+                valorEvento = 50,
                 dataHoraInicio = DateTime.UtcNow.AddDays(1),
                 dataHoraFim = DateTime.UtcNow.AddDays(2),
                 idEstacionamento = idEstacionamento
@@ -118,7 +118,6 @@ namespace ParkManager_Service.Tests.UnitTests
                 valorMensal = 6000,
                 valorDiaria = 200,
                 adicionalNoturno = 20,
-                valorEvento = 50,
                 tipo = TipoEstacionamento._24H,
                 idGerente = IdUsuario
             };
@@ -134,6 +133,7 @@ namespace ParkManager_Service.Tests.UnitTests
             var novoEvento = new
             {
                 nome = "Evento Teste BuscarPorId",
+                valorEvento = 50,
                 dataHoraInicio = DateTime.UtcNow.AddDays(1),
                 dataHoraFim = DateTime.UtcNow.AddDays(2),
                 idEstacionamento = idEstacionamento
@@ -185,7 +185,6 @@ namespace ParkManager_Service.Tests.UnitTests
                 valorMensal = 6000,
                 valorDiaria = 200,
                 adicionalNoturno = 20,
-                valorEvento = 50,
                 tipo = TipoEstacionamento._24H,
                 idGerente = IdUsuario
             };
@@ -202,6 +201,7 @@ namespace ParkManager_Service.Tests.UnitTests
             var novoEvento = new
             {
                 nome = "Evento Teste Atualizar",
+                valorEvento = 50,
                 dataHoraInicio = DateTime.UtcNow.AddDays(1),
                 dataHoraFim = DateTime.UtcNow.AddDays(2),
                 idEstacionamento = idEstacionamento
@@ -222,6 +222,7 @@ namespace ParkManager_Service.Tests.UnitTests
             {
                 idEvento = id,
                 nome = "Evento Teste Atualizado",
+                valorEvento = 50,
                 dataHoraInicio = DateTime.UtcNow.AddDays(3),
                 dataHoraFim = DateTime.UtcNow.AddDays(4),
                 idEstacionamento = idEstacionamento
@@ -266,7 +267,6 @@ namespace ParkManager_Service.Tests.UnitTests
                 valorMensal = 6000,
                 valorDiaria = 200,
                 adicionalNoturno = 20,
-                valorEvento = 50,
                 tipo = TipoEstacionamento._24H,
                 idGerente = IdUsuario
             };
@@ -283,6 +283,7 @@ namespace ParkManager_Service.Tests.UnitTests
             var novoEvento = new
             {
                 nome = "Evento Teste Deletar",
+                valorEvento = 50,
                 dataHoraInicio = DateTime.UtcNow.AddDays(1),
                 dataHoraFim = DateTime.UtcNow.AddDays(2),
                 idEstacionamento = idEstacionamento
