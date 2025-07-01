@@ -11,11 +11,9 @@ namespace ParkManager_Service.Services
     {
         private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
-        private string? GetUserId() =>
-            _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        private string? GetUserId() => _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        private bool IsGerente() =>
-            _httpContextAccessor.HttpContext?.User.IsInRole("Gerente") ?? false;
+        private bool IsGerente() => _httpContextAccessor.HttpContext?.User.IsInRole("Gerente") ?? false;
 
         public async Task<IEnumerable<EstacionamentoGetDto>> GetAllEstacionamentosAsync()
         {
@@ -87,7 +85,7 @@ namespace ParkManager_Service.Services
             if (userId == null) throw new InvalidOperationException("Usuário não autenticado.");
 
             estacionamento.IdGerente = userId;
-            
+
             db.Estacionamentos.Add(estacionamento);
 
             await db.SaveChangesAsync()
