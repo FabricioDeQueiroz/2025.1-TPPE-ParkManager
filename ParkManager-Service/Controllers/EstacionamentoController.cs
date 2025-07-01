@@ -58,8 +58,7 @@ namespace ParkManager_Service.Controllers
                 ValorEvento = estacionamentoCreateDto.ValorEvento,
                 HoraAbertura = estacionamentoCreateDto.HoraAbertura,
                 HoraFechamento = estacionamentoCreateDto.HoraFechamento,
-                Tipo = estacionamentoCreateDto.Tipo,
-                IdGerente = estacionamentoCreateDto.IdGerente
+                Tipo = estacionamentoCreateDto.Tipo
             };
 
             var estacionamentoCriado = await estacionamentoService.AddEstacionamentoAsync(novoEstacionamento).ConfigureAwait(false);

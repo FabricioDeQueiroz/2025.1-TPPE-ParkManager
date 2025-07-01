@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using ParkManager_Service.Data;
 using ParkManager_Service.Models;
@@ -6,15 +7,28 @@ using ParkManager_Service.Views;
 
 namespace ParkManager_Service.Services
 {
-    public class EstacionamentoService(AppDbContext db) : IEstacionamento
+    public class EstacionamentoService(AppDbContext db, IHttpContextAccessor httpContextAccessor) : IEstacionamento
     {
+        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+
+        private string? GetUserId() =>
+            _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        private bool IsGerente() =>
+            _httpContextAccessor.HttpContext?.User.IsInRole("Gerente") ?? false;
+
         public async Task<IEnumerable<EstacionamentoGetDto>> GetAllEstacionamentosAsync()
         {
-            var estacionamentos = await db.Estacionamentos
-                .ToListAsync()
-                .ConfigureAwait(false);
+            var query = db.Estacionamentos.AsQueryable();
 
-            var estacionamentosDto = estacionamentos.Select(e => new EstacionamentoGetDto
+            if (IsGerente())
+            {
+                query = query.Where(e => e.IdGerente == GetUserId());
+            }
+
+            var estacionamentos = await query.ToListAsync().ConfigureAwait(false);
+
+            return estacionamentos.Select(e => new EstacionamentoGetDto
             {
                 IdEstacionamento = e.IdEstacionamento,
                 Nome = e.Nome,
@@ -33,18 +47,16 @@ namespace ParkManager_Service.Services
                 HoraFechamento = e.HoraFechamento,
                 Tipo = e.Tipo,
                 IdGerente = e.IdGerente
-            }).ToList();
-
-            return estacionamentosDto;
+            });
         }
 
         public async Task<EstacionamentoGetDto?> GetEstacionamentoByIdAsync(int id)
         {
-            var estacionamento = await db.Estacionamentos
-                .FirstOrDefaultAsync(e => e.IdEstacionamento == id)
-                .ConfigureAwait(false);
+            var estacionamento = await db.Estacionamentos.FirstOrDefaultAsync(e => e.IdEstacionamento == id).ConfigureAwait(false);
 
             if (estacionamento == null) return null;
+
+            if (IsGerente() && estacionamento.IdGerente != GetUserId()) return null;
 
             return new EstacionamentoGetDto
             {
@@ -70,6 +82,12 @@ namespace ParkManager_Service.Services
 
         public async Task<EstacionamentoGetDto> AddEstacionamentoAsync(Estacionamento estacionamento)
         {
+            var userId = GetUserId();
+
+            if (userId == null) throw new InvalidOperationException("Usuário não autenticado.");
+
+            estacionamento.IdGerente = userId;
+            
             db.Estacionamentos.Add(estacionamento);
 
             await db.SaveChangesAsync()
@@ -99,32 +117,22 @@ namespace ParkManager_Service.Services
 
         public async Task<bool> UpdateEstacionamentoAsync(Estacionamento estacionamento)
         {
+            var existente = await db.Estacionamentos.AsNoTracking().FirstOrDefaultAsync(e => e.IdEstacionamento == estacionamento.IdEstacionamento).ConfigureAwait(false);
+
+            if (existente == null || existente.IdGerente != GetUserId()) return false;
+
             db.Entry(estacionamento).State = EntityState.Modified;
 
-            try
-            {
-                await db.SaveChangesAsync()
-                    .ConfigureAwait(false);
+            await db.SaveChangesAsync().ConfigureAwait(false);
 
-                return true;
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await db.Estacionamentos.AnyAsync(e => e.IdEstacionamento == estacionamento.IdEstacionamento).ConfigureAwait(false))
-                {
-                    return false;
-                }
-                throw;
-            }
+            return true;
         }
 
         public async Task<bool> DeleteEstacionamentoAsync(int id)
         {
-            var estacionamento = await db.Estacionamentos
-                .FindAsync(id)
-                .ConfigureAwait(false);
+            var estacionamento = await db.Estacionamentos.FindAsync(id).ConfigureAwait(false);
 
-            if (estacionamento == null) return false;
+            if (estacionamento == null || estacionamento.IdGerente != GetUserId()) return false;
 
             db.Estacionamentos.Remove(estacionamento);
 
