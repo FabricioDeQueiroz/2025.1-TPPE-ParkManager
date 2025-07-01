@@ -12,10 +12,4 @@ public class HelloControllerTests
         var result = _controller.Get();
         Assert.Equal("ParkManager API!", result);
     }
-
-    [Fact(DisplayName = "Ignorado 1", Skip = "Ignorado")]
-    public void GetIgnorado()
-    {
-        // Implementar depois
-    }
 }
