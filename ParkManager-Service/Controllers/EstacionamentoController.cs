@@ -55,7 +55,6 @@ namespace ParkManager_Service.Controllers
                 ValorMensal = estacionamentoCreateDto.ValorMensal,
                 ValorDiaria = estacionamentoCreateDto.ValorDiaria,
                 AdicionalNoturno = estacionamentoCreateDto.AdicionalNoturno,
-                ValorEvento = estacionamentoCreateDto.ValorEvento,
                 HoraAbertura = estacionamentoCreateDto.HoraAbertura,
                 HoraFechamento = estacionamentoCreateDto.HoraFechamento,
                 Tipo = estacionamentoCreateDto.Tipo
@@ -94,7 +93,6 @@ namespace ParkManager_Service.Controllers
                 ValorMensal = estacionamentoUpdateDto.ValorMensal,
                 ValorDiaria = estacionamentoUpdateDto.ValorDiaria,
                 AdicionalNoturno = estacionamentoUpdateDto.AdicionalNoturno,
-                ValorEvento = estacionamentoUpdateDto.ValorEvento,
                 HoraAbertura = estacionamentoUpdateDto.HoraAbertura,
                 HoraFechamento = estacionamentoUpdateDto.HoraFechamento,
                 Tipo = estacionamentoUpdateDto.Tipo,

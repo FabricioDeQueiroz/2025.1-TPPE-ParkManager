@@ -30,6 +30,7 @@ namespace ParkManager_Service.Services
             {
                 IdEvento = e.IdEvento,
                 Nome = e.Nome,
+                ValorEvento = e.ValorEvento,
                 DataHoraInicio = e.DataHoraInicio,
                 DataHoraFim = e.DataHoraFim,
                 Estacionamento = new EstacionamentoGetDto
@@ -46,7 +47,6 @@ namespace ParkManager_Service.Services
                     ValorMensal = e.Estacionamento.ValorMensal,
                     ValorDiaria = e.Estacionamento.ValorDiaria,
                     AdicionalNoturno = e.Estacionamento.AdicionalNoturno,
-                    ValorEvento = e.Estacionamento.ValorEvento,
                     HoraAbertura = e.Estacionamento.HoraAbertura,
                     HoraFechamento = e.Estacionamento.HoraFechamento,
                     Tipo = e.Estacionamento.Tipo,
@@ -72,6 +72,7 @@ namespace ParkManager_Service.Services
             {
                 IdEvento = evento.IdEvento,
                 Nome = evento.Nome,
+                ValorEvento = evento.ValorEvento,
                 DataHoraInicio = evento.DataHoraInicio,
                 DataHoraFim = evento.DataHoraFim,
                 Estacionamento = new EstacionamentoGetDto
@@ -88,7 +89,6 @@ namespace ParkManager_Service.Services
                     ValorMensal = evento.Estacionamento.ValorMensal,
                     ValorDiaria = evento.Estacionamento.ValorDiaria,
                     AdicionalNoturno = evento.Estacionamento.AdicionalNoturno,
-                    ValorEvento = evento.Estacionamento.ValorEvento,
                     HoraAbertura = evento.Estacionamento.HoraAbertura,
                     HoraFechamento = evento.Estacionamento.HoraFechamento,
                     Tipo = evento.Estacionamento.Tipo,
@@ -116,6 +116,7 @@ namespace ParkManager_Service.Services
             var novoEvento = new Evento
             {
                 Nome = evento.Nome,
+                ValorEvento = evento.ValorEvento,
                 DataHoraInicio = evento.DataHoraInicio,
                 DataHoraFim = evento.DataHoraFim,
                 IdEstacionamento = evento.IdEstacionamento
@@ -129,6 +130,7 @@ namespace ParkManager_Service.Services
             {
                 IdEvento = novoEvento.IdEvento,
                 Nome = novoEvento.Nome,
+                ValorEvento = novoEvento.ValorEvento,
                 DataHoraInicio = novoEvento.DataHoraInicio,
                 DataHoraFim = novoEvento.DataHoraFim,
                 Estacionamento = new EstacionamentoGetDto
@@ -145,7 +147,6 @@ namespace ParkManager_Service.Services
                     ValorMensal = estacionamento.ValorMensal,
                     ValorDiaria = estacionamento.ValorDiaria,
                     AdicionalNoturno = estacionamento.AdicionalNoturno,
-                    ValorEvento = estacionamento.ValorEvento,
                     HoraAbertura = estacionamento.HoraAbertura,
                     HoraFechamento = estacionamento.HoraFechamento,
                     Tipo = estacionamento.Tipo,
@@ -166,6 +167,7 @@ namespace ParkManager_Service.Services
             if (IsGerente() && eventoExistente.Estacionamento.IdGerente != GetUserId()) return false;
 
             eventoExistente.Nome = evento.Nome;
+            eventoExistente.ValorEvento = evento.ValorEvento;
             eventoExistente.DataHoraInicio = evento.DataHoraInicio;
             eventoExistente.DataHoraFim = evento.DataHoraFim;
             eventoExistente.IdEstacionamento = evento.IdEstacionamento;

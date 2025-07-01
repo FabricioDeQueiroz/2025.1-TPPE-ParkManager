@@ -17,7 +17,6 @@ namespace ParkManager_Service.Views
         public decimal ValorMensal { get; set; }
         public decimal ValorDiaria { get; set; }
         public decimal AdicionalNoturno { get; set; }
-        public decimal ValorEvento { get; set; }
         public TimeSpan? HoraAbertura { get; set; }
         public TimeSpan? HoraFechamento { get; set; }
         public TipoEstacionamento Tipo { get; set; }
@@ -68,10 +67,6 @@ namespace ParkManager_Service.Views
         [Required]
         [Range(0.00, (double)decimal.MaxValue, ErrorMessage = "O adicional noturno deve ser maior ou igual a zero.")]
         public decimal AdicionalNoturno { get; set; }
-
-        [Required]
-        [Range(0.00, (double)decimal.MaxValue, ErrorMessage = "O valor do evento deve ser maior ou igual a zero.")]
-        public decimal ValorEvento { get; set; }
 
         public TimeSpan? HoraAbertura { get; set; }
 
@@ -132,10 +127,6 @@ namespace ParkManager_Service.Views
         [Required]
         [Range(0.00, (double)decimal.MaxValue, ErrorMessage = "O adicional noturno deve ser maior ou igual a zero.")]
         public decimal AdicionalNoturno { get; set; }
-
-        [Required]
-        [Range(0.00, (double)decimal.MaxValue, ErrorMessage = "O valor do evento deve ser maior ou igual a zero.")]
-        public decimal ValorEvento { get; set; }
 
         public TimeSpan? HoraAbertura { get; set; }
 

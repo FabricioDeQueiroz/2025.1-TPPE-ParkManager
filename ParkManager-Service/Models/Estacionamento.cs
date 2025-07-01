@@ -69,11 +69,6 @@ public class Estacionamento
     [Range(0.00, (double)decimal.MaxValue, ErrorMessage = "O adicional noturno deve ser maior ou igual a zero.")]
     public decimal AdicionalNoturno { get; set; } = 0.00m;
 
-    [Required]
-    [Column("valor_evento", TypeName = "numeric(10, 2)")]
-    [Range(0.00, (double)decimal.MaxValue, ErrorMessage = "O valor do evento deve ser maior ou igual a zero.")]
-    public decimal ValorEvento { get; set; } = 0.00m;
-
     [Column("hora_abertura")]
     public TimeSpan? HoraAbertura { get; set; } = null;
 

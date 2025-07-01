@@ -7,6 +7,7 @@ namespace ParkManager_Service.Views
     {
         public int IdEvento { get; init; }
         public string Nome { get; set; } = string.Empty;
+        public decimal ValorEvento { get; set; }
         public DateTime DataHoraInicio { get; set; }
         public DateTime DataHoraFim { get; set; }
         public EstacionamentoGetDto Estacionamento { get; set; } = null!;
@@ -17,6 +18,10 @@ namespace ParkManager_Service.Views
         [Required]
         [StringLength(255)]
         public string Nome { get; set; } = string.Empty;
+
+        [Required]
+        [Range(0.00, (double)decimal.MaxValue, ErrorMessage = "O valor do evento deve ser maior ou igual a zero.")]
+        public decimal ValorEvento { get; set; }
 
         [Required]
         public DateTime DataHoraInicio { get; set; }
@@ -36,6 +41,10 @@ namespace ParkManager_Service.Views
         [Required]
         [StringLength(255)]
         public string Nome { get; set; } = string.Empty;
+
+        [Required]
+        [Range(0.00, (double)decimal.MaxValue, ErrorMessage = "O valor do evento deve ser maior ou igual a zero.")]
+        public decimal ValorEvento { get; set; }
 
         [Required]
         public DateTime DataHoraInicio { get; set; }

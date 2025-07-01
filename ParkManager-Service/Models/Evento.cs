@@ -15,6 +15,11 @@ public class Evento
     public string Nome { get; set; } = string.Empty;
 
     [Required]
+    [Column("valor_evento", TypeName = "numeric(10, 2)")]
+    [Range(0.00, (double)decimal.MaxValue, ErrorMessage = "O valor do evento deve ser maior ou igual a zero.")]
+    public decimal ValorEvento { get; set; } = 0.00m;
+
+    [Required]
     [Column("data_hora_inicio")]
     public DateTime DataHoraInicio { get; set; }
 
@@ -28,4 +33,6 @@ public class Evento
 
     [ForeignKey("IdEstacionamento")]
     public Estacionamento Estacionamento { get; set; } = null!;
+
+    public ICollection<Acesso> Acessos { get; } = new List<Acesso>();
 }

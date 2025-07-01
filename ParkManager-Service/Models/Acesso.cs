@@ -32,10 +32,6 @@ public class Acesso
     [Column("data_hora_saida")]
     public DateTime? DataHoraSaida { get; set; }
 
-    [StringLength(255)]
-    [Column("nome_evento")]
-    public string NomeEvento { get; set; } = string.Empty;
-
     [Required]
     [Column("tipo")]
     [EnumDataType(typeof(TipoAcesso))]
@@ -49,9 +45,15 @@ public class Acesso
     [Column("id_estacionamento")]
     public int IdEstacionamento { get; set; }
 
+    [Column("id_evento")]
+    public int? IdEvento { get; set; }
+
     [ForeignKey("IdCliente")]
     public Usuario Cliente { get; set; } = null!;
 
     [ForeignKey("IdEstacionamento")]
     public Estacionamento Estacionamento { get; set; } = null!;
+
+    [ForeignKey("IdEvento")]
+    public Evento? Evento { get; set; }
 }
