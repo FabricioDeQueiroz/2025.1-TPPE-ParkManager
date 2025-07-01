@@ -41,6 +41,13 @@ namespace ParkManager_Service.Data
                 .HasForeignKey(a => a.IdEstacionamento)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // ACESSO - em - EVENTO (N:1)
+            builder.Entity<Acesso>()
+                .HasOne(a => a.Evento)
+                .WithMany(ev => ev.Acessos)
+                .HasForeignKey(a => a.IdEvento)
+                .OnDelete(DeleteBehavior.SetNull);
+
             base.OnModelCreating(builder);
         }
     }

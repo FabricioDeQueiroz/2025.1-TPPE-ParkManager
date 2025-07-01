@@ -180,11 +180,9 @@ namespace ParkManager_Service.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("id_estacionamento");
 
-                    b.Property<string>("NomeEvento")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("nome_evento");
+                    b.Property<int?>("IdEvento")
+                        .HasColumnType("integer")
+                        .HasColumnName("id_evento");
 
                     b.Property<string>("PlacaVeiculo")
                         .IsRequired()
@@ -205,6 +203,8 @@ namespace ParkManager_Service.Migrations
                     b.HasIndex("IdCliente");
 
                     b.HasIndex("IdEstacionamento");
+
+                    b.HasIndex("IdEvento");
 
                     b.ToTable("ACESSO");
                 });
@@ -275,10 +275,6 @@ namespace ParkManager_Service.Migrations
                         .HasColumnType("numeric(10, 2)")
                         .HasColumnName("valor_diaria");
 
-                    b.Property<decimal>("ValorEvento")
-                        .HasColumnType("numeric(10, 2)")
-                        .HasColumnName("valor_evento");
-
                     b.Property<decimal>("ValorFracao")
                         .HasColumnType("numeric(10, 2)")
                         .HasColumnName("valor_fracao");
@@ -320,6 +316,10 @@ namespace ParkManager_Service.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
                         .HasColumnName("nome");
+
+                    b.Property<decimal>("ValorEvento")
+                        .HasColumnType("numeric(10, 2)")
+                        .HasColumnName("valor_evento");
 
                     b.HasKey("IdEvento");
 
@@ -467,9 +467,16 @@ namespace ParkManager_Service.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ParkManager_Service.Models.Evento", "Evento")
+                        .WithMany("Acessos")
+                        .HasForeignKey("IdEvento")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Cliente");
 
                     b.Navigation("Estacionamento");
+
+                    b.Navigation("Evento");
                 });
 
             modelBuilder.Entity("ParkManager_Service.Models.Estacionamento", b =>
@@ -499,6 +506,11 @@ namespace ParkManager_Service.Migrations
                     b.Navigation("Acessos");
 
                     b.Navigation("Eventos");
+                });
+
+            modelBuilder.Entity("ParkManager_Service.Models.Evento", b =>
+                {
+                    b.Navigation("Acessos");
                 });
 
             modelBuilder.Entity("ParkManager_Service.Models.Usuario", b =>

@@ -176,7 +176,6 @@ namespace ParkManager_Service.Migrations
                     valor_mensal = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
                     valor_diaria = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
                     adicional_noturno = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
-                    valor_evento = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
                     hora_abertura = table.Column<TimeSpan>(type: "interval", nullable: true),
                     hora_fechamento = table.Column<TimeSpan>(type: "interval", nullable: true),
                     tipo = table.Column<int>(type: "integer", nullable: false),
@@ -194,6 +193,29 @@ namespace ParkManager_Service.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EVENTO",
+                columns: table => new
+                {
+                    id_evento = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    nome = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    valor_evento = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
+                    data_hora_inicio = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    data_hora_fim = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    id_estacionamento = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EVENTO", x => x.id_evento);
+                    table.ForeignKey(
+                        name: "FK_EVENTO_ESTACIONAMENTO_id_estacionamento",
+                        column: x => x.id_estacionamento,
+                        principalTable: "ESTACIONAMENTO",
+                        principalColumn: "id_estacionamento",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ACESSO",
                 columns: table => new
                 {
@@ -203,10 +225,10 @@ namespace ParkManager_Service.Migrations
                     valor_acesso = table.Column<decimal>(type: "numeric(10,2)", nullable: true),
                     data_hora_entrada = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     data_hora_saida = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    nome_evento = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     tipo = table.Column<int>(type: "integer", nullable: false),
                     id_cliente = table.Column<string>(type: "text", nullable: false),
-                    id_estacionamento = table.Column<int>(type: "integer", nullable: false)
+                    id_estacionamento = table.Column<int>(type: "integer", nullable: false),
+                    id_evento = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -223,28 +245,12 @@ namespace ParkManager_Service.Migrations
                         principalTable: "ESTACIONAMENTO",
                         principalColumn: "id_estacionamento",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EVENTO",
-                columns: table => new
-                {
-                    id_evento = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    nome = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    data_hora_inicio = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    data_hora_fim = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    id_estacionamento = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EVENTO", x => x.id_evento);
                     table.ForeignKey(
-                        name: "FK_EVENTO_ESTACIONAMENTO_id_estacionamento",
-                        column: x => x.id_estacionamento,
-                        principalTable: "ESTACIONAMENTO",
-                        principalColumn: "id_estacionamento",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_ACESSO_EVENTO_id_evento",
+                        column: x => x.id_evento,
+                        principalTable: "EVENTO",
+                        principalColumn: "id_evento",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateIndex(
@@ -256,6 +262,11 @@ namespace ParkManager_Service.Migrations
                 name: "IX_ACESSO_id_estacionamento",
                 table: "ACESSO",
                 column: "id_estacionamento");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ACESSO_id_evento",
+                table: "ACESSO",
+                column: "id_evento");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

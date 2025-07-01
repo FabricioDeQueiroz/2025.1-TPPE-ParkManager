@@ -9,17 +9,16 @@ namespace ParkManager_Service.Migrations
     /// <inheritdoc />
     public partial class FakesMigration : Migration
     {
-        private static readonly string[] nomesEventos = new[] { "Nenhum", "Show de Rock", "Feira Tech", "Festa Anual" };
-        private static readonly string[] columnsEvento = new[] { "id_evento", "nome", "data_hora_inicio", "data_hora_fim", "id_estacionamento" };
+        private static readonly string[] columnsEvento = new[] { "id_evento", "nome", "valor_evento", "data_hora_inicio", "data_hora_fim", "id_estacionamento" };
         private static readonly string[] columnsUsuario = new[] { "Id", "nome", "tipo", "UserName", "Email", "EmailConfirmed", "PasswordHash", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnabled", "AccessFailedCount" };
         private static readonly string[] columnsAcesso = new[] {
             "id_acesso", "placa_veiculo", "valor_acesso", "data_hora_entrada",
-            "data_hora_saida", "nome_evento", "tipo", "id_cliente", "id_estacionamento"
+            "data_hora_saida", "tipo", "id_cliente", "id_estacionamento", "id_evento"
         };
         private static readonly string[] columnsEstacionamento = new[] {
             "id_estacionamento", "nome", "nome_contratante", "vagas_totais", "vagas_ocupadas",
             "faturamento", "retorno_contratante", "valor_fracao", "desconto_hora",
-            "valor_mensal", "valor_diaria", "adicional_noturno", "valor_evento",
+            "valor_mensal", "valor_diaria", "adicional_noturno",
             "hora_abertura", "hora_fechamento", "tipo", "id_gerente"
         };
 
@@ -135,7 +134,6 @@ namespace ParkManager_Service.Migrations
                     faker.Finance.Amount(100m, 500m),
                     faker.Finance.Amount(20m, 80m),
                     faker.Finance.Amount(1m, 10m),
-                    faker.Finance.Amount(30m, 150m),
                     horaAbertura,
                     horaFechamento,
                     estacionamentoTipo,
@@ -154,10 +152,12 @@ namespace ParkManager_Service.Migrations
 
             // 3. Inserir EVENTO (100 eventos)
             var eventosToInsert = new List<object[]>();
+            var eventoIds = new List<int>();
 
             for (int i = 1; i <= 100; i++)
             {
                 var eventoId = 3000 + i;
+                eventoIds.Add(eventoId);
                 var dataInicio = faker.Date.Soon(30);
                 var dataFim = dataInicio.AddHours(random.Next(2, 8));
                 var estacionamentoParaEvento = faker.PickRandom(estacionamentoIds);
@@ -166,6 +166,7 @@ namespace ParkManager_Service.Migrations
                 {
                     eventoId,
                     faker.Lorem.Sentence(3, 5) + " Evento",
+                    faker.Finance.Amount(30m, 150m),
                     dataInicio.ToUniversalTime(),
                     dataFim.ToUniversalTime(),
                     estacionamentoParaEvento
@@ -192,7 +193,7 @@ namespace ParkManager_Service.Migrations
 
                 var clienteDoAcesso = faker.PickRandom(clienteIds);
                 var estacionamentoDoAcesso = faker.PickRandom(estacionamentoIds);
-                var nomeEventoAcesso = faker.PickRandom(nomesEventos);
+                var eventoDoAcesso = faker.PickRandom(eventoIds);
 
                 acessosToInsert.Add(new object[]
                 {
@@ -201,10 +202,10 @@ namespace ParkManager_Service.Migrations
                     faker.Finance.Amount(5m, 100m),
                     dataEntrada.ToUniversalTime(),
                     dataSaida.ToUniversalTime(),
-                    nomeEventoAcesso,
                     random.Next(0, 4),
                     clienteDoAcesso,
-                    estacionamentoDoAcesso
+                    estacionamentoDoAcesso,
+                    eventoDoAcesso
                 });
             }
 
