@@ -1,7 +1,6 @@
 services:
   parkmanager-postgres-prod:
     image: postgres:17
-    container_name: parkmanager_postgres_prod
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -18,7 +17,6 @@ services:
       retries: 10
 
   parkmanager-service-prod:
-    container_name: parkmanager_service_prod
     build:
       context: .
       dockerfile: ParkManager-Service/Dockerfile.prod
