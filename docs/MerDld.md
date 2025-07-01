@@ -31,7 +31,6 @@
   - valor_mensal
   - valor_diaria
   - adicional_noturno
-  - valor_evento
   - hora_abertura (NULLABLE)
   - hora_fechamento (NULLABLE)
   - tipo (ENUM: COMUM, 24H)
@@ -40,6 +39,7 @@
 - **EVENTO**:
   - id_evento (PK)
   - nome
+  - valor_evento
   - data_hora_inicio
   - data_hora_fim
   - id_estacionamento (FK -> id_estacionamento)
@@ -50,10 +50,10 @@
   - valor_acesso (NULLABLE)
   - data_hora_entrada
   - data_hora_saida (NULLABLE)
-  - nome_evento (NULLABLE)
   - tipo (ENUM: POR_TEMPO, DIARIA, MENSAL, EVENTO)
   - id_cliente (FK -> id_usuario)
   - id_estacionamento (FK -> id_estacionamento)
+  - id_evento (FK -> id_evento, NULLABLE)
 
 ### Descrição dos Relacionamentos:
 
@@ -72,6 +72,10 @@
 - **ESTACIONAMENTO** - **registra** - **ACESSO**:
   - Um Estacionamento pode registrar vários Acessos, e um Acesso é registrado em um único Estacionamento.
   - Cardinalidade: **1:N**.
+
+- **ACESSO** - **em** - **EVENTO**:
+  - Um Acesso pode estar associado a um Evento, e um Evento pode ter vários Acessos associados.
+  - Cardinalidade: **N:1**.
 
 ### Diagrama Lógico de Dados (DLD):
 
