@@ -29,10 +29,8 @@ ENV PATH="${PATH}:/root/.dotnet/tools"
 
 COPY --from=publish /app/publish .
 
-COPY --from=build /src/ParkManager-Service/entrypoint.sh .
+COPY --from=build /src/ParkManager-Service/ .
 
 RUN chmod +x "entrypoint.sh"
-
-COPY --from=build /src/ParkManager-Service/ParkManager-Service.csproj ParkManager-Service/ParkManager-Service.csproj
 
 ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
