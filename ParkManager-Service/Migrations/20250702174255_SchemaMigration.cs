@@ -225,7 +225,7 @@ namespace ParkManager_Service.Migrations
                     valor_acesso = table.Column<decimal>(type: "numeric(10,2)", nullable: true),
                     data_hora_entrada = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     data_hora_saida = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    tipo = table.Column<int>(type: "integer", nullable: false),
+                    tipo = table.Column<int>(type: "integer", nullable: true),
                     id_cliente = table.Column<string>(type: "text", nullable: false),
                     id_estacionamento = table.Column<int>(type: "integer", nullable: false),
                     id_evento = table.Column<int>(type: "integer", nullable: true)

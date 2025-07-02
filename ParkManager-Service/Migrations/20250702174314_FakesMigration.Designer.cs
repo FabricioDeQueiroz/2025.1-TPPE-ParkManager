@@ -12,8 +12,8 @@ using ParkManager_Service.Data;
 namespace ParkManager_Service.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250701211916_SchemaMigration")]
-    partial class SchemaMigration
+    [Migration("20250702174314_FakesMigration")]
+    partial class FakesMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -193,7 +193,7 @@ namespace ParkManager_Service.Migrations
                         .HasColumnType("character varying(10)")
                         .HasColumnName("placa_veiculo");
 
-                    b.Property<int>("Tipo")
+                    b.Property<int?>("Tipo")
                         .HasColumnType("integer")
                         .HasColumnName("tipo");
 

@@ -190,7 +190,7 @@ namespace ParkManager_Service.Migrations
                         .HasColumnType("character varying(10)")
                         .HasColumnName("placa_veiculo");
 
-                    b.Property<int>("Tipo")
+                    b.Property<int?>("Tipo")
                         .HasColumnType("integer")
                         .HasColumnName("tipo");
 

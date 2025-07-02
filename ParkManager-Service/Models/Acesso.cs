@@ -32,10 +32,9 @@ public class Acesso
     [Column("data_hora_saida")]
     public DateTime? DataHoraSaida { get; set; }
 
-    [Required]
     [Column("tipo")]
     [EnumDataType(typeof(TipoAcesso))]
-    public TipoAcesso Tipo { get; set; }
+    public TipoAcesso? Tipo { get; set; }
 
     [Required]
     [Column("id_cliente")]
