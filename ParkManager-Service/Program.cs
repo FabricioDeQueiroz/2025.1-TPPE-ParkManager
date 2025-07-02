@@ -97,29 +97,36 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// Para que o Swagger funcione também no ambiente de produção
-string swaggerPrefix = string.Empty;
-
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    swaggerPrefix = "/parkmanager-api"; 
+    app.UseStaticFiles();
+
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ParkManager v1");
+        c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
+    });
+}
+else
+{
+    app.UsePathBase("/parkmanager-api");
+    app.UseStaticFiles();
+
+    app.UseSwagger(c =>
+    {
+        c.RouteTemplate = "swagger/{documentName}/swagger.json";
+    });
+
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/parkmanager-api/swagger/v1/swagger.json", "ParkManager v1");
+        c.RoutePrefix = "swagger";
+        c.InjectStylesheet("/parkmanager-api/swagger-ui/SwaggerDark.css");
+    });
 }
 
-app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint($"{swaggerPrefix}/swagger/v1/swagger.json", "ParkManager v1");
-    c.InjectStylesheet($"{swaggerPrefix}/swagger-ui/SwaggerDark.css");
-
-    c.RoutePrefix = string.Empty;
-});
-app.UseStaticFiles();
-
-// if (app.Environment.IsDevelopment())
-// {
-// }
-
-// app.UseHttpsRedirection();
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
