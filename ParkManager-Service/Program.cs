@@ -135,5 +135,13 @@ app.MapControllers();
 
 app.Run();
 
+// Aplicando migrações automaticamente em produção:
+if (!app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
 // Para ser visível nos Testes
 public abstract partial class Program { }
