@@ -98,11 +98,20 @@ builder.Services.AddAuthentication(options =>
 var app = builder.Build();
 
 // Para que o Swagger funcione também no ambiente de produção
+string swaggerPrefix = string.Empty;
+
+if (!app.Environment.IsDevelopment())
+{
+    swaggerPrefix = "/parkmanager-api"; 
+}
+
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ParkManager v1");
-    c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
+    c.SwaggerEndpoint($"{swaggerPrefix}/swagger/v1/swagger.json", "ParkManager v1");
+    c.InjectStylesheet($"{swaggerPrefix}/swagger-ui/SwaggerDark.css");
+
+    c.RoutePrefix = string.Empty;
 });
 app.UseStaticFiles();
 
