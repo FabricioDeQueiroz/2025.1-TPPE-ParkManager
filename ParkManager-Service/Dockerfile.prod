@@ -31,6 +31,8 @@ COPY --from=publish /app/publish .
 
 COPY --from=build /src/ParkManager-Service/ .
 
+COPY --from=build /src/ParkManager-Service/wwwroot ./wwwroot
+
 RUN chmod +x "entrypoint.sh"
 
 ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
