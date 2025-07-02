@@ -133,26 +133,15 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
-
 // Aplicando migrações automaticamente em produção:
 if (!app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
-    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-    try
-    {
-        logger.LogInformation("🟡 Iniciando aplicação de migrations...");
-        db.Database.Migrate();
-        logger.LogInformation("✅ Migrations aplicadas com sucesso!");
-    }
-    catch (Exception ex)
-    {
-        logger.LogError(ex, "❌ Erro ao aplicar migrations no ambiente de produção.");
-    }
+    db.Database.Migrate();
 }
+
+app.Run();
 
 // Para ser visível nos Testes
 public abstract partial class Program { }
