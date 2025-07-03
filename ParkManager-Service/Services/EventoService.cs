@@ -103,6 +103,7 @@ namespace ParkManager_Service.Services
                 .FirstOrDefaultAsync(e => e.IdEstacionamento == evento.IdEstacionamento)
                 .ConfigureAwait(false);
 
+            // TODO depois arrumar essas exceções pois geram erro 500 - Internal Server Error
             if (estacionamento == null)
             {
                 throw new InvalidOperationException("Estacionamento não encontrado.");

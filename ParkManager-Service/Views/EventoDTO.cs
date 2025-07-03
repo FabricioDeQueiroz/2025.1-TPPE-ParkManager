@@ -13,6 +13,15 @@ namespace ParkManager_Service.Views
         public EstacionamentoGetDto Estacionamento { get; set; } = null!;
     }
 
+    public class EventoForAcessoGetDto
+    {
+        public int IdEvento { get; init; }
+        public string Nome { get; set; } = string.Empty;
+        public decimal ValorEvento { get; set; }
+        public DateTime DataHoraInicio { get; set; }
+        public DateTime DataHoraFim { get; set; }
+    }
+
     public class EventoCreateDto
     {
         [Required]

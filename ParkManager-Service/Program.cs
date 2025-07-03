@@ -23,6 +23,7 @@ if (builder.Environment.IsEnvironment("Test"))
     builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Infrastructure", LogLevel.None);
     builder.Logging.AddFilter("Microsoft.Hosting.Lifetime", LogLevel.None);
     builder.Logging.AddFilter("Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware", LogLevel.None);
+    builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Migrations", LogLevel.None);
     builder.Logging.SetMinimumLevel(LogLevel.Warning);
 }
 
