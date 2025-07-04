@@ -40,7 +40,7 @@ namespace ParkManager_Service.Controllers
 
             if (usuario.Data == null) return Unauthorized(new { message = "Erro ao realizar login." });
 
-            return Ok(usuario);
+            return Ok(usuario.Data);
         }
     }
 }

@@ -96,7 +96,7 @@ namespace ParkManager_Service.Controllers
         }
 
         [Authorize(Roles = "Cliente")]
-        [HttpGet("{id:int}")]
+        [HttpGet("finalizar/{id:int}")]
         public async Task<ActionResult<AcessoGetDto>> FinalizeAcesso(int id)
         {
             var acessoFinalizado = await acessoService

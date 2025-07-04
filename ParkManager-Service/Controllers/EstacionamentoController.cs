@@ -66,7 +66,7 @@ namespace ParkManager_Service.Controllers
 
             if (estacionamentoCriado.Data == null) return BadRequest(new { message = "Erro ao criar estacionamento." });
 
-            return CreatedAtAction(nameof(GetEstacionamento), new { id = estacionamentoCriado.Data.IdEstacionamento }, estacionamentoCriado);
+            return CreatedAtAction(nameof(GetEstacionamento), new { id = estacionamentoCriado.Data.IdEstacionamento }, estacionamentoCriado.Data);
         }
 
         [Authorize(Roles = "Gerente")]

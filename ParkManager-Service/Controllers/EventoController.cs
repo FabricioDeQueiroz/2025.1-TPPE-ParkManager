@@ -47,7 +47,7 @@ namespace ParkManager_Service.Controllers
 
             if (eventoCriado.Data == null) return BadRequest(new { message = "Erro ao criar evento." });
 
-            return CreatedAtAction(nameof(GetEvento), new { id = eventoCriado.Data.IdEvento }, eventoCriado);
+            return CreatedAtAction(nameof(GetEvento), new { id = eventoCriado.Data.IdEvento }, eventoCriado.Data);
         }
 
         [Authorize(Roles = "Gerente")]
