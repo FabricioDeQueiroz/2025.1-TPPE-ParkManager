@@ -27,7 +27,6 @@ if [ "$ASPNETCORE_ENVIRONMENT" = "Development" ]; then
 elif [ "$ASPNETCORE_ENVIRONMENT" = "Production" ]; then
   echo -e "\nDB está disponível. Aplicando migrations...\n\n"
 
-  # TODO depois alterar para "...update SchemaMigration" para o ambiente de produção não popular: 
   dotnet ef database update --project ParkManager-Service.csproj
 
   echo -e "\nMigrations aplicadas com sucesso. Iniciando a aplicação...\n\n"

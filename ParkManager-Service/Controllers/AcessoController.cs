@@ -103,7 +103,7 @@ namespace ParkManager_Service.Controllers
                 .IdentifyTypeAndValueOfAccessoAsync(id, true)
                 .ConfigureAwait(false);
 
-            if(!acessoFinalizado.Success) return BadRequest(new { message = acessoFinalizado.Error });
+            if (!acessoFinalizado.Success) return BadRequest(new { message = acessoFinalizado.Error });
 
             if (acessoFinalizado.Data == null) return BadRequest(new { message = "Erro ao finalizar acesso." });
 

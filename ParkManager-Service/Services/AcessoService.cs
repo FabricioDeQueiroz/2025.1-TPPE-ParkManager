@@ -461,7 +461,10 @@ namespace ParkManager_Service.Services
                             Tipo = acesso.Tipo,
                             Cliente = new UsuarioGetDto
                             {
-                                Id = cliente.Id, Nome = cliente.Nome, Email = cliente.Email!, Tipo = cliente.Tipo,
+                                Id = cliente.Id,
+                                Nome = cliente.Nome,
+                                Email = cliente.Email!,
+                                Tipo = cliente.Tipo
                             },
                             Estacionamento = new EstacionamentoGetDto
                             {
@@ -498,8 +501,8 @@ namespace ParkManager_Service.Services
                 double horasAdicionais = duracaoAdicional.TotalHours;
                 double minutosAdicionais = duracaoAdicional.TotalMinutes;
 
-                int blocos15Adicionais = (int) Math.Ceiling(minutosAdicionais / 15);
-                int horasCheiasAdicionais = (int) horasAdicionais;
+                int blocos15Adicionais = (int)Math.Ceiling(minutosAdicionais / 15);
+                int horasCheiasAdicionais = (int)horasAdicionais;
                 decimal valorTempoAdicionais = blocos15Adicionais * estacionamento.ValorFracao - horasCheiasAdicionais * estacionamento.DescontoHora;
                 valorTempoAdicionais = Math.Max(valorTempoAdicionais, 0);
 
@@ -629,12 +632,12 @@ namespace ParkManager_Service.Services
             }
 
             // Calcular valor mensal
-            int meses = (int) (dias / 30);
+            int meses = (int)(dias / 30);
             double restoDiasMensal = dias % 30;
             decimal valorMensal = meses * estacionamento.ValorMensal;
 
             // Calcular valor diária e adicional noturno do restante
-            int diasInteirosRestantes = (int) restoDiasMensal;
+            int diasInteirosRestantes = (int)restoDiasMensal;
             double horasRestantes = (restoDiasMensal - diasInteirosRestantes) * 24;
 
             decimal valorDiariaRestante = diasInteirosRestantes * estacionamento.ValorDiaria;
@@ -643,21 +646,21 @@ namespace ParkManager_Service.Services
                 valorDiariaRestante += estacionamento.AdicionalNoturno;
 
             // Calcular valor por tempo do restante
-            int blocos15Restante = (int) Math.Ceiling(horasRestantes * 60 / 15);
-            int horasCheiasRestante = (int) horasRestantes;
+            int blocos15Restante = (int)Math.Ceiling(horasRestantes * 60 / 15);
+            int horasCheiasRestante = (int)horasRestantes;
             decimal valorTempoRestante = blocos15Restante * estacionamento.ValorFracao - horasCheiasRestante * estacionamento.DescontoHora;
             valorTempoRestante = Math.Max(valorTempoRestante, 0);
 
             decimal valorTotalMensal = valorMensal + valorDiariaRestante + valorTempoRestante;
 
             // Calcular valor total apenas por diária
-            decimal valorTotalDiaria = (int) dias * estacionamento.ValorDiaria;
+            decimal valorTotalDiaria = (int)dias * estacionamento.ValorDiaria;
             if (dataHoraSaida.Hour < 6 || dataHoraEntrada.Hour >= 22)
                 valorTotalDiaria += estacionamento.AdicionalNoturno;
 
             // Calcular valor total apenas por tempo
-            int blocos15 = (int) Math.Ceiling(minutos / 15);
-            int horasCheias = (int) horas;
+            int blocos15 = (int)Math.Ceiling(minutos / 15);
+            int horasCheias = (int)horas;
             decimal valorTotalPorTempo = blocos15 * estacionamento.ValorFracao - horasCheias * estacionamento.DescontoHora;
             valorTotalPorTempo = Math.Max(valorTotalPorTempo, 0);
 
