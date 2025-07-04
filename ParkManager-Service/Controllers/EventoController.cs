@@ -43,7 +43,11 @@ namespace ParkManager_Service.Controllers
 
             var eventoCriado = await eventoService.AddEventoAsync(eventoCreateDto).ConfigureAwait(false);
 
-            return CreatedAtAction(nameof(GetEvento), new { id = eventoCriado.IdEvento }, eventoCriado);
+            if (!eventoCriado.Success) return BadRequest(new { message = eventoCriado.Error });
+
+            if (eventoCriado.Data == null) return BadRequest(new { message = "Erro ao criar evento." });
+
+            return CreatedAtAction(nameof(GetEvento), new { id = eventoCriado.Data.IdEvento }, eventoCriado);
         }
 
         [Authorize(Roles = "Gerente")]

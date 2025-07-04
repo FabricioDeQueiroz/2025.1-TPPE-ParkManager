@@ -62,7 +62,11 @@ namespace ParkManager_Service.Controllers
 
             var estacionamentoCriado = await estacionamentoService.AddEstacionamentoAsync(novoEstacionamento).ConfigureAwait(false);
 
-            return CreatedAtAction(nameof(GetEstacionamento), new { id = estacionamentoCriado.IdEstacionamento }, estacionamentoCriado);
+            if (!estacionamentoCriado.Success) return BadRequest(new { message = estacionamentoCriado.Error });
+
+            if (estacionamentoCriado.Data == null) return BadRequest(new { message = "Erro ao criar estacionamento." });
+
+            return CreatedAtAction(nameof(GetEstacionamento), new { id = estacionamentoCriado.Data.IdEstacionamento }, estacionamentoCriado);
         }
 
         [Authorize(Roles = "Gerente")]

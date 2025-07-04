@@ -2,9 +2,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using ParkManager_Service.Data;
+using ParkManager_Service.Helpers;
 using ParkManager_Service.Models;
 using ParkManager_Service.Services.Interfaces;
 using ParkManager_Service.Views;
@@ -31,15 +30,15 @@ namespace ParkManager_Service.Services
             };
         }
 
-        public async Task<UsuarioLoginResponseDto?> LoginAsync(UsuarioLoginDto user)
+        public async Task<Resultado<UsuarioLoginResponseDto>> LoginAsync(UsuarioLoginDto user)
         {
             var usuario = await _userManager.FindByEmailAsync(user.Email).ConfigureAwait(false);
 
-            if (usuario == null) return null;
+            if (usuario == null) return Resultado<UsuarioLoginResponseDto>.Falha("Email não encontrado.");
 
-            var resultado = await _userManager.CheckPasswordAsync(usuario, user.Senha).ConfigureAwait(false);
+            bool resultado = await _userManager.CheckPasswordAsync(usuario, user.Senha).ConfigureAwait(false);
 
-            if (!resultado) return null;
+            if (!resultado) return Resultado<UsuarioLoginResponseDto>.Falha("Senha incorreta.");
 
             var alegacoes = new List<Claim>
             {
@@ -50,9 +49,9 @@ namespace ParkManager_Service.Services
                 new Claim(ClaimTypes.Role, usuario.Tipo.ToString())
             };
 
-            var chaveJwt = _configuration["Jwt:Key"];
+            string? chaveJwt = _configuration["Jwt:Key"];
 
-            if (string.IsNullOrWhiteSpace(chaveJwt)) throw new InvalidOperationException("A chave JWT está ausente ou vazia.");
+            if (string.IsNullOrWhiteSpace(chaveJwt)) return Resultado<UsuarioLoginResponseDto>.Falha("A chave de autenticação está ausente ou vazia.");
 
             var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(chaveJwt));
 
@@ -66,16 +65,18 @@ namespace ParkManager_Service.Services
                 signingCredentials: credenciais
             );
 
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            string tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return new UsuarioLoginResponseDto
-            {
-                Token = tokenString,
-                Id = usuario.Id,
-                Nome = usuario.Nome,
-                Email = usuario.Email!,
-                Tipo = usuario.Tipo
-            };
+            return Resultado<UsuarioLoginResponseDto>.Ok(
+                new UsuarioLoginResponseDto
+                {
+                    Token = tokenString,
+                    Id = usuario.Id,
+                    Nome = usuario.Nome,
+                    Email = usuario.Email!,
+                    Tipo = usuario.Tipo
+                }
+            );
         }
 
         public async Task<string?> RegisterAsync(UsuarioRegisterDto user)
@@ -106,9 +107,7 @@ namespace ParkManager_Service.Services
 
             var resultado = await _userManager.DeleteAsync(usuario).ConfigureAwait(false);
 
-            if (resultado.Succeeded) return true;
-
-            return false;
+            return resultado.Succeeded;
         }
     }
 }

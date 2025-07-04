@@ -1,5 +1,4 @@
 using ParkManager_Service.Helpers;
-using ParkManager_Service.Models;
 using ParkManager_Service.Views;
 
 namespace ParkManager_Service.Services.Interfaces

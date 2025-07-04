@@ -16,7 +16,7 @@ namespace ParkManager_Service.Controllers
                 return BadRequest(ModelState);
             }
 
-            var usuarioCriado = await usuarioService.RegisterAsync(usuarioRegisterDto).ConfigureAwait(false);
+            string? usuarioCriado = await usuarioService.RegisterAsync(usuarioRegisterDto).ConfigureAwait(false);
 
             if (usuarioCriado != null)
             {
@@ -36,10 +36,9 @@ namespace ParkManager_Service.Controllers
 
             var usuario = await usuarioService.LoginAsync(usuarioLoginDto).ConfigureAwait(false);
 
-            if (usuario == null)
-            {
-                return Unauthorized();
-            }
+            if (!usuario.Success) return BadRequest(new { message = usuario.Error });
+
+            if (usuario.Data == null) return Unauthorized(new { message = "Erro ao realizar login." });
 
             return Ok(usuario);
         }

@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using ParkManager_Service.Data;
+using ParkManager_Service.Helpers;
 using ParkManager_Service.Models;
 using ParkManager_Service.Services.Interfaces;
 using ParkManager_Service.Views;
@@ -99,22 +100,31 @@ namespace ParkManager_Service.Services
             };
         }
 
-        // TODO verificar horário de abertura e fechamento do estacionamento
-        public async Task<EventoGetDto> AddEventoAsync(EventoCreateDto evento)
+        public async Task<Resultado<EventoGetDto>> AddEventoAsync(EventoCreateDto evento)
         {
             var estacionamento = await db.Estacionamentos
                 .FirstOrDefaultAsync(e => e.IdEstacionamento == evento.IdEstacionamento)
                 .ConfigureAwait(false);
 
-            // TODO depois arrumar essas exceções pois geram erro 500 - Internal Server Error
             if (estacionamento == null)
             {
-                throw new InvalidOperationException("Estacionamento não encontrado.");
+                return Resultado<EventoGetDto>.Falha("Estacionamento não encontrado.");
             }
 
             if (IsGerente() && estacionamento.IdGerente != GetUserId())
             {
-                throw new UnauthorizedAccessException("Gerente não tem permissão para adicionar eventos neste estacionamento.");
+                return Resultado<EventoGetDto>.Falha("Gerente não tem permissão para adicionar eventos neste estacionamento.");
+            }
+
+            if (estacionamento.Tipo == TipoEstacionamento.Comum)
+            {
+                if (evento.DataHoraInicio.TimeOfDay > estacionamento.HoraFechamento
+                    || evento.DataHoraInicio.TimeOfDay < estacionamento.HoraAbertura
+                    || evento.DataHoraFim.TimeOfDay > estacionamento.HoraFechamento
+                    || evento.DataHoraFim.TimeOfDay < estacionamento.HoraAbertura)
+                {
+                    return Resultado<EventoGetDto>.Falha("Evento fora do horário de funcionamento do Estacionamento.");
+                }
             }
 
             var novoEvento = new Evento
@@ -130,33 +140,35 @@ namespace ParkManager_Service.Services
 
             await db.SaveChangesAsync().ConfigureAwait(false);
 
-            return new EventoGetDto
-            {
-                IdEvento = novoEvento.IdEvento,
-                Nome = novoEvento.Nome,
-                ValorEvento = novoEvento.ValorEvento,
-                DataHoraInicio = novoEvento.DataHoraInicio,
-                DataHoraFim = novoEvento.DataHoraFim,
-                Estacionamento = new EstacionamentoGetDto
+            return Resultado<EventoGetDto>.Ok(
+                new EventoGetDto
                 {
-                    IdEstacionamento = estacionamento.IdEstacionamento,
-                    Nome = estacionamento.Nome,
-                    NomeContratante = estacionamento.NomeContratante,
-                    VagasTotais = estacionamento.VagasTotais,
-                    VagasOcupadas = estacionamento.VagasOcupadas,
-                    Faturamento = estacionamento.Faturamento,
-                    RetornoContratante = estacionamento.RetornoContratante,
-                    ValorFracao = estacionamento.ValorFracao,
-                    DescontoHora = estacionamento.DescontoHora,
-                    ValorMensal = estacionamento.ValorMensal,
-                    ValorDiaria = estacionamento.ValorDiaria,
-                    AdicionalNoturno = estacionamento.AdicionalNoturno,
-                    HoraAbertura = estacionamento.HoraAbertura,
-                    HoraFechamento = estacionamento.HoraFechamento,
-                    Tipo = estacionamento.Tipo,
-                    IdGerente = estacionamento.IdGerente
+                    IdEvento = novoEvento.IdEvento,
+                    Nome = novoEvento.Nome,
+                    ValorEvento = novoEvento.ValorEvento,
+                    DataHoraInicio = novoEvento.DataHoraInicio,
+                    DataHoraFim = novoEvento.DataHoraFim,
+                    Estacionamento = new EstacionamentoGetDto
+                    {
+                        IdEstacionamento = estacionamento.IdEstacionamento,
+                        Nome = estacionamento.Nome,
+                        NomeContratante = estacionamento.NomeContratante,
+                        VagasTotais = estacionamento.VagasTotais,
+                        VagasOcupadas = estacionamento.VagasOcupadas,
+                        Faturamento = estacionamento.Faturamento,
+                        RetornoContratante = estacionamento.RetornoContratante,
+                        ValorFracao = estacionamento.ValorFracao,
+                        DescontoHora = estacionamento.DescontoHora,
+                        ValorMensal = estacionamento.ValorMensal,
+                        ValorDiaria = estacionamento.ValorDiaria,
+                        AdicionalNoturno = estacionamento.AdicionalNoturno,
+                        HoraAbertura = estacionamento.HoraAbertura,
+                        HoraFechamento = estacionamento.HoraFechamento,
+                        Tipo = estacionamento.Tipo,
+                        IdGerente = estacionamento.IdGerente
+                    }
                 }
-            };
+            );
         }
 
         public async Task<bool> UpdateEventoAsync(EventoUpdateDto evento)
