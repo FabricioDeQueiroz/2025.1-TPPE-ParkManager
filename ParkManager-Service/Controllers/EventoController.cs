@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ParkManager_Service.Models;
 using ParkManager_Service.Services.Interfaces;
 using ParkManager_Service.Views;
 

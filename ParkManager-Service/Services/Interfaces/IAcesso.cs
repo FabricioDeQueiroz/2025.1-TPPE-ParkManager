@@ -11,7 +11,6 @@ namespace ParkManager_Service.Services.Interfaces
         Task<Resultado<AcessoGetDto>> AddAcessoAsync(AcessoCreateDto acesso);
         Task<bool> UpdateAcessoAsync(AcessoUpdateDto acesso);
         Task<bool> DeleteAcessoAsync(int id);
-        Task<string> IdentifyTypeAndValueOfAccessoAsync();
-        Task<string> FinalizeAcessoAsync(int id);
+        Task<Resultado<AcessoGetDto>> IdentifyTypeAndValueOfAccessoAsync(int id, bool encerrar = false);
     }
 }

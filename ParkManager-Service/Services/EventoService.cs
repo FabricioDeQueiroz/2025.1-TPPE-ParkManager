@@ -17,11 +17,13 @@ namespace ParkManager_Service.Services
 
         public async Task<IEnumerable<EventoGetDto>> GetAllEventosAsync()
         {
+            string? userId = GetUserId();
+
             var query = db.Eventos.Include(e => e.Estacionamento).AsQueryable();
 
             if (IsGerente())
             {
-                query = query.Where(e => e.Estacionamento.IdGerente == GetUserId());
+                query = query.Where(e => e.Estacionamento.IdGerente == userId);
             }
 
             var eventos = await query.ToListAsync().ConfigureAwait(false);
@@ -97,6 +99,7 @@ namespace ParkManager_Service.Services
             };
         }
 
+        // TODO verificar horário de abertura e fechamento do estacionamento
         public async Task<EventoGetDto> AddEventoAsync(EventoCreateDto evento)
         {
             var estacionamento = await db.Estacionamentos
