@@ -47,7 +47,7 @@ namespace ParkManager_Service.Controllers
 
             if (acessoCriado.Data == null) return BadRequest(new { message = "Erro ao realizar acesso." });
 
-            return CreatedAtAction(nameof(GetAcesso), new { id = acessoCriado.Data.IdAcesso }, acessoCriado);
+            return CreatedAtAction(nameof(GetAcesso), new { id = acessoCriado.Data.IdAcesso }, acessoCriado.Data);
         }
 
         [Authorize(Roles = "Cliente")]

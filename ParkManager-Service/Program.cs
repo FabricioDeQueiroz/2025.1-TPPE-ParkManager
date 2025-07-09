@@ -67,6 +67,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connect
 builder.Services.AddScoped<IEstacionamento, EstacionamentoService>();
 builder.Services.AddScoped<IUsuario, UsuarioService>();
 builder.Services.AddScoped<IEvento, EventoService>();
+builder.Services.AddScoped<IAcesso, AcessoService>();
 
 builder.Services.AddIdentity<Usuario, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()

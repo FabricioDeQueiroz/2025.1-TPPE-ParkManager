@@ -40,20 +40,76 @@ namespace ParkManager_Service.Services
 
             var acessos = await query.ToListAsync().ConfigureAwait(false);
 
-            var resultados = await Task.WhenAll(
-                acessos.Select(e => IdentifyTypeAndValueOfAccessoAsync(e.IdAcesso, false))
-            ).ConfigureAwait(false);
+            var acessosDto = new List<AcessoGetDto>();
 
-            var acessosDto = resultados
-                .Where(r => r is { Success: true, Data: not null })
-                .Select(r => r.Data!)
-                .ToList();
+            foreach (var acesso in acessos)
+            {
+                if (acesso.DataHoraSaida == null)
+                {
+                    var resultado = await IdentifyTypeAndValueOfAccessoAsync(acesso.IdAcesso, false).ConfigureAwait(false);
 
-            return acessosDto;
+                    if (resultado is { Success: true, Data: not null })
+                    {
+                        acessosDto.Add(resultado.Data);
+                    }
+                }
+                else
+                {
+                    acessosDto.Add(
+                        new AcessoGetDto
+                        {
+                            IdAcesso = acesso.IdAcesso,
+                            PlacaVeiculo = acesso.PlacaVeiculo,
+                            ValorAcesso = acesso.ValorAcesso,
+                            DataHoraEntrada = acesso.DataHoraEntrada,
+                            DataHoraSaida = acesso.DataHoraSaida,
+                            Tipo = acesso.Tipo,
+                            Cliente = new UsuarioGetDto
+                            {
+                                Id = acesso.Cliente.Id,
+                                Nome = acesso.Cliente.Nome,
+                                Email = acesso.Cliente.Email!,
+                                Tipo = acesso.Cliente.Tipo,
+                            },
+                            Estacionamento = new EstacionamentoGetDto
+                            {
+                                IdEstacionamento = acesso.Estacionamento.IdEstacionamento,
+                                Nome = acesso.Estacionamento.Nome,
+                                NomeContratante = acesso.Estacionamento.NomeContratante,
+                                VagasTotais = acesso.Estacionamento.VagasTotais,
+                                VagasOcupadas = acesso.Estacionamento.VagasOcupadas,
+                                Faturamento = acesso.Estacionamento.Faturamento,
+                                RetornoContratante = acesso.Estacionamento.RetornoContratante,
+                                ValorFracao = acesso.Estacionamento.ValorFracao,
+                                DescontoHora = acesso.Estacionamento.DescontoHora,
+                                ValorMensal = acesso.Estacionamento.ValorMensal,
+                                ValorDiaria = acesso.Estacionamento.ValorDiaria,
+                                AdicionalNoturno = acesso.Estacionamento.AdicionalNoturno,
+                                HoraAbertura = acesso.Estacionamento.HoraAbertura,
+                                HoraFechamento = acesso.Estacionamento.HoraFechamento,
+                                Tipo = acesso.Estacionamento.Tipo,
+                                IdGerente = acesso.Estacionamento.IdGerente
+                            },
+                            Evento = acesso.Evento == null ? null : new EventoForAcessoGetDto
+                            {
+                                IdEvento = acesso.Evento.IdEvento,
+                                Nome = acesso.Evento.Nome,
+                                ValorEvento = acesso.Evento.ValorEvento,
+                                DataHoraInicio = acesso.Evento.DataHoraInicio,
+                                DataHoraFim = acesso.Evento.DataHoraFim
+                            }
+                        }
+                    );
+                }
+            }
+
+            return acessosDto.OrderByDescending(a => a.DataHoraEntrada).ToList();
         }
 
         public async Task<AcessoGetDto?> GetAcessoByIdAsync(int id)
         {
+            string? userId = GetUserId();
+
             var acesso = await db.Acessos
                 .Include(c => c.Cliente)
                 .Include(e => e.Estacionamento)
@@ -63,9 +119,9 @@ namespace ParkManager_Service.Services
 
             if (acesso == null) return null;
 
-            if (IsCliente() && acesso.IdCliente != GetUserId()) return null;
+            if (IsCliente() && acesso.IdCliente != userId) return null;
 
-            if (IsGerente() && acesso.Estacionamento.IdGerente != GetUserId()) return null;
+            if (IsGerente() && acesso.Estacionamento.IdGerente != userId) return null;
 
             var resultado = await IdentifyTypeAndValueOfAccessoAsync(acesso.IdAcesso, false).ConfigureAwait(false);
 
@@ -143,9 +199,18 @@ namespace ParkManager_Service.Services
                 .FirstOrDefaultAsync(e => e.IdEvento == acesso.IdEvento)
                 .ConfigureAwait(false);
 
-            if (evento == null)
+            if (acesso.IdEvento != null)
             {
-                return Resultado<AcessoGetDto>.Falha("Evento não encontrado.");
+                if (evento == null)
+                {
+                    return Resultado<AcessoGetDto>.Falha("Evento não encontrado.");
+                }
+
+                // Verifica se o evento pertence ao estacionamento:
+                if (evento.IdEstacionamento != estacionamento.IdEstacionamento)
+                {
+                    return Resultado<AcessoGetDto>.Falha("Evento não pertence ao estacionamento especificado.");
+                }
             }
 
             // Pega o cliente associado ao usuário autenticado:
@@ -158,13 +223,8 @@ namespace ParkManager_Service.Services
                 return Resultado<AcessoGetDto>.Falha("Cliente não encontrado.");
             }
 
-            // Verifica se o evento pertence ao estacionamento:
-            if (evento.IdEstacionamento != estacionamento.IdEstacionamento)
-            {
-                return Resultado<AcessoGetDto>.Falha("Evento não pertence ao estacionamento especificado.");
-            }
-
-            var dataHoraAtual = DateTime.Now;
+            // UTC no horário de Brasília (UTC-3):
+            var dataHoraAtual = DateTime.UtcNow.AddHours(-3);
 
             // Verifica se o estacionamento está aberto no horário atual (se não for 24 horas):
             if (estacionamento.Tipo == TipoEstacionamento.Comum)
@@ -245,7 +305,7 @@ namespace ParkManager_Service.Services
             else
             {
                 // Verifica se o evento está ativo no momento:
-                if (dataHoraAtual < evento.DataHoraInicio || dataHoraAtual > evento.DataHoraFim)
+                if (dataHoraAtual < evento!.DataHoraInicio || dataHoraAtual > evento.DataHoraFim)
                 {
                     return Resultado<AcessoGetDto>.Falha("O evento não está ativo no momento.");
                 }
@@ -320,13 +380,15 @@ namespace ParkManager_Service.Services
 
         public async Task<bool> UpdateAcessoAsync(AcessoUpdateDto acesso)
         {
+            string? userId = GetUserId();
+
             var acessoExistente = await db.Acessos
                 .FirstOrDefaultAsync(e => e.IdAcesso == acesso.IdAcesso)
                 .ConfigureAwait(false);
 
             if (acessoExistente == null) return false;
 
-            if (IsCliente() && acessoExistente.IdCliente != GetUserId()) return false;
+            if (IsCliente() && acessoExistente.IdCliente != userId) return false;
 
             acessoExistente.PlacaVeiculo = acesso.PlacaVeiculo;
 
@@ -340,13 +402,15 @@ namespace ParkManager_Service.Services
 
         public async Task<bool> DeleteAcessoAsync(int id)
         {
+            string? userId = GetUserId();
+
             var acessoExistente = await db.Acessos
                 .FirstOrDefaultAsync(e => e.IdAcesso == id)
                 .ConfigureAwait(false);
 
             if (acessoExistente == null) return false;
 
-            if (IsCliente() && acessoExistente.IdCliente != GetUserId()) return false;
+            if (IsCliente() && acessoExistente.IdCliente != userId) return false;
 
             var estacionamento = await db.Estacionamentos
                 .FirstOrDefaultAsync(e => e.IdEstacionamento == acessoExistente.IdEstacionamento)
@@ -354,9 +418,10 @@ namespace ParkManager_Service.Services
 
             if (estacionamento == null) return false;
 
-            db.Acessos.Remove(acessoExistente);
+            if (acessoExistente.DataHoraSaida == null)
+                if (estacionamento.VagasOcupadas > 0) estacionamento.VagasOcupadas--;
 
-            if (estacionamento.VagasOcupadas > 0) estacionamento.VagasOcupadas--;
+            db.Acessos.Remove(acessoExistente);
 
             db.Estacionamentos.Update(estacionamento);
 
@@ -412,9 +477,18 @@ namespace ParkManager_Service.Services
                 .FirstOrDefaultAsync(e => e.IdEvento == acesso.IdEvento)
                 .ConfigureAwait(false);
 
-            if (evento == null)
+            if (acesso.IdEvento != null)
             {
-                return Resultado<AcessoGetDto>.Falha("Evento não encontrado.");
+                if (evento == null)
+                {
+                    return Resultado<AcessoGetDto>.Falha("Evento não encontrado.");
+                }
+
+                // Verifica se o evento pertence ao estacionamento:
+                if (evento.IdEstacionamento != estacionamento.IdEstacionamento)
+                {
+                    return Resultado<AcessoGetDto>.Falha("Evento não pertence ao estacionamento especificado.");
+                }
             }
 
             // Verifica se o Gerente do estacionamento é o usuário autenticado:
@@ -434,7 +508,7 @@ namespace ParkManager_Service.Services
             }
 
             // Verificar Tipo e Valor do Acesso:
-            var dataHoraAtual = DateTime.Now;
+            var dataHoraAtual = DateTime.UtcNow.AddHours(-3);
 
             var dataHoraSaida = acesso.DataHoraSaida ?? dataHoraAtual;
             var dataHoraEntrada = acesso.DataHoraEntrada;
@@ -447,9 +521,23 @@ namespace ParkManager_Service.Services
                 }
             }
 
-            if (acesso.Tipo == TipoAcesso.Evento)
+            if (acesso.Tipo == TipoAcesso.Evento && evento != null)
             {
                 if (dataHoraAtual <= evento.DataHoraFim)
+                {
+                    if (encerrar)
+                    {
+                        acesso.DataHoraSaida = dataHoraSaida;
+
+                        if (estacionamento.VagasOcupadas > 0) estacionamento.VagasOcupadas--;
+                        estacionamento.Faturamento += acesso.ValorAcesso ?? evento.ValorEvento;
+                    }
+
+                    db.Acessos.Update(acesso);
+                    db.Estacionamentos.Update(estacionamento);
+
+                    await db.SaveChangesAsync().ConfigureAwait(false);
+
                     return Resultado<AcessoGetDto>.Ok(
                         new AcessoGetDto
                         {
@@ -495,13 +583,14 @@ namespace ParkManager_Service.Services
                             }
                         }
                     );
+                }
 
-                var duracaoAdicional = evento.DataHoraFim - dataHoraAtual;
+                var duracaoAdicional = dataHoraAtual - evento.DataHoraFim;
 
                 double horasAdicionais = duracaoAdicional.TotalHours;
                 double minutosAdicionais = duracaoAdicional.TotalMinutes;
 
-                int blocos15Adicionais = (int)Math.Ceiling(minutosAdicionais / 15);
+                int blocos15Adicionais = (int)Math.Floor(minutosAdicionais / 15);
                 int horasCheiasAdicionais = (int)horasAdicionais;
                 decimal valorTempoAdicionais = blocos15Adicionais * estacionamento.ValorFracao - horasCheiasAdicionais * estacionamento.DescontoHora;
                 valorTempoAdicionais = Math.Max(valorTempoAdicionais, 0);
@@ -636,7 +725,6 @@ namespace ParkManager_Service.Services
             double restoDiasMensal = dias % 30;
             decimal valorMensal = meses * estacionamento.ValorMensal;
 
-            // Calcular valor diária e adicional noturno do restante
             int diasInteirosRestantes = (int)restoDiasMensal;
             double horasRestantes = (restoDiasMensal - diasInteirosRestantes) * 24;
 
@@ -645,43 +733,49 @@ namespace ParkManager_Service.Services
             if (dataHoraSaida.Hour < 6 || dataHoraEntrada.Hour >= 22)
                 valorDiariaRestante += estacionamento.AdicionalNoturno;
 
-            // Calcular valor por tempo do restante
-            int blocos15Restante = (int)Math.Ceiling(horasRestantes * 60 / 15);
+            int blocos15Restante = (int)Math.Floor(horasRestantes * 60 / 15);
             int horasCheiasRestante = (int)horasRestantes;
             decimal valorTempoRestante = blocos15Restante * estacionamento.ValorFracao - horasCheiasRestante * estacionamento.DescontoHora;
             valorTempoRestante = Math.Max(valorTempoRestante, 0);
 
             decimal valorTotalMensal = valorMensal + valorDiariaRestante + valorTempoRestante;
 
-            // Calcular valor total apenas por diária
-            decimal valorTotalDiaria = (int)dias * estacionamento.ValorDiaria;
+            // Calcular valor diária
+            decimal valorDiaria = (int)dias * estacionamento.ValorDiaria;
             if (dataHoraSaida.Hour < 6 || dataHoraEntrada.Hour >= 22)
-                valorTotalDiaria += estacionamento.AdicionalNoturno;
+                valorDiaria += estacionamento.AdicionalNoturno;
 
-            // Calcular valor total apenas por tempo
-            int blocos15 = (int)Math.Ceiling(minutos / 15);
+            double restoHorasDiaria = horas % 24;
+
+            int blocos15Diaria = (int)Math.Floor(restoHorasDiaria * 60 / 15);
+            int horasCheiasDiaria = (int)restoHorasDiaria;
+            decimal valorTempoRestanteDiaria = blocos15Diaria * estacionamento.ValorFracao - horasCheiasDiaria * estacionamento.DescontoHora;
+            valorTempoRestanteDiaria = Math.Max(valorTempoRestanteDiaria, 0);
+
+            decimal valorTotalDiaria = valorDiaria + valorTempoRestanteDiaria;
+
+            // Calcular valor por tempo
+            int blocos15 = (int)Math.Floor(minutos / 15);
             int horasCheias = (int)horas;
             decimal valorTotalPorTempo = blocos15 * estacionamento.ValorFracao - horasCheias * estacionamento.DescontoHora;
             valorTotalPorTempo = Math.Max(valorTotalPorTempo, 0);
 
             // Avaliar melhor opção (mínimo valor)
-            var opcoes = new List<(TipoAcesso tipo, decimal valor)>
-            {
-                (TipoAcesso.PorTempo, valorTotalPorTempo),
-                (TipoAcesso.Diaria, valorTotalDiaria),
-                (TipoAcesso.Mensal, valorTotalMensal)
-            };
+            (TipoAcesso tipo, decimal valor) tipoValor;
 
-            var melhor = opcoes.OrderBy(x => x.valor).First();
-            acesso.Tipo = melhor.tipo;
-            acesso.ValorAcesso = melhor.valor;
+            if (meses >= 1) tipoValor = (TipoAcesso.Mensal, valorTotalMensal);
+            else if (dias >= 1) tipoValor = (TipoAcesso.Diaria, valorTotalDiaria);
+            else tipoValor = (TipoAcesso.PorTempo, valorTotalPorTempo);
+
+            acesso.Tipo = tipoValor.tipo;
+            acesso.ValorAcesso = tipoValor.valor;
 
             if (encerrar)
             {
                 acesso.DataHoraSaida = dataHoraSaida;
 
                 if (estacionamento.VagasOcupadas > 0) estacionamento.VagasOcupadas--;
-                estacionamento.Faturamento += melhor.valor;
+                estacionamento.Faturamento += tipoValor.valor;
             }
 
             db.Acessos.Update(acesso);

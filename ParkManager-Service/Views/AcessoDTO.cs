@@ -23,9 +23,6 @@ namespace ParkManager_Service.Views
         public string PlacaVeiculo { get; set; } = string.Empty;
 
         [Required]
-        public DateTime DataHoraEntrada { get; set; }
-
-        [Required]
         public int IdEstacionamento { get; init; }
 
         public int? IdEvento { get; init; }

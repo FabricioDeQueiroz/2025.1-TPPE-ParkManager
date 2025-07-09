@@ -75,9 +75,6 @@ namespace ParkManager_Service.Views
         [Required]
         [EnumDataType(typeof(TipoEstacionamento))]
         public TipoEstacionamento Tipo { get; set; }
-
-        [Required]
-        public string IdGerente { get; set; } = string.Empty;
     }
 
     public class EstacionamentoUpdateDto
