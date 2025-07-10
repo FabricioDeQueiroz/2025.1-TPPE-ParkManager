@@ -6,7 +6,7 @@ using ParkManager_Service.Helpers;
 using ParkManager_Service.Models;
 using ParkManager_Service.Views;
 
-namespace ParkManager_Service.Tests.UnitTests
+namespace ParkManager_Service.Tests.IntegrationTests
 {
     public class AcessoControllerTests(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
     {

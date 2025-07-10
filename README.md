@@ -36,12 +36,11 @@ A arquitetura do projeto segue o padrão **MVC** e está organizada da seguinte 
 │   ├── Migrations/
 │   ├── Controllers/
 │   ├── Services/
-│   │   ├── Interfaces/
+│   │   └── Interfaces/
 │   ├── Views/
 │   ├── Models/
 │   ├── Helpers/
 │   ├── Tests/
-│   │   ├── UnitTests/
 │   │   ├── ParametersTests/
 │   │   └── IntegrationTests/
 │   └── wwwroot/swagger-ui/

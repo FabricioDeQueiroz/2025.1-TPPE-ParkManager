@@ -6,7 +6,7 @@ using ParkManager_Service.Models;
 using ParkManager_Service.Services;
 using ParkManager_Service.Views;
 
-namespace ParkManager_Service.Tests.UnitTests
+namespace ParkManager_Service.Tests.IntegrationTests
 {
     public class UsuarioControllerTests(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
     {

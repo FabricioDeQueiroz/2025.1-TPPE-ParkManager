@@ -1,6 +1,6 @@
 using ParkManager_Service.Controllers;
 
-namespace ParkManager_Service.Tests.UnitTests;
+namespace ParkManager_Service.Tests.IntegrationTests;
 
 public class HelloControllerTests
 {
