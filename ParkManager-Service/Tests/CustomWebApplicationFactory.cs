@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc.Testing;
+using ParkManager_Service.Data;
 
 namespace ParkManager_Service.Tests
 {
@@ -9,6 +10,13 @@ namespace ParkManager_Service.Tests
             // Corrige o ContentRootPath, essencial para evitar DirectoryNotFoundException
             builder.UseContentRoot(Directory.GetCurrentDirectory());
             builder.UseEnvironment("Test");
+        }
+
+        public AppDbContext CreateDbContext()
+        {
+            var scopeFactory = Services.GetRequiredService<IServiceScopeFactory>();
+            var scope = scopeFactory.CreateScope();
+            return scope.ServiceProvider.GetRequiredService<AppDbContext>();
         }
     }
 }

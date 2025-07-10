@@ -730,8 +730,8 @@ namespace ParkManager_Service.Services
 
             decimal valorDiariaRestante = diasInteirosRestantes * estacionamento.ValorDiaria;
 
-            if (dataHoraSaida.Hour < 6 || dataHoraEntrada.Hour >= 22)
-                valorDiariaRestante += estacionamento.AdicionalNoturno;
+            if (diasInteirosRestantes > 0)
+                valorDiariaRestante += (estacionamento.AdicionalNoturno * diasInteirosRestantes);
 
             int blocos15Restante = (int)Math.Floor(horasRestantes * 60 / 15);
             int horasCheiasRestante = (int)horasRestantes;
@@ -742,8 +742,9 @@ namespace ParkManager_Service.Services
 
             // Calcular valor diária
             decimal valorDiaria = (int)dias * estacionamento.ValorDiaria;
-            if (dataHoraSaida.Hour < 6 || dataHoraEntrada.Hour >= 22)
-                valorDiaria += estacionamento.AdicionalNoturno;
+
+            if ((int)dias > 0)
+                valorDiaria += (estacionamento.AdicionalNoturno * (int)dias);
 
             double restoHorasDiaria = horas % 24;
 
