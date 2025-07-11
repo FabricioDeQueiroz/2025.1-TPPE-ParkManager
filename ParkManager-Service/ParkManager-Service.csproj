@@ -18,6 +18,11 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+        <PackageReference Include="Hangfire" Version="1.8.20" />
+        <PackageReference Include="Hangfire.AspNetCore" Version="1.8.20" />
+        <PackageReference Include="Hangfire.MemoryStorage" Version="1.8.1.2" />
+        <PackageReference Include="Hangfire.PostgreSql" Version="1.20.12" />
+        <PackageReference Include="MailKit" Version="4.13.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.6" />

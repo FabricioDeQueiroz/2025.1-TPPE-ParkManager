@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
+using Hangfire;
+using Hangfire.PostgreSql;
+using Hangfire.Dashboard;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,6 +71,7 @@ builder.Services.AddScoped<IEstacionamento, EstacionamentoService>();
 builder.Services.AddScoped<IUsuario, UsuarioService>();
 builder.Services.AddScoped<IEvento, EventoService>();
 builder.Services.AddScoped<IAcesso, AcessoService>();
+builder.Services.AddScoped<IEmail, EmailService>();
 
 builder.Services.AddIdentity<Usuario, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
@@ -96,6 +100,23 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
     };
 });
+
+// Configuração do Hangfire para usar PostgreSQL
+builder.Services.AddHangfire(config =>
+{
+    config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+        .UseSimpleAssemblyNameTypeSerializer()
+        .UseDefaultTypeSerializer()
+        .UseRecommendedSerializerSettings()
+        .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(connectionString));
+});
+
+GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 10 });
+
+if (!builder.Environment.IsEnvironment("Test"))
+{
+    builder.Services.AddHangfireServer();
+}
 
 var app = builder.Build();
 
@@ -143,7 +164,53 @@ if (!app.Environment.IsDevelopment())
     db.Database.Migrate();
 }
 
+if (app.Environment.IsDevelopment())
+{
+    if (!app.Environment.IsEnvironment("Test"))
+    {
+        app.UseHangfireDashboard("/hangfire",
+            new DashboardOptions
+            {
+                Authorization = new[] { new AllowAllDashboardAuthorizationFilter() }
+            }
+        );
+    }
+}
+else
+{
+    if (!app.Environment.IsEnvironment("Test"))
+    {
+        app.UseHangfireDashboard("/parkmanager-api/hangfire",
+            new DashboardOptions
+            {
+                Authorization = new[] { new AllowAllDashboardAuthorizationFilter() }
+            }
+        );
+    }
+}
+
+if (!builder.Environment.IsEnvironment("Test"))
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
+
+        recurringJobManager.AddOrUpdate<IEmail>(
+            "Envio-Relatorio-Mensal",
+            service => service.SendMailAsync(),
+            "*/5 * * * *",
+            new RecurringJobOptions { TimeZone = TimeZoneInfo.Utc }
+        );
+    }
+}
+
 app.Run();
+
+// Hangfire Authorization Filter para Gerentes
+internal sealed class AllowAllDashboardAuthorizationFilter : IDashboardAuthorizationFilter
+{
+    public bool Authorize(DashboardContext context) => true;
+}
 
 // Para ser visível nos Testes
 public abstract partial class Program { }

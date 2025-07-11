@@ -4,6 +4,7 @@ all:
 
 docker:
 	docker compose -p parkmanager down
+# 	docker volume rm parkmanager_postgres_data
 	docker-compose -p parkmanager up --build
 
 docker-down:

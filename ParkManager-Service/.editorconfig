@@ -127,3 +127,4 @@ dotnet_diagnostic.CA5394.severity = silent
 dotnet_diagnostic.CA1062.severity = silent
 dotnet_diagnostic.CS7022.severity = silent
 dotnet_diagnostic.CA1000.severity = silent
+dotnet_diagnostic.CA2000.severity = silent

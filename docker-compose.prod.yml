@@ -31,6 +31,8 @@ services:
       - JWT__Key=${JWT_KEY}
       - JWT__Issuer=${JWT_ISSUER}
       - JWT__Audience=${JWT_AUDIENCE}
+      - SMTP__EMAIL=${SMTP_EMAIL}
+      - SMTP__PASSWORD=${SMTP_PASSWORD}
       - ConnectionStrings__DefaultConnection=Host=parkmanager-postgres-prod;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
     depends_on:
       parkmanager-postgres-prod:
