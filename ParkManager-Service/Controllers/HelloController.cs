@@ -9,6 +9,6 @@ public class HelloController() : ControllerBase
     [HttpGet(Name = "GetHello")]
     public string Get()
     {
-        return "Olá Mundo!";
+        return "ParkManager API!";
     }
 }

@@ -1,0 +1,47 @@
+services:
+  parkmanager-postgres-prod:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+
+  parkmanager-service-prod:
+    build:
+      context: .
+      dockerfile: ParkManager-Service/Dockerfile.prod
+      args:
+        BUILD_CONFIGURATION: Release
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - DB_HOST=parkmanager-postgres-prod
+      - DB_PORT=5432
+      - JWT__Key=${JWT_KEY}
+      - JWT__Issuer=${JWT_ISSUER}
+      - JWT__Audience=${JWT_AUDIENCE}
+      - SMTP__EMAIL=${SMTP_EMAIL}
+      - SMTP__PASSWORD=${SMTP_PASSWORD}
+      - ConnectionStrings__DefaultConnection=Host=parkmanager-postgres-prod;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+    depends_on:
+      parkmanager-postgres-prod:
+        condition: service_healthy
+    volumes:
+      - ./ParkManager-Service:/src
+      - ~/.nuget/packages:/root/.nuget/packages:ro
+      - ./data-protection-keys:/root/.aspnet/DataProtection-Keys
+    restart: always
+
+volumes:
+  postgres_data:

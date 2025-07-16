@@ -1,7 +1,5 @@
-version: '3.8'
-
 services:
-  db:
+  parkmanager-postgres:
     image: postgres:17
     container_name: parkmanager_postgres
     restart: always
@@ -19,26 +17,33 @@ services:
       timeout: 10s
       retries: 10
 
-  api:
-    image: parkmanager-api:1
+  parkmanager-service:
     container_name: parkmanager_service
     build:
       context: .
       dockerfile: ParkManager-Service/Dockerfile
       args:
-        BUILD_CONFIGURATION: Release
+        BUILD_CONFIGURATION: Debug
     ports:
       - "8080:8080"
-      - "8081:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - DB_HOST=parkmanager-postgres
+      - DB_PORT=5432
+      - JWT__Key=${JWT_KEY}
+      - JWT__Issuer=${JWT_ISSUER}
+      - JWT__Audience=${JWT_AUDIENCE}
+      - SMTP__EMAIL=${SMTP_EMAIL}
+      - SMTP__PASSWORD=${SMTP_PASSWORD}
+      - ConnectionStrings__DefaultConnection=Host=parkmanager-postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
     depends_on:
-      db:
+      parkmanager-postgres:
         condition: service_healthy
     volumes:
-      - ./ParkManager-Service:/src
+      - ./ParkManager-Service:/src/ParkManager-Service
       - ~/.nuget/packages:/root/.nuget/packages:ro
+      - ./data-protection-keys:/root/.aspnet/DataProtection-Keys
+    restart: always
 
 volumes:
   postgres_data:
