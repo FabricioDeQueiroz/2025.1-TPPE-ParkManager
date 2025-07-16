@@ -89,7 +89,7 @@ jobs:
           ASPNETCORE_ENVIRONMENT: Test
           ConnectionStrings__DefaultConnection: Host=localhost;Port=5432;Database=ParkManager_CI_Tests;Username=postgres_ci;Password=postgres_ci_pass
         run: |
-          dotnet tool run dotnet-ef database update --project ParkManager-Service --startup-project ParkManager-Service
+          dotnet tool run dotnet-ef database update --project ParkManager-Service
 
       - name: Run tests
         env:
@@ -99,6 +99,9 @@ jobs:
           POSTGRES_DB: ParkManager_CI_Tests
           DB_HOST: localhost
           DB_PORT: 5432
+          JWT__Key: "Test.SecretKey123"
+          JWT__Issuer: "Test.Issuer"
+          JWT__Audience: "Test.Audience"
           ConnectionStrings__DefaultConnection: Host=localhost;Port=5432;Database=ParkManager_CI_Tests;Username=postgres_ci;Password=postgres_ci_pass
         run: |
           dotnet restore ParkManager-Service/ParkManager-Service.csproj
