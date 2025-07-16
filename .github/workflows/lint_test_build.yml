@@ -60,6 +60,13 @@ jobs:
             sleep 2
           done
 
+      - name: Apply Database Migrations
+        env:
+          ASPNETCORE_ENVIRONMENT: Test
+          ConnectionStrings__DefaultConnection: Host=localhost;Port=5432;Database=ParkManager_CI_Tests;Username=postgres_ci;Password=postgres_ci_pass
+        run: |
+          dotnet ef database update --project ParkManager-Service --startup-project ParkManager-Service
+
       - name: Run tests
         env:
           ASPNETCORE_ENVIRONMENT: Test
