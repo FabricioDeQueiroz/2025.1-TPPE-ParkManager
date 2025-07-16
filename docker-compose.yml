@@ -45,5 +45,22 @@ services:
       - ./data-protection-keys:/root/.aspnet/DataProtection-Keys
     restart: always
 
+  parkmanager-frontend:
+    container_name: parkmanager_frontend
+    build:
+      context: .
+      dockerfile: ParkManager-Frontend/Dockerfile
+      target: development
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./ParkManager-Frontend:/app
+      - /app/node_modules
+    depends_on:
+      - parkmanager-service
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    restart: always
+
 volumes:
   postgres_data:
