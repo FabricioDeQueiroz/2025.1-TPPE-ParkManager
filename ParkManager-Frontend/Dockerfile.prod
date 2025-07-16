@@ -1,14 +1,11 @@
-FROM node:20-alpine AS builder
+FROM node:20-alpine AS build
 WORKDIR /app
 
-COPY package*.json ./
+COPY ParkManager-Frontend/package*.json ./
 
 RUN npm ci
 
-FROM builder AS prod
-
-COPY . .
-
+COPY ParkManager-Frontend ./
 RUN npm run build
 
 FROM nginx:stable-alpine
@@ -17,13 +14,11 @@ FROM nginx:stable-alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copia os arquivos gerados para a pasta pública do nginx
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html
 
 # Copia um nginx.conf customizado
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY ParkManager-Frontend/nginx.conf /etc/nginx/nginx.conf
 
-# Expondo a porta padrão HTTP
 EXPOSE 80
 
-# Comando padrão
 CMD ["nginx", "-g", "daemon off;"]

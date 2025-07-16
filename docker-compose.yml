@@ -50,7 +50,6 @@ services:
     build:
       context: .
       dockerfile: ParkManager-Frontend/Dockerfile
-      target: development
     ports:
       - "5173:5173"
     volumes:
