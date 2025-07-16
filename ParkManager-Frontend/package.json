@@ -11,7 +11,8 @@
         "lint": "eslint . --fix",
         "format": "npx prettier . --write",
         "tailwind": "npx @tailwindcss/cli -i ./src/index.css -o ./src/theme/theme.css",
-        "tailwind:watch": "npx @tailwindcss/cli -i ./src/index.css -o ./src/theme/theme.css --watch"
+        "tailwind:watch": "npx @tailwindcss/cli -i ./src/index.css -o ./src/theme/theme.css --watch",
+        "dev:full": "concurrently -k \"npm run dev:server\" \"npm run tailwind:watch\""
     },
     "dependencies": {
         "@tailwindcss/vite": "^4.1.11",
@@ -27,6 +28,7 @@
         "@types/react-dom": "^19.1.6",
         "@vitejs/plugin-react": "^4.6.0",
         "autoprefixer": "^10.4.21",
+        "concurrently": "^9.2.0",
         "daisyui": "^5.0.46",
         "eslint": "^9.31.0",
         "eslint-config-prettier": "^10.1.5",

@@ -15,7 +15,7 @@ RUN rm -rf /src/ParkManager-Service/Tests
 COPY . .
 WORKDIR "/src/ParkManager-Service/"
 
-RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build ParkManager-Service.csproj -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
