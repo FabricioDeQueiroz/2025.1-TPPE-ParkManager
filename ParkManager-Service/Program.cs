@@ -189,6 +189,7 @@ else
     }
 }
 
+// TODO aqui mudaria a periodicidade do envio de e-mails, está a cada 5 minutos
 if (!builder.Environment.IsEnvironment("Test"))
 {
     using (var scope = app.Services.CreateScope())
@@ -198,7 +199,7 @@ if (!builder.Environment.IsEnvironment("Test"))
         recurringJobManager.AddOrUpdate<IEmail>(
             "Envio-Relatorio-Mensal",
             service => service.SendMailAsync(),
-            "*/5 * * * *",
+            "*/59 * * * *",
             new RecurringJobOptions { TimeZone = TimeZoneInfo.Utc }
         );
     }

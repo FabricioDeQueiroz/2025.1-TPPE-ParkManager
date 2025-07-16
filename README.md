@@ -41,7 +41,7 @@ A arquitetura do projeto segue o padrão **MVC** e está organizada da seguinte 
 │   ├── Models/
 │   ├── Helpers/
 │   ├── Tests/
-│   │   ├── ParametersTests/
+│   │   ├── ParameterizedTests/
 │   │   └── IntegrationTests/
 │   └── wwwroot/swagger-ui/
 └── docs/
@@ -60,7 +60,7 @@ A arquitetura do projeto segue o padrão **MVC** e está organizada da seguinte 
        * **`Interfaces/`**: Define as interfaces dos serviços, promovendo a separação de responsabilidades.
     * **`Views/`**: Contém as views, que são as interfaces de usuário.
     * **`Models/`**: Define as estruturas de dados e entidades de negócio.
-    * **`Tests/`**: Armazena todos os testes do serviço (unitários e de integração).
+    * **`Tests/`**: Armazena todos os testes do serviço (Integração e Parametrizados).
     * **`wwwroot/swagger-ui/`**: Arquivos de estilização para o Swagger.
 
 * **`docs/`**: Dedicada à **documentação** do projeto.
@@ -94,6 +94,6 @@ A arquitetura do projeto segue o padrão **MVC** e está organizada da seguinte 
    ```bash
    make docker-test
    
-2. **Execute o linter:**
+2. **Execute os linters:**
    ```bash
    make docker-lint

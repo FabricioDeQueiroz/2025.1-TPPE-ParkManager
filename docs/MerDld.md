@@ -4,14 +4,14 @@
 
 ### Identificação das Entidades:
 
-- **USUARIO**;
+- **USUARIO/AspNetUsers**;
 - **ESTACIONAMENTO**;
 - **EVENTO**;
 - **ACESSO**;
 
 ### Descrição das Entidades:
 
-- **USUARIO**:
+- **USUARIO/AspNetUsers**:
   - id_usuario (PK)
   - nome
   - email (UNIQUE)

@@ -314,6 +314,24 @@ namespace ParkManager_Service.Migrations
                 name: "IX_EVENTO_id_estacionamento",
                 table: "EVENTO",
                 column: "id_estacionamento");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
         }
 
         /// <inheritdoc />
