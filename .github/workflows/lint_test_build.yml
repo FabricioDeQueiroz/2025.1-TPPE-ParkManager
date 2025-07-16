@@ -11,7 +11,8 @@ on:
       - ci_cd_test
 
 jobs:
-  lint:
+  lint-backend:
+    name: Lint .NET Backend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -27,9 +28,29 @@ jobs:
           dotnet restore ParkManager-Service/ParkManager-Service.csproj
           dotnet format ParkManager-Service/ParkManager-Service.csproj --verify-no-changes --verbosity d --no-restore
 
-  test:
+  lint-frontend:
+    name: Lint React frontend
     runs-on: ubuntu-latest
-    needs: lint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install frontend dependencies
+        working-directory: ParkManager-Frontend
+        run: npm ci
+
+      - name: Run eslint
+        working-directory: ParkManager-Frontend
+        run: npm run lint
+
+  tests:
+    runs-on: ubuntu-latest
+    needs: lint-backend
     services:
       postgres:
         image: postgres:17
@@ -61,7 +82,7 @@ jobs:
           done
 
       - name: Install EF Core CLI
-        run: dotnet tool install --global dotnet-ef
+        run: dotnet tool install --global dotnet-ef --version 9.0.6
         env:
           PATH: ${{ env.PATH }}:/home/runner/.dotnet/tools
 
