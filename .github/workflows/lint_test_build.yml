@@ -99,9 +99,9 @@ jobs:
           POSTGRES_DB: ParkManager_CI_Tests
           DB_HOST: localhost
           DB_PORT: 5432
-          JWT__Key: "Test.SecretKey123"
-          JWT__Issuer: "Test.Issuer"
-          JWT__Audience: "Test.Audience"
+          JWT__Key: "Test.SecretKey1234567890!@#ASDFGHJKLZXCVBN"
+          JWT__Issuer: "Test.Issuer.Issuer.Issuer"
+          JWT__Audience: "Test.Audience.Audience.Audience"
           ConnectionStrings__DefaultConnection: Host=localhost;Port=5432;Database=ParkManager_CI_Tests;Username=postgres_ci;Password=postgres_ci_pass
         run: |
           dotnet restore ParkManager-Service/ParkManager-Service.csproj
