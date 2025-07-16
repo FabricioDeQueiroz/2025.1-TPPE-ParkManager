@@ -1,8 +1,161 @@
 @import 'tailwindcss';
 @plugin "daisyui";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* FONTES PERSONALIZADAS - TAILWIND */
+@theme {
+    --font-loen: 'Loen', sans-serif;
+    --font-michroma: Michroma, sans-serif;
+    --font-inter: Inter, sans-serif;
+    --font-manrope: Manrope, sans-serif;
+    --font-ubuntu: Ubuntu, sans-serif;
+    --font-helvetica: Helvetica, sans-serif;
+}
+
+/* CORES PERSONALIZADAS - TAILWIND */
+@theme {
+    --color-*: initial;
+
+    /* Cadastro e Login */
+    --color-background-escuro: #194268;
+    --color-background-claro: #3182ce;
+    --color-texto-branco: #ffffff;
+    --color-texto-footer: #f7fafc;
+    --color-background-login: #ffffff;
+    --color-titulo-login: #2d3748;
+    --color-texto-login: #2d3748;
+    --color-placeholder-login: #a0aec0;
+    --color-field-login: #e2e8f0;
+    --color-field-border-login: #ffffff;
+    --color-icon-login: #a0aec0;
+    --color-button-text: #ffffff;
+    --color-button-color: #2d3748;
+    --color-text-register: #a0aec0;
+    --color-button-register: #2d3748;
+    --color-icon-branco: #ffffff;
+    --color-color-footer: #194268;
+    --color-field-border-active: #2d3748;
+
+    /* Navbar */
+    --color-background-navbar: #ffffff;
+    --color-text-logo: #2d3748;
+    --color-line-navbar: #e0e1e2;
+    --color-placeholder-avatar: #00b5d8;
+    --color-placeholder-avatar-icon: #ffffff;
+    --color-text-user-name: #000000;
+    --color-text-user-role: #0987a0;
+    --color-background-option-ac: #ffffff;
+    --color-background-option-button-ac: #00b5d8;
+    --color-background-option-icon-ac: #ffffff;
+    --color-text-option-ac: #2d3748;
+    --color-background-option-de: #ffffff00;
+    --color-background-option-button-de: #edf2f7;
+    --color-background-option-icon-de: #00b5d8;
+    --color-text-option-de: #a0aec0;
+
+    /* Dashboard */
+    --color-text-breadcrumb: #ffffff;
+    --color-text-page-title: #ffffff;
+    --color-background-card-dashboard: #ffffff;
+    --color-card-dashboard-capt-text: #a0aec0;
+    --color-card-dashboard-text: #2d3748;
+    --color-card-dashboard-button: #00b5d8;
+    --color-card-dashboard-button-icon: #ffffff;
+    --color-card-dashboard-footer-text: #a0aec0;
+    --color-card-dashboard-line-table: #e2e8f0;
+    --color-card-dashboard-background-table: #f7fafc;
+    --color-card-dashboard-text-table: #718096;
+    --color-card-dashboard-dot-line: #4a5568;
+    --color-dashboard-occupation: #a0aec0;
+    --color-dashboard-create-button: #2d3748;
+    --color-dashboard-create-button-text: #ffffff;
+    --color-dashboard-create-button-de: #edf2f7;
+    --color-dashboard-green-400: #48bb78;
+    --color-dashboard-red-400: #f56565;
+    --color-dashboard-green-500: #38a169;
+    --color-dashboard-red-500: #e53e3e;
+    --color-dashboard-tea: #319795;
+    --color-dashboard-orange: #ed8936;
+}
+
+/* CORES - TEMA DARK */
+@variant dark {
+    --color-*: initial;
+
+    /* Cadastro e Login */
+    --color-background-escuro: #151928;
+    --color-background-claro: #1a202c;
+    --color-texto-branco: #ffffff;
+    --color-texto-footer: #f7fafc;
+    --color-background-login: #111c44;
+    --color-titulo-login: #ffffff;
+    --color-texto-login: #ffffff;
+    --color-placeholder-login: #a0aec0;
+    --color-field-login: #1b254b;
+    --color-field-border-login: #1b254b;
+    --color-icon-login: #a0aec0;
+    --color-button-text: #ffffff;
+    --color-button-color: #3182ce;
+    --color-text-register: #a0aec0;
+    --color-button-register: #3182ce;
+    --color-icon-branco: #ffffff;
+    --color-color-footer: #151928;
+    --color-field-border-active: #ffffff;
+
+    /* Navbar */
+    --color-background-navbar: #111c44;
+    --color-text-logo: #ffffff;
+    --color-line-navbar: #e0e1e2;
+    --color-placeholder-avatar: #3182ce;
+    --color-placeholder-avatar-icon: #ffffff;
+    --color-text-user-name: #ffffff;
+    --color-text-user-role: #0987a0;
+    --color-background-option-ac: #1b254b;
+    --color-background-option-button-ac: #3182ce;
+    --color-background-option-icon-ac: #ffffff;
+    --color-text-option-ac: #ffffff;
+    --color-background-option-de: #ffffff00;
+    --color-background-option-button-de: #1b254b;
+    --color-background-option-icon-de: #3182ce;
+    --color-text-option-de: #ffffff;
+
+    /* Dashboard */
+    --color-text-breadcrumb: #ffffff;
+    --color-text-page-title: #ffffff;
+    --color-background-card-dashboard: #111c44;
+    --color-card-dashboard-capt-text: #a0aec0;
+    --color-card-dashboard-text: #ffffff;
+    --color-card-dashboard-button: #3182ce;
+    --color-card-dashboard-button-icon: #ffffff;
+    --color-card-dashboard-footer-text: #a0aec0;
+    --color-card-dashboard-line-table: #4a5568;
+    --color-card-dashboard-background-table: #0b1433;
+    --color-card-dashboard-text-table: #ffffff;
+    --color-card-dashboard-dot-line: #4a5568;
+    --color-dashboard-occupation: #a0aec0;
+    --color-dashboard-create-button: #3182ce;
+    --color-dashboard-create-button-text: #ffffff;
+    --color-dashboard-create-button-de: #edf2f7;
+    --color-dashboard-green-400: #48bb78;
+    --color-dashboard-red-400: #f56565;
+    --color-dashboard-green-500: #38a169;
+    --color-dashboard-red-500: #e53e3e;
+    --color-dashboard-tea: #319795;
+    --color-dashboard-orange: #ed8936;
+}
+
+@font-face {
+    font-family: 'Loen';
+    src: url('/fonts/Loen.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 :root {
-    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family:
+        Michroma, Inter, Manrope, Ubuntu, 'Loen', system-ui, Avenir, Helvetica,
+        Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
 
