@@ -81,18 +81,15 @@ jobs:
             sleep 2
           done
 
-      - name: Install EF Core CLI
-        run: dotnet tool install --global dotnet-ef --version 9.0.6
-        env:
-          PATH: ${{ env.PATH }}:/home/runner/.dotnet/tools
+      - name: Restore EF Core CLI (Local Tool)
+        run: dotnet tool restore
 
       - name: Apply Database Migrations
         env:
           ASPNETCORE_ENVIRONMENT: Test
-          PATH: ${{ env.PATH }}:/home/runner/.dotnet/tools
           ConnectionStrings__DefaultConnection: Host=localhost;Port=5432;Database=ParkManager_CI_Tests;Username=postgres_ci;Password=postgres_ci_pass
         run: |
-          dotnet ef database update --project ParkManager-Service
+          dotnet tool run dotnet-ef database update --project ParkManager-Service --startup-project ParkManager-Service
 
       - name: Run tests
         env:
