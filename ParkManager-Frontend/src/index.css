@@ -31,6 +31,7 @@
     --color-icon-login: #a0aec0;
     --color-button-text: #ffffff;
     --color-button-color: #2d3748;
+    --color-button-color-hover: #2d3748e5;
     --color-text-register: #a0aec0;
     --color-button-register: #2d3748;
     --color-icon-branco: #ffffff;
@@ -53,6 +54,7 @@
     --color-background-option-button-de: #edf2f7;
     --color-background-option-icon-de: #00b5d8;
     --color-text-option-de: #a0aec0;
+    --color-theme-toggle-button: #4a5568;
 
     /* Dashboard */
     --color-text-breadcrumb: #ffffff;
@@ -77,6 +79,12 @@
     --color-dashboard-red-500: #e53e3e;
     --color-dashboard-tea: #319795;
     --color-dashboard-orange: #ed8936;
+
+    /* Outros */
+    --color-toast-success: #276749;
+    --color-toast-error: #9b2c2c;
+    --color-toast-info: #1e4e8c;
+    --color-toast-warning: #2c7a7b;
 }
 
 /* CORES - TEMA DARK */
@@ -97,6 +105,7 @@
     --color-icon-login: #a0aec0;
     --color-button-text: #ffffff;
     --color-button-color: #3182ce;
+    --color-button-color-hover: #3182cee5;
     --color-text-register: #a0aec0;
     --color-button-register: #3182ce;
     --color-icon-branco: #ffffff;
@@ -119,6 +128,7 @@
     --color-background-option-button-de: #1b254b;
     --color-background-option-icon-de: #3182ce;
     --color-text-option-de: #ffffff;
+    --color-theme-toggle-button: #f6ad55;
 
     /* Dashboard */
     --color-text-breadcrumb: #ffffff;
@@ -143,6 +153,12 @@
     --color-dashboard-red-500: #e53e3e;
     --color-dashboard-tea: #319795;
     --color-dashboard-orange: #ed8936;
+
+    /* Outros */
+    --color-toast-success: #276749;
+    --color-toast-error: #9b2c2c;
+    --color-toast-info: #1e4e8c;
+    --color-toast-warning: #2c7a7b;
 }
 
 @font-face {
@@ -150,6 +166,25 @@
     src: url('/fonts/Loen.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
+}
+
+html,
+body {
+    overflow-x: hidden;
+}
+
+input:-webkit-autofill {
+    @apply bg-field-border-login text-texto-login;
+    box-shadow: 0 0 0 1000px #e6e9f0 inset !important;
+    -webkit-text-fill-color: #1f2937 !important;
+}
+
+@layer utilities {
+    .hyphens-auto {
+        hyphens: auto;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
+    }
 }
 
 :root {
@@ -167,29 +202,6 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-    font-weight: 500;
-    color: #646cff;
-    text-decoration: inherit;
-}
-
-a:hover {
-    color: #535bf2;
-}
-
-body {
-    margin: 0;
-    display: flex;
-    place-items: center;
-    min-width: 320px;
-    min-height: 100vh;
-}
-
-h1 {
-    font-size: 3.2em;
-    line-height: 1.1;
 }
 
 /* button {
@@ -210,16 +222,3 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 } */
-
-@media (prefers-color-scheme: light) {
-    :root {
-        color: #213547;
-        background-color: #ffffff;
-    }
-    a:hover {
-        color: #747bff;
-    }
-    button {
-        background-color: #f9f9f9;
-    }
-}
