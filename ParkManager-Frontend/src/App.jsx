@@ -3,7 +3,7 @@ import { ToastNotify } from './components/Feedback/ToastNotify';
 import PrivateRoute from './features/auth/PrivateRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Sidebar from './components/Sidebar/Sidebar';
+import Dashboard from './pages/Dashboard';
 
 function App() {
     return (
@@ -17,7 +17,7 @@ function App() {
                         path="/dashboard"
                         element={
                             <PrivateRoute allowedTypes={[0, 1]}>
-                                <Sidebar />
+                                <Dashboard />
                             </PrivateRoute>
                         }
                     />
