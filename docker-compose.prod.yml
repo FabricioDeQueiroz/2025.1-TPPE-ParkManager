@@ -49,7 +49,6 @@ services:
       dockerfile: ParkManager-Frontend/Dockerfile.prod
     ports:
       - "5173:5173"
-    restart: always
     depends_on:
       - parkmanager-service-prod
 

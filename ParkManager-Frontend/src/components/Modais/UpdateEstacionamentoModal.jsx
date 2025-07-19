@@ -1,8 +1,12 @@
-import { useState } from 'react';
-import useCreateEstacionamento from '../../Hooks/CreateEstacionamento';
+import { useState, useEffect } from 'react';
+import useUpdateEstacionamento from '../../Hooks/UpdateEstacionamento';
+import { useAuth } from '../../features/auth/AuthContext';
 
-const CreateEstacionamentoModal = () => {
+const UpdateEstacionamentoModal = ({ estacionamentoData }) => {
+    const { user, userId } = useAuth();
+
     const [formData, setFormData] = useState({
+        idEstacionamento: '',
         nome: '',
         nomeContratante: '',
         vagasTotais: '',
@@ -18,14 +22,25 @@ const CreateEstacionamentoModal = () => {
         horaFechamento: '',
         tipo: 0,
         is24h: false,
+        idGerente: '',
     });
+
+    const { handleUpdate } = useUpdateEstacionamento();
+
+    useEffect(() => {
+        if (estacionamentoData) {
+            setFormData({
+                ...estacionamentoData,
+                retornoContratante: estacionamentoData.retornoContratante * 100,
+                is24h: estacionamentoData.tipo === 1,
+            });
+        }
+    }, [estacionamentoData]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
-
-    const { handleCreate, loading, erro } = useCreateEstacionamento();
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -33,11 +48,12 @@ const CreateEstacionamentoModal = () => {
         const is24h = formData.is24h;
 
         const payload = {
+            idEstacionamento: formData.idEstacionamento || '',
             nome: formData.nome || '',
             nomeContratante: formData.nomeContratante || '',
             vagasTotais: Number(formData.vagasTotais) || 0,
-            vagasOcupadas: 0,
-            faturamento: 0,
+            vagasOcupadas: Number(formData.vagasOcupadas) || 0,
+            faturamento: Number(formData.faturamento) || 0,
             retornoContratante:
                 formData.retornoContratante !== ''
                     ? parseFloat(formData.retornoContratante) / 100
@@ -50,35 +66,19 @@ const CreateEstacionamentoModal = () => {
             horaAbertura: is24h ? undefined : formData.horaAbertura || '',
             horaFechamento: is24h ? undefined : formData.horaFechamento || '',
             tipo: is24h ? 1 : 0,
+            idGerente: userId || user.id || '',
         };
 
         try {
-            await handleCreate(payload);
-            document.getElementById('create-modal').close();
-            setFormData({
-                nome: '',
-                nomeContratante: '',
-                vagasTotais: '',
-                vagasOcupadas: 0,
-                faturamento: 0,
-                retornoContratante: '',
-                valorFracao: '',
-                descontoHora: '',
-                valorMensal: '',
-                valorDiaria: '',
-                adicionalNoturno: '',
-                horaAbertura: '',
-                horaFechamento: '',
-                tipo: 0,
-                is24h: false,
-            });
+            await handleUpdate(payload);
+            document.getElementById('update-modal').close();
         } catch (error) {
-            console.error('Erro ao criar estacionamento:', error);
+            console.error('Erro ao atualizar estacionamento:', error);
         }
     };
 
     return (
-        <dialog id="create-modal" className="modal">
+        <dialog id="update-modal" className="modal">
             <div className="modal-box bg-background-card-dashboard w-[720px] min-w-[720px] rounded-[10px] shadow-xl p-10 relative">
                 <form method="dialog">
                     <button className="hover:cursor-pointer absolute top-4 right-4 text-2xl text-card-dashboard-text">
@@ -87,7 +87,7 @@ const CreateEstacionamentoModal = () => {
                 </form>
 
                 <h2 className="text-xl font-bold text-card-dashboard-text text-center mb-6">
-                    Digite os dados do estacionamento a ser cadastrado:
+                    Atualize os dados do estacionamento:
                 </h2>
 
                 <div className="grid grid-cols-1 gap-4 mb-4">
@@ -164,7 +164,7 @@ const CreateEstacionamentoModal = () => {
                 </div>
 
                 <h2 className="text-xl font-bold text-card-dashboard-text text-center mb-6 mt-14">
-                    Digite os valores cobrados pelo estacionamento:
+                    Atualize os valores cobrados pelo estacionamento:
                 </h2>
 
                 <div className="grid grid-cols-2 gap-4 mb-14">
@@ -228,11 +228,11 @@ const CreateEstacionamentoModal = () => {
                     onClick={onSubmit}
                     className="hover:cursor-pointer w-full h-[60px] font-bold text-white text-[20px] bg-dashboard-create-button rounded-lg hover:opacity-90"
                 >
-                    CADASTRAR
+                    ATUALIZAR
                 </button>
             </div>
         </dialog>
     );
 };
 
-export default CreateEstacionamentoModal;
+export default UpdateEstacionamentoModal;

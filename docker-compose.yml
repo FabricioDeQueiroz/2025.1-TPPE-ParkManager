@@ -59,7 +59,6 @@ services:
       - parkmanager-service
     environment:
       - CHOKIDAR_USEPOLLING=true
-    restart: always
 
 volumes:
   postgres_data:

@@ -71,7 +71,7 @@ const DashboardManager = () => {
     }
 
     return (
-        <div className="flex flex-col h-[calc(100vh-52px)] max-w-[calc(100vh-256px)] min-w-fit mx-5 mb-5 mt-8">
+        <div className="flex flex-col h-[calc(100vh)] max-w-[calc(100vh-256px)] min-w-fit mx-5 mb-5 mt-8">
             <div className="mb-2">
                 <Breadcrumb
                     lista={['ParkManager', 'Painel']}

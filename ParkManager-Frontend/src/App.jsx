@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Estacionamentos from './pages/Estacionamentos';
+import Acessos from './pages/Acessos';
 
 function App() {
     return (
@@ -27,6 +28,14 @@ function App() {
                         element={
                             <PrivateRoute allowedTypes={[0]}>
                                 <Estacionamentos />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/acessos"
+                        element={
+                            <PrivateRoute allowedTypes={[1]}>
+                                <Acessos />
                             </PrivateRoute>
                         }
                     />

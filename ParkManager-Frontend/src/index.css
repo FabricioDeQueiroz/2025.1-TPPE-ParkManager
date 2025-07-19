@@ -170,10 +170,6 @@
     font-style: normal;
 }
 
-@utility loading {
-    @apply loading loading-infinity stroke-1;
-}
-
 html,
 body {
     overflow-x: hidden;
