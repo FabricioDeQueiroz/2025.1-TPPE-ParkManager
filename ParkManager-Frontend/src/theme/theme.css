@@ -1678,6 +1678,9 @@
   .mt-8 {
     margin-top: calc(var(--spacing) * 8);
   }
+  .mt-10 {
+    margin-top: calc(var(--spacing) * 10);
+  }
   .mt-11 {
     margin-top: calc(var(--spacing) * 11);
   }
@@ -1920,8 +1923,14 @@
   .h-\[115px\] {
     height: 115px;
   }
+  .h-\[217px\] {
+    height: 217px;
+  }
   .h-\[252px\] {
     height: 252px;
+  }
+  .h-\[317px\] {
+    height: 317px;
   }
   .h-\[350px\] {
     height: 350px;
@@ -1931,6 +1940,9 @@
   }
   .h-\[400px\] {
     height: 400px;
+  }
+  .h-\[417px\] {
+    height: 417px;
   }
   .h-\[517px\] {
     height: 517px;
@@ -2057,6 +2069,9 @@
   }
   .w-\[511px\] {
     width: 511px;
+  }
+  .w-\[520px\] {
+    width: 520px;
   }
   .w-\[546px\] {
     width: 546px;
@@ -2483,6 +2498,9 @@
   .p-5 {
     padding: calc(var(--spacing) * 5);
   }
+  .p-8 {
+    padding: calc(var(--spacing) * 8);
+  }
   .p-9 {
     padding: calc(var(--spacing) * 9);
   }
@@ -2534,6 +2552,9 @@
   .pr-2 {
     padding-right: calc(var(--spacing) * 2);
   }
+  .pr-4 {
+    padding-right: calc(var(--spacing) * 4);
+  }
   .pr-10 {
     padding-right: calc(var(--spacing) * 10);
   }
@@ -2583,6 +2604,9 @@
     font-size: var(--text-xs);
     line-height: var(--tw-leading, var(--text-xs--line-height));
   }
+  .text-\[12px\] {
+    font-size: 12px;
+  }
   .text-\[14px\] {
     font-size: 14px;
   }
@@ -2592,8 +2616,17 @@
   .text-\[15px\] {
     font-size: 15px;
   }
+  .text-\[18px\] {
+    font-size: 18px;
+  }
   .text-\[20px\] {
     font-size: 20px;
+  }
+  .text-\[22px\] {
+    font-size: 22px;
+  }
+  .text-\[28px\] {
+    font-size: 28px;
   }
   .text-\[32px\] {
     font-size: 32px;
@@ -2685,6 +2718,18 @@
   .text-dashboard-red-500 {
     color: var(--color-dashboard-red-500);
   }
+  .text-dashboard-red-500\/30 {
+    color: color-mix(in srgb, #e53e3e 30%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-dashboard-red-500) 30%, transparent);
+    }
+  }
+  .text-dashboard-red-500\/50 {
+    color: color-mix(in srgb, #e53e3e 50%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-dashboard-red-500) 50%, transparent);
+    }
+  }
   .text-dashboard-tea {
     color: var(--color-dashboard-tea);
   }
@@ -2743,6 +2788,9 @@
     &::placeholder {
       color: var(--color-placeholder-login);
     }
+  }
+  .opacity-30 {
+    opacity: 30%;
   }
   .opacity-80 {
     opacity: 80%;
@@ -2847,6 +2895,27 @@
     &:is(:where(.group):hover *) {
       @media (hover: hover) {
         color: var(--color-theme-toggle-button);
+      }
+    }
+  }
+  .hover\:cursor-default {
+    &:hover {
+      @media (hover: hover) {
+        cursor: default;
+      }
+    }
+  }
+  .hover\:cursor-none {
+    &:hover {
+      @media (hover: hover) {
+        cursor: none;
+      }
+    }
+  }
+  .hover\:cursor-not-allowed {
+    &:hover {
+      @media (hover: hover) {
+        cursor: not-allowed;
       }
     }
   }

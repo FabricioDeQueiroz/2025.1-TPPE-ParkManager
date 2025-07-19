@@ -13,7 +13,7 @@ import DashboardTableCustomer from '../components/Dashboard/DashboardTableCustom
 const DashboardCustomer = () => {
     const { acessos, loading, erro, superDados } = getAcessos();
 
-    const { acessosAbertosHoje, acessosAgrupados, primeiroAcesso } = superDados;
+    const { acessosAgrupados, primeiroAcesso } = superDados;
 
     if (loading) {
         return (
@@ -74,16 +74,24 @@ const DashboardCustomer = () => {
 
             <div className="flex flex-row justify-between gap-x-7 mb-5">
                 <AccessCard
-                    corpo={acessosAbertosHoje}
-                    entrada={DateConverter(
-                        primeiroAcesso.dataHoraEntrada,
-                        true,
-                        0
-                    )}
+                    corpo={primeiroAcesso ? primeiroAcesso.tipo : 'N/A'}
+                    entrada={
+                        primeiroAcesso
+                            ? DateConverter(
+                                  primeiroAcesso.dataHoraEntrada,
+                                  true,
+                                  0
+                              )
+                            : 'N/A'
+                    }
                 />
                 <SmallCardCustomer
                     titulo={'VALOR DO ACESSO ATUAL'}
-                    corpo={`R$ ${primeiroAcesso.valorAcesso.toFixed(2).replace('.', ',')}`}
+                    corpo={
+                        primeiroAcesso
+                            ? `R$ ${primeiroAcesso.valorAcesso.toFixed(2).replace('.', ',')}`
+                            : 'N/A'
+                    }
                     icon={MdOutlineAttachMoney}
                     width="w-[385px]"
                     fontSize="text-[34px]"

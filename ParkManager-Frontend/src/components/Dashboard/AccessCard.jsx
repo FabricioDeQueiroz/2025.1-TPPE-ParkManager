@@ -1,4 +1,5 @@
 const SmallCard = ({ corpo, entrada }) => {
+    console.log('Corpo:', corpo);
     return (
         <div className="flex flex-row justify-start gap-x-7 bg-background-card-dashboard rounded-[20px] shadow-lg w-[637px] h-[115px]">
             <div className="flex flex-col p-5">

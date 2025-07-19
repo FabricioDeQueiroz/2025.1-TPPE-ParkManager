@@ -4,12 +4,11 @@ import { FaDoorOpen, FaDoorClosed } from 'react-icons/fa';
 import { DateConverter } from '../../util/DateConverter';
 import { TbClock24 } from 'react-icons/tb';
 import ActionButton from '../Form/ActionButton';
-import { FaEye, FaPencil, FaTrash } from 'react-icons/fa6';
-import ModalDelete from '../Modais/ModalDelete';
-import deleteEstacionamento from '../../Hooks/DeleteEstacionamento';
 import { showToast } from '../Feedback/ToastNotify';
-import CreateEstacionamentoModal from '../Modais/CreateEstacionamentoModal';
-import UpdateEstacionamentoModal from '../Modais/UpdateEstacionamentoModal';
+import { IoExitOutline } from 'react-icons/io5';
+import FinishAcessoModal from '../Modais/FinishAcessoModal';
+import useFinishAcesso from '../../Hooks/FinishAcesso';
+import CreateAcessoModal from '../Modais/CreateAcessoModal';
 
 export default function AcessosTable({ data, limit = 3 }) {
     const [currentPage, setCurrentPage] = useState(1);
@@ -21,17 +20,12 @@ export default function AcessosTable({ data, limit = 3 }) {
         currentPage * limit
     );
 
-    const { handleDelete, erro } = deleteEstacionamento();
-
-    const handleDeleteClick = (id) => {
+    const handleFinishClick = (id) => {
         setSelectedId(id);
-        document.getElementById('delete-modal').showModal();
+        document.getElementById('finish-modal').showModal();
     };
 
-    const handleUpdateClick = (id) => {
-        setSelectedId(id);
-        document.getElementById('update-modal').showModal();
-    };
+    const { finishEspecificAcesso } = useFinishAcesso();
 
     return (
         <div className="bg-background-card-dashboard rounded-[20px] shadow-md w-[1589px] h-[400px]">
@@ -41,21 +35,23 @@ export default function AcessosTable({ data, limit = 3 }) {
                 </p>
                 <button
                     onClick={() =>
-                        document.getElementById('create-modal').showModal()
+                        document
+                            .getElementById('create-acesso-modal')
+                            .showModal()
                     }
                     className="flex flex-row justify-between items-center px-4 hover:cursor-pointer rounded-lg text-base text-dashboard-create-button-text bg-dashboard-create-button hover:bg-dashboard-create-button/85 font-bold w-[230px] h-[39px]"
                 >
                     <FaCirclePlus className="w-4 h-4 text-dashboard-create-button-text" />
-                    <p>ADICIONAR ACESSO</p>
+                    <p>REALIZAR ACESSO</p>
                 </button>
             </div>
 
-            <div className="overflow-x-auto relative h-[517px]">
+            <div className="overflow-x-auto relative h-[317px]">
                 <table className="min-w-full text-left table-fixed">
                     <thead className="bg-card-dashboard-background-table text-card-dashboard-text-table uppercase tracking-wider">
                         <tr>
                             <th className="w-1/8 py-2.5 px-6 text-xs">
-                                Cliente
+                                Estacionamento
                             </th>
                             <th className="w-1/8 py-2.5 px-6 text-xs">Placa</th>
                             <th className="w-2/8 py-2.5 px-6 text-xs">
@@ -65,6 +61,7 @@ export default function AcessosTable({ data, limit = 3 }) {
                             <th className="w-1/8 py-2.5 px-6 text-xs text-right">
                                 Valor
                             </th>
+                            <th className="w-1/8 py-2.5 px-6 text-xs text-right"></th>
                         </tr>
                     </thead>
                     <tbody className="text-card-dashboard-text text-[15.5px]">
@@ -75,10 +72,10 @@ export default function AcessosTable({ data, limit = 3 }) {
                             >
                                 <td className="w-2/8 py-3 px-6 truncate opacity-80">
                                     <p className="font-bold">
-                                        {item.cliente.nome}
+                                        {item.estacionamento.nome}
                                     </p>
                                 </td>
-                                <td className="w-2/8 py-3 px-6 truncate opacity-80">
+                                <td className="w-1/8 py-3 px-6 truncate opacity-80">
                                     <p className="font-bold">
                                         {item.placaVeiculo}
                                     </p>
@@ -156,11 +153,34 @@ export default function AcessosTable({ data, limit = 3 }) {
                                         </p>
                                     )}
                                 </td>
+                                <td className="w-1/8 py-3 px-6">
+                                    <div className="flex flex-row gap-x-8 justify-end">
+                                        {item.dataHoraSaida ? (
+                                            <ActionButton
+                                                icon={IoExitOutline}
+                                                label="ENCERRAR"
+                                                color="text-dashboard-red-500/50 opacity-30 hover:cursor-default"
+                                                action={() => {}}
+                                            />
+                                        ) : (
+                                            <ActionButton
+                                                icon={IoExitOutline}
+                                                label="ENCERRAR"
+                                                color="text-dashboard-red-500"
+                                                action={() =>
+                                                    handleFinishClick(
+                                                        item.idAcesso
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    </div>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-                <div className="absolute mt-11 left-0 w-full flex justify-center items-center px-6 space-x-2">
+                <div className="absolute mt-4 bottom-0 left-0 w-full flex justify-center items-center px-6 space-x-2">
                     <button
                         className={`px-3 font-bold w-[90px] py-1 rounded bg-dashboard-create-button-de ${currentPage === 1 ? 'text-dashboard-create-button/50 cursor-not-allowed' : 'text-dashboard-create-button hover:bg-dashboard-create-button/20'}`}
                         onClick={() =>
@@ -188,31 +208,23 @@ export default function AcessosTable({ data, limit = 3 }) {
                     </button>
                 </div>
 
-                <ModalDelete
-                    type="estacionamento"
+                <FinishAcessoModal
+                    type={'acesso'}
                     action={() => {
-                        handleDelete(selectedId);
-                        document.getElementById('delete-modal').close();
-                        if (erro) {
-                            showToast({
-                                message: 'Erro ao excluir estacionamento!',
-                                type: 'error',
-                                duration: 3000,
-                            });
-                        }
+                        handleFinishClick(selectedId);
+                        finishEspecificAcesso(selectedId);
+                        document.getElementById('finish-modal').close();
                         showToast({
-                            message: 'Estacionamento excluído com sucesso!',
+                            message: 'Acesso finalizado com sucesso!',
                             type: 'success',
-                            duration: 3000,
+                            duration: 1000,
+                            onClose: () => {
+                                window.location.reload();
+                            },
                         });
                     }}
                 />
-                <CreateEstacionamentoModal />
-                <UpdateEstacionamentoModal
-                    estacionamentoData={data.find(
-                        (item) => item.idEstacionamento === selectedId
-                    )}
-                />
+                <CreateAcessoModal />
             </div>
         </div>
     );
