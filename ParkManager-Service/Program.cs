@@ -214,21 +214,21 @@ else
     }
 }
 
-// TODO aqui mudaria a periodicidade do envio de e-mails, está a cada 5 minutos
-// if (!builder.Environment.IsEnvironment("Test"))
-// {
-//     using (var scope = app.Services.CreateScope())
-//     {
-//         var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
+// Aqui mudaria a periodicidade do envio de e-mails, está a cada 5 minutos
+if (!builder.Environment.IsEnvironment("Test"))
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
 
-//         recurringJobManager.AddOrUpdate<IEmail>(
-//             "Envio-Relatorio-Mensal",
-//             service => service.SendMailAsync(),
-//             "*/59 * * * *",
-//             new RecurringJobOptions { TimeZone = TimeZoneInfo.Utc }
-//         );
-//     }
-// }
+        recurringJobManager.AddOrUpdate<IEmail>(
+            "Envio-Relatorio-Mensal",
+            service => service.SendMailAsync(),
+            "*/59 * * * *",
+            new RecurringJobOptions { TimeZone = TimeZoneInfo.Utc }
+        );
+    }
+}
 
 app.Run();
 

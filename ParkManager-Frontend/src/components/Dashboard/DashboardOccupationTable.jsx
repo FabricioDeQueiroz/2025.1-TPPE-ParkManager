@@ -43,16 +43,6 @@ export default function DashboardOccupationTable({ data, limit = 5 }) {
                                 </td>
 
                                 <td className="max-w-[15px] min-w-[15px] px-4 py-3">
-                                    {/* TODO aqui tem o card de ocupação */}
-                                    {/* <div className="flex flex-row justify-center items-center bg-dashboard-occupation h-6 rounded-md">
-                                        <p className="text-text-page-title text-sm font-bold">
-                                            20
-                                        </p>
-                                        <vr className="border-l border-card-dashboard-line-table h-4 mx-2"></vr>
-                                        <p className="text-text-page-title text-sm font-bold">
-                                            400
-                                        </p>
-                                    </div> */}
                                     <progress
                                         className="progress text-dashboard-tea justify-center h-2 mt-3 bg-dashboard-occupation"
                                         value={item.vagasOcupadas}

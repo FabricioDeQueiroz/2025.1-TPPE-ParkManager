@@ -4,7 +4,6 @@ import { IoExitOutline } from 'react-icons/io5';
 import BillingChart from '../components/Dashboard/BillingChart';
 import AccessChart from '../components/Dashboard/AccessChart';
 import getAcessos from '../Hooks/GetAcessos';
-import getEstacionamentos from '../Hooks/GetEstacionamentos';
 import SmallCardCustomer from '../components/Dashboard/SmallCardCustomer';
 import AccessCard from '../components/Dashboard/AccessCard';
 import { DateConverter } from '../util/DateConverter';
