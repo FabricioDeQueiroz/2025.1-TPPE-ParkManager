@@ -11,12 +11,20 @@
         "lint": "eslint . --fix",
         "format": "npx prettier . --write",
         "tailwind": "npx @tailwindcss/cli -i ./src/index.css -o ./src/theme/theme.css",
-        "tailwind:watch": "npx @tailwindcss/cli -i ./src/index.css -o ./src/theme/theme.css --watch"
+        "tailwind:watch": "npx @tailwindcss/cli -i ./src/index.css -o ./src/theme/theme.css --watch",
+        "dev:full": "concurrently -k \"npm run dev:server\" \"npm run tailwind:watch\""
     },
     "dependencies": {
+        "@tailwindcss/typography": "^0.5.16",
         "@tailwindcss/vite": "^4.1.11",
+        "axios": "^1.10.0",
+        "date-fns": "^4.1.0",
         "react": "^19.1.0",
-        "react-dom": "^19.1.0"
+        "react-dom": "^19.1.0",
+        "react-icons": "^5.5.0",
+        "react-router-dom": "^7.7.0",
+        "react-toastify": "^11.0.5",
+        "recharts": "^3.1.0"
     },
     "engines": {
         "node": ">=20"
@@ -27,6 +35,7 @@
         "@types/react-dom": "^19.1.6",
         "@vitejs/plugin-react": "^4.6.0",
         "autoprefixer": "^10.4.21",
+        "concurrently": "^9.2.0",
         "daisyui": "^5.0.46",
         "eslint": "^9.31.0",
         "eslint-config-prettier": "^10.1.5",

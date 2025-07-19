@@ -12,8 +12,12 @@ using System.IdentityModel.Tokens.Jwt;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Hangfire.Dashboard;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var supportedCultures = new[] { new CultureInfo("pt-BR") };
 
 builder.Configuration.AddEnvironmentVariables();
 
@@ -62,6 +66,17 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
+builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowMultipleOrigins", policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+    }
+);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -149,6 +164,16 @@ else
     });
 }
 
+app.UseCors("AllowMultipleOrigins");
+
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("pt-BR"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures,
+    ApplyCurrentCultureToResponseHeaders = true
+});
+
 app.UseRouting();
 
 app.UseAuthentication();
@@ -189,7 +214,7 @@ else
     }
 }
 
-// TODO aqui mudaria a periodicidade do envio de e-mails, está a cada 5 minutos
+// Aqui mudaria a periodicidade do envio de e-mails, está a cada 5 minutos
 if (!builder.Environment.IsEnvironment("Test"))
 {
     using (var scope = app.Services.CreateScope())
