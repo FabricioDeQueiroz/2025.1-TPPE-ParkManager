@@ -18,7 +18,7 @@ const Estacionamentos = () => {
                     <div className="mb-2">
                         <Breadcrumb
                             lista={['ParkManager', 'Estacionamentos']}
-                            caminhos={['', '/parkmanager/estacionamentos']}
+                            caminhos={['', '/estacionamentos']}
                         />
                     </div>
 
@@ -43,7 +43,7 @@ const Estacionamentos = () => {
                     <div className="mb-2">
                         <Breadcrumb
                             lista={['ParkManager', 'Estacionamentos']}
-                            caminhos={['', '/parkmanager/estacionamentos']}
+                            caminhos={['', '/estacionamentos']}
                         />
                     </div>
 
@@ -69,7 +69,7 @@ const Estacionamentos = () => {
                 <div className="mb-2">
                     <Breadcrumb
                         lista={['ParkManager', 'Estacionamentos']}
-                        caminhos={['', '/parkmanager/estacionamentos']}
+                        caminhos={['', '/estacionamentos']}
                     />
                 </div>
 

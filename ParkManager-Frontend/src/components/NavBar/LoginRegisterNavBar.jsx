@@ -16,13 +16,9 @@ const Navbar = () => {
                 <NavigationLink
                     icon={FaUserCircle}
                     label="CADASTRO"
-                    to="/parkmanager/cadastro"
+                    to="/cadastro"
                 />
-                <NavigationLink
-                    icon={FaKey}
-                    label="ENTRAR"
-                    to="/parkmanager/"
-                />
+                <NavigationLink icon={FaKey} label="ENTRAR" to="/" />
             </div>
         </nav>
     );

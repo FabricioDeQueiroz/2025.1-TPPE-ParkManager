@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('parkmanager@auth_user');
         localStorage.removeItem('parkmanager@auth_token');
 
-        return <Navigate to="/parkmanager/" />;
+        return <Navigate to="/" />;
     };
 
     const retrive_user_data = async () => {

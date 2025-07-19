@@ -13,7 +13,7 @@ export default function DashboardTable({ data, limit = 5 }) {
                     Acessos recentes
                 </p>
                 <button
-                    onClick={() => navigate('/parkmanager/estacionamentos')}
+                    onClick={() => navigate('/estacionamentos')}
                     className="hover:cursor-pointer rounded-lg text-base text-dashboard-create-button-text bg-background-option-button-ac hover:bg-background-option-button-ac-hover font-bold w-[110px] h-[40px]"
                 >
                     VER TUDO

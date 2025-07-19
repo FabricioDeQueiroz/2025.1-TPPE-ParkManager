@@ -32,7 +32,7 @@ const DashboardManager = () => {
                 <div className="mb-2">
                     <Breadcrumb
                         lista={['ParkManager', 'Painel']}
-                        caminhos={['', '/parkmanager/dashboard']}
+                        caminhos={['', '/dashboard']}
                     />
                 </div>
 
@@ -53,7 +53,7 @@ const DashboardManager = () => {
                 <div className="mb-2">
                     <Breadcrumb
                         lista={['ParkManager', 'Painel']}
-                        caminhos={['', '/parkmanager/dashboard']}
+                        caminhos={['', '/dashboard']}
                     />
                 </div>
 
@@ -75,7 +75,7 @@ const DashboardManager = () => {
             <div className="mb-2">
                 <Breadcrumb
                     lista={['ParkManager', 'Painel']}
-                    caminhos={['', '/parkmanager/dashboard']}
+                    caminhos={['', '/dashboard']}
                 />
             </div>
 

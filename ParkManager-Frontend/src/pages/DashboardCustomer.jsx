@@ -21,7 +21,7 @@ const DashboardCustomer = () => {
                 <div className="mb-2">
                     <Breadcrumb
                         lista={['ParkManager', 'Painel']}
-                        caminhos={['', '/parkmanager/dashboard']}
+                        caminhos={['', '/dashboard']}
                     />
                 </div>
 
@@ -42,7 +42,7 @@ const DashboardCustomer = () => {
                 <div className="mb-2">
                     <Breadcrumb
                         lista={['ParkManager', 'Painel']}
-                        caminhos={['', '/parkmanager/dashboard']}
+                        caminhos={['', '/dashboard']}
                     />
                 </div>
 
@@ -64,7 +64,7 @@ const DashboardCustomer = () => {
             <div className="mb-2">
                 <Breadcrumb
                     lista={['ParkManager', 'Painel']}
-                    caminhos={['', '/parkmanager/dashboard']}
+                    caminhos={['', '/dashboard']}
                 />
             </div>
 
@@ -99,7 +99,7 @@ const DashboardCustomer = () => {
                     width="w-[511px]"
                     widthCorpo="w-[380px]"
                     button={true}
-                    to="/parkmanager/acessos/"
+                    to="/acessos/"
                     fontSize="text-lg"
                 />
             </div>

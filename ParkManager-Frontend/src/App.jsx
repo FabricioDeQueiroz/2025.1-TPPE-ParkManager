@@ -12,13 +12,10 @@ function App() {
             <BrowserRouter>
                 <ToastNotify />
                 <Routes>
-                    <Route path="/parkmanager/" element={<Login />} />
+                    <Route path="/" element={<Login />} />
+                    <Route path="/cadastro" element={<Register />} />
                     <Route
-                        path="/parkmanager/cadastro"
-                        element={<Register />}
-                    />
-                    <Route
-                        path="/parkmanager/dashboard"
+                        path="/dashboard"
                         element={
                             <PrivateRoute allowedTypes={[0, 1]}>
                                 <Dashboard />
@@ -26,7 +23,7 @@ function App() {
                         }
                     />
                     <Route
-                        path="/parkmanager/estacionamentos"
+                        path="/estacionamentos"
                         element={
                             <PrivateRoute allowedTypes={[0]}>
                                 <Estacionamentos />
