@@ -1,10 +1,10 @@
 import Sidebar from '../components/Sidebar/Sidebar';
 import Breadcrumb from '../components/NavBar/Breadcrumb';
 import AcessosTable from '../components/Dashboard/AcessosTable';
-import getAcessos from '../Hooks/GetAcessos';
+import useGetAcessos from '../Hooks/GetAcessos';
 
 const Acessos = () => {
-    const { acessos, loading, erro } = getAcessos();
+    const { acessos, loading, erro } = useGetAcessos();
 
     if (loading) {
         return (

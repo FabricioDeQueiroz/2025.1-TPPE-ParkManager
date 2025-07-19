@@ -3,7 +3,7 @@ import { API_BASE_URL } from '../util/Constants';
 import { useAuth } from '../features/auth/AuthContext';
 import axios from 'axios';
 
-const deleteEstacionamento = () => {
+const useDeleteEstacionamento = () => {
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState(null);
 
@@ -29,4 +29,4 @@ const deleteEstacionamento = () => {
     return { handleDelete, loading, erro };
 };
 
-export default deleteEstacionamento;
+export default useDeleteEstacionamento;

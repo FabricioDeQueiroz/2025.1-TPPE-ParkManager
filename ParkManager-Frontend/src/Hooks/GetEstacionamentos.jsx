@@ -3,7 +3,7 @@ import { API_BASE_URL } from '../util/Constants';
 import { useAuth } from '../features/auth/AuthContext';
 import axios from 'axios';
 
-const getEstacionamentos = () => {
+const useGetEstacionamentos = () => {
     const [estacionamentos, setEstacionamentos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState(null);
@@ -30,9 +30,9 @@ const getEstacionamentos = () => {
         };
 
         fetchEstacionamentos();
-    }, []);
+    }, [token]);
 
     return { estacionamentos, loading, erro };
 };
 
-export default getEstacionamentos;
+export default useGetEstacionamentos;

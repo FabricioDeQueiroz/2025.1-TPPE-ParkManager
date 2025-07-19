@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { API_BASE_URL } from '../util/Constants';
 import { useAuth } from '../features/auth/AuthContext';
 import axios from 'axios';
 
-const finishAcesso = () => {
+const useFinishAcesso = () => {
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState(null);
 
@@ -30,4 +30,4 @@ const finishAcesso = () => {
     return { finishEspecificAcesso, loading, erro };
 };
 
-export default finishAcesso;
+export default useFinishAcesso;

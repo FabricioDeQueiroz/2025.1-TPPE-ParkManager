@@ -6,20 +6,18 @@ import InputField from '../components/Form/InputField';
 import LoginRegisterButton from '../components/Form/LoginRegisterButton';
 
 const Login = () => {
-    const navigate = useNavigate();
-
-    const { token } = useAuth();
-
-    if (token) {
-        return <Navigate to="/dashboard" replace />;
-    }
-
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const { login } = useAuth();
+    const navigate = useNavigate();
+
+    const { token, login } = useAuth();
+
+    if (token) {
+        return <Navigate to="/dashboard" replace />;
+    }
 
     const handleLogin = async (e) => {
         e.preventDefault();

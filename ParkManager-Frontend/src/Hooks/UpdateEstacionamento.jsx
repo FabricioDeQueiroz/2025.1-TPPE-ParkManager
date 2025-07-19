@@ -3,7 +3,7 @@ import { API_BASE_URL } from '../util/Constants';
 import { useAuth } from '../features/auth/AuthContext';
 import axios from 'axios';
 
-const updateEstacionamento = () => {
+const useUpdateEstacionamento = () => {
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState(null);
 
@@ -33,4 +33,4 @@ const updateEstacionamento = () => {
     return { handleUpdate, loading, erro };
 };
 
-export default updateEstacionamento;
+export default useUpdateEstacionamento;

@@ -8,14 +8,6 @@ import ImageInputRadio from '../components/Form/ImageInputRadio';
 import { showToast } from '../components/Feedback/ToastNotify';
 
 const Register = () => {
-    const navigate = useNavigate();
-
-    const { token } = useAuth();
-
-    if (token) {
-        return <Navigate to="/dashboard" replace />;
-    }
-
     const [role, setRole] = useState(null);
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
@@ -24,6 +16,13 @@ const Register = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const { register } = useAuth();
+    const navigate = useNavigate();
+
+    const { token } = useAuth();
+
+    if (token) {
+        return <Navigate to="/dashboard" replace />;
+    }
 
     const handleCadastro = async (e) => {
         e.preventDefault();

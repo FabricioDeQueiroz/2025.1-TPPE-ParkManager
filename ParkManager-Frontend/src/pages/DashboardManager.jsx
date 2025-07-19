@@ -5,14 +5,14 @@ import { FaCar } from 'react-icons/fa';
 import { IoNewspaperSharp } from 'react-icons/io5';
 import BillingChart from '../components/Dashboard/BillingChart';
 import AccessChart from '../components/Dashboard/AccessChart';
-import getAcessos from '../Hooks/GetAcessos';
+import useGetAcessos from '../Hooks/GetAcessos';
 import DashboardTable from '../components/Dashboard/DashboardTable';
 import DashboardOccupationTable from '../components/Dashboard/DashboardOccupationTable';
-import getEstacionamentos from '../Hooks/GetEstacionamentos';
+import useGetEstacionamentos from '../Hooks/GetEstacionamentos';
 
 const DashboardManager = () => {
-    const { acessos, loading, erro, superDados } = getAcessos();
-    const { estacionamentos } = getEstacionamentos();
+    const { acessos, loading, erro, superDados } = useGetAcessos();
+    const { estacionamentos } = useGetEstacionamentos();
 
     const {
         faturamentoDoDia,

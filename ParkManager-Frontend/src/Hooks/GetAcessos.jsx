@@ -4,7 +4,7 @@ import { useAuth } from '../features/auth/AuthContext';
 import { subDays, isSameDay, parseISO, isWithinInterval } from 'date-fns';
 import axios from 'axios';
 
-const getAcessos = () => {
+const useGetAcessos = () => {
     const [acessos, setAcessos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState(null);
@@ -28,7 +28,7 @@ const getAcessos = () => {
         };
 
         fetchAcessos();
-    }, []);
+    }, [token]);
 
     const hoje = new Date();
     const ontem = subDays(hoje, 1);
@@ -148,4 +148,4 @@ const getAcessos = () => {
     return { acessos, loading, erro, superDados };
 };
 
-export default getAcessos;
+export default useGetAcessos;

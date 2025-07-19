@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '../../util/Constants';
 import { useAuth } from '../../features/auth/AuthContext';
-import getEstacionamentos from '../../Hooks/GetEstacionamentos';
+import useGetEstacionamentos from '../../Hooks/GetEstacionamentos';
 import { showToast } from '../Feedback/ToastNotify';
 
 const CreateAcessoModal = () => {
@@ -11,7 +11,7 @@ const CreateAcessoModal = () => {
         idEstacionamento: '',
     });
 
-    const { estacionamentos } = getEstacionamentos();
+    const { estacionamentos } = useGetEstacionamentos();
 
     const { token } = useAuth();
 

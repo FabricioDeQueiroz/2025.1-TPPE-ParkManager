@@ -1,13 +1,10 @@
-import { useAuth } from '../features/auth/AuthContext';
 import Sidebar from '../components/Sidebar/Sidebar';
 import Breadcrumb from '../components/NavBar/Breadcrumb';
 import EstacionamentosTable from '../components/Dashboard/EstacionamentosTable';
-import getEstacionamentos from '../Hooks/GetEstacionamentos';
+import useGetEstacionamentos from '../Hooks/GetEstacionamentos';
 
 const Estacionamentos = () => {
-    const { userType } = useAuth();
-
-    const { estacionamentos, loading, erro } = getEstacionamentos();
+    const { estacionamentos, loading, erro } = useGetEstacionamentos();
 
     if (loading) {
         return (

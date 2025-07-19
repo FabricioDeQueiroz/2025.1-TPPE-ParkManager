@@ -38,7 +38,9 @@ const SmallCardCustomer = ({
             ) : (
                 <div className="flex flex-col">
                     <div className="bg-card-dashboard-button w-12 h-12 rounded-lg flex items-center justify-center">
-                        <Icon className="text-card-dashboard-button-icon w-8 h-8" />
+                        {Icon && (
+                            <Icon className="text-card-dashboard-button-icon w-8 h-8" />
+                        )}
                     </div>
                 </div>
             )}

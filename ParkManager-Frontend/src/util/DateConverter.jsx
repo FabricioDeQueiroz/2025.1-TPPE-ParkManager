@@ -13,6 +13,7 @@ export const DateConverter = (dateString, isGmt, anoSlice) => {
     return `${day}/${month}/${year} ${hours}:${minutes}`;
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const formatHour = (hora) => {
     if (!hora) return '';
 

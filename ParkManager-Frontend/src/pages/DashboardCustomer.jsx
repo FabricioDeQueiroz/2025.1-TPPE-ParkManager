@@ -3,14 +3,14 @@ import { MdOutlineAttachMoney } from 'react-icons/md';
 import { IoExitOutline } from 'react-icons/io5';
 import BillingChart from '../components/Dashboard/BillingChart';
 import AccessChart from '../components/Dashboard/AccessChart';
-import getAcessos from '../Hooks/GetAcessos';
+import useGetAcessos from '../Hooks/GetAcessos';
 import SmallCardCustomer from '../components/Dashboard/SmallCardCustomer';
 import AccessCard from '../components/Dashboard/AccessCard';
 import { DateConverter } from '../util/DateConverter';
 import DashboardTableCustomer from '../components/Dashboard/DashboardTableCustomer';
 
 const DashboardCustomer = () => {
-    const { acessos, loading, erro, superDados } = getAcessos();
+    const { acessos, loading, erro, superDados } = useGetAcessos();
 
     const { acessosAgrupados, primeiroAcesso } = superDados;
 

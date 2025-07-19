@@ -25,7 +25,7 @@ const CreateEstacionamentoModal = () => {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const { handleCreate, loading, erro } = useCreateEstacionamento();
+    const { handleCreate } = useCreateEstacionamento();
 
     const onSubmit = async (e) => {
         e.preventDefault();

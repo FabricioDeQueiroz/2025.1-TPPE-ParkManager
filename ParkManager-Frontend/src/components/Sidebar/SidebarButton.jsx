@@ -33,8 +33,9 @@ export const SidebarButton = ({ icon: Icon, label, to }) => {
           }
         `}
             >
-                <Icon
-                    className={`
+                {Icon && (
+                    <Icon
+                        className={`
             w-6 h-6
             ${
                 isActive
@@ -42,7 +43,8 @@ export const SidebarButton = ({ icon: Icon, label, to }) => {
                     : 'text-background-option-icon-de group-hover:text-background-option-icon-ac'
             }
           `}
-                />
+                    />
+                )}
             </div>
             <p
                 className={`

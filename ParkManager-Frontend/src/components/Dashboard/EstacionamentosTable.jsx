@@ -6,7 +6,7 @@ import { TbClock24 } from 'react-icons/tb';
 import ActionButton from '../Form/ActionButton';
 import { FaEye, FaPencil, FaTrash } from 'react-icons/fa6';
 import ModalDelete from '../Modais/ModalDelete';
-import deleteEstacionamento from '../../Hooks/DeleteEstacionamento';
+import useDeleteEstacionamento from '../../Hooks/DeleteEstacionamento';
 import { showToast } from '../Feedback/ToastNotify';
 import CreateEstacionamentoModal from '../Modais/CreateEstacionamentoModal';
 import UpdateEstacionamentoModal from '../Modais/UpdateEstacionamentoModal';
@@ -21,7 +21,7 @@ export default function EstacionamentosTable({ data, limit = 6 }) {
         currentPage * limit
     );
 
-    const { handleDelete, erro } = deleteEstacionamento();
+    const { handleDelete, erro } = useDeleteEstacionamento();
 
     const handleDeleteClick = (id) => {
         setSelectedId(id);
