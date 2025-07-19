@@ -48,6 +48,7 @@
     --color-text-user-role: #0987a0;
     --color-background-option-ac: #ffffff;
     --color-background-option-button-ac: #00b5d8;
+    --color-background-option-button-ac-hover: #00b5d8e5;
     --color-background-option-icon-ac: #ffffff;
     --color-text-option-ac: #2d3748;
     --color-background-option-de: #ffffff00;
@@ -122,6 +123,7 @@
     --color-text-user-role: #0987a0;
     --color-background-option-ac: #1b254b;
     --color-background-option-button-ac: #3182ce;
+    --color-background-option-button-ac-hover: #3182cee5;
     --color-background-option-icon-ac: #ffffff;
     --color-text-option-ac: #ffffff;
     --color-background-option-de: #ffffff00;
@@ -166,6 +168,10 @@
     src: url('/fonts/Loen.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
+}
+
+@utility loading {
+    @apply loading loading-infinity stroke-1;
 }
 
 html,

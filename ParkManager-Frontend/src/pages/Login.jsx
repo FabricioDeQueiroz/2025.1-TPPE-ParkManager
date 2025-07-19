@@ -11,7 +11,7 @@ const Login = () => {
     const { token } = useAuth();
 
     if (token) {
-        return <Navigate to="/dashboard" replace />;
+        return <Navigate to="/parkmanager/dashboard" replace />;
     }
 
     const [email, setEmail] = useState('');
@@ -30,7 +30,7 @@ const Login = () => {
         setIsLoading(true);
         const logar = await login({ email, senha });
         if (logar.passou) {
-            navigate('/dashboard', { replace: true });
+            navigate('/parkmanager/dashboard', { replace: true });
         }
         setIsLoading(false);
         setError(`${logar.retorno}`);
@@ -94,7 +94,9 @@ const Login = () => {
                                         Ainda não tem uma conta?
                                     </p>
                                     <p
-                                        onClick={() => navigate('/cadastro')}
+                                        onClick={() =>
+                                            navigate('/parkmanager/cadastro')
+                                        }
                                         className="text-button-register hover:underline hover:cursor-pointer font-bold"
                                     >
                                         Cadastre-se

@@ -7,7 +7,7 @@ export const LogoutButton = () => {
 
     const handleLogout = async () => {
         await logout();
-        return <Navigate to="/" replace />;
+        return <Navigate to="/parkmanager/" replace />;
     };
 
     return (

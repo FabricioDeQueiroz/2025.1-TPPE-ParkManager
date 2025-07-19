@@ -49,17 +49,17 @@ const Sidebar = () => {
                         <SidebarButton
                             icon={FaHome}
                             label="Painel"
-                            to="/dashboard"
+                            to="/parkmanager/dashboard"
                         />
                         <SidebarButton
                             icon={FaSquareParking}
                             label="Estacionamentos"
-                            to="/estacionamentos"
+                            to="/parkmanager/estacionamentos"
                         />
                         <SidebarButton
                             icon={FaCalendarAlt}
                             label="Eventos"
-                            to="/eventos"
+                            to="/parkmanager/eventos"
                         />
                     </>
                 ) : (
@@ -67,12 +67,12 @@ const Sidebar = () => {
                         <SidebarButton
                             icon={FaHome}
                             label="Painel"
-                            to="/dashboard"
+                            to="/parkmanager/dashboard"
                         />
                         <SidebarButton
                             icon={RxEnter}
                             label="Acessos"
-                            to="/acessos"
+                            to="/parkmanager/acessos"
                         />
                     </>
                 )}

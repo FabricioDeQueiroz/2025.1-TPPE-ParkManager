@@ -13,7 +13,7 @@ const Register = () => {
     const { token } = useAuth();
 
     if (token) {
-        return <Navigate to="/dashboard" replace />;
+        return <Navigate to="/parkmanager/dashboard" replace />;
     }
 
     const [role, setRole] = useState(null);
@@ -40,7 +40,7 @@ const Register = () => {
                     'Cadastro realizado com sucesso! Redirecionando para login...',
                 type: 'success',
                 duration: 4000,
-                navigateTo: () => navigate('/', { replace: true }),
+                navigateTo: () => navigate('/parkmanager/', { replace: true }),
             });
         } else {
             setError(`${registrar.retorno}`);
@@ -132,7 +132,9 @@ const Register = () => {
                                         Já tem uma conta?
                                     </p>
                                     <p
-                                        onClick={() => navigate('/')}
+                                        onClick={() =>
+                                            navigate('/parkmanager/')
+                                        }
                                         className="text-button-register hover:underline hover:cursor-pointer font-bold"
                                     >
                                         Entrar

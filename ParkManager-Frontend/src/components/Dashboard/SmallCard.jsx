@@ -2,6 +2,7 @@ const SmallCard = ({
     titulo,
     corpo,
     plus,
+    signal,
     quantidade,
     periodo,
     icon: Icon,
@@ -18,11 +19,13 @@ const SmallCard = ({
                 <span className="text-sm flex items-center gap-x-1.5">
                     {plus ? (
                         <p className="text-dashboard-green-500 font-bold">
-                            +{quantidade}
+                            {signal}
+                            {quantidade}
                         </p>
                     ) : (
                         <p className="text-dashboard-red-500 font-bold">
-                            -{quantidade}
+                            {signal}
+                            {quantidade}
                         </p>
                     )}
                     <p className="text-card-dashboard-footer-text">{periodo}</p>

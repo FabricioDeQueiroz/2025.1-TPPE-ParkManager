@@ -8,28 +8,13 @@ import {
     ResponsiveContainer,
 } from 'recharts';
 
-const data = [
-    { name: 'Jan', value: 19000 },
-    { name: 'Feb', value: 21000 },
-    { name: 'Mar', value: 22000 },
-    { name: 'Apr', value: 32000 },
-    { name: 'May', value: 35000 },
-    { name: 'Jun', value: 47000 },
-    { name: 'Jul', value: 40000 },
-    { name: 'Aug', value: 30000 },
-    { name: 'Sep', value: 33000 },
-    { name: 'Oct', value: 21000 },
-    { name: 'Nov', value: 39000 },
-    { name: 'Dec', value: 43000 },
-];
-
 const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
         return (
             <div className="p-4 bg-background-card-dashboard border border-card-dashboard-capt-text rounded-md shadow-lg">
-                <p className="font-bold text-card-dashboard-text">{`Mês: ${label}`}</p>
+                <p className="font-bold text-card-dashboard-text">{`Mês: ${label == 'Jan' ? 'Janeiro' : label == 'Fev' ? 'Fevereiro' : label == 'Mar' ? 'Março' : label == 'Abr' ? 'Abril' : label == 'Mai' ? 'Maio' : label == 'Jun' ? 'Junho' : label == 'Jul' ? 'Julho' : label == 'Ago' ? 'Agosto' : label == 'Set' ? 'Setembro' : label == 'Out' ? 'Outubro' : label == 'Nov' ? 'Novembro' : 'Dezembro'}`}</p>
                 <p className="font-bold text-dashboard-tea">
-                    {`R$ ${payload[0].value}`}
+                    {`R$ ${payload[0].value.toFixed(2).replace('.', ',')}`}
                 </p>
             </div>
         );
@@ -38,14 +23,14 @@ const CustomTooltip = ({ active, payload, label }) => {
     return null;
 };
 
-export default function BillingChart() {
+export default function BillingChart({ title, data }) {
     return (
-        <div className="bg-background-card-dashboard rounded-[20px] p-5 shadow-md w-[1050px] h-[490px]">
+        <div className="bg-background-card-dashboard rounded-[20px] p-5 shadow-md w-[1050px] h-[370px]">
             <div className="flex flex-col">
-                <p className="text-xs font-bold mb-14 text-card-dashboard-capt-text">
-                    FATURAMENTO NO DECORRER DOS MESES
+                <p className="text-xs font-bold mb-4 text-card-dashboard-capt-text">
+                    {title}
                 </p>
-                <ResponsiveContainer width="100%" height={394}>
+                <ResponsiveContainer width="100%" height={314}>
                     <AreaChart data={data}>
                         <defs>
                             <linearGradient
@@ -69,21 +54,22 @@ export default function BillingChart() {
                         </defs>
                         <CartesianGrid
                             strokeDasharray="3 3"
-                            stroke="#6b7280"
+                            stroke="#9ea3ae"
                             vertical={false}
                         />
                         <XAxis
                             dataKey="name"
-                            tick={{ fill: '#6b7280', fontSize: 12 }}
+                            tick={{ fill: '#9ea3ae', fontSize: 12 }}
                         />
                         <YAxis
-                            tick={{ fill: '#6b7280', fontSize: 12 }}
+                            dataKey="valorTotal"
+                            tick={{ fill: '#9ea3ae', fontSize: 12 }}
                             tickFormatter={(v) => `${v}`}
                         />
                         <Tooltip content={<CustomTooltip />} />
                         <Area
                             type="monotone"
-                            dataKey="value"
+                            dataKey="valorTotal"
                             stroke="#0f766e"
                             fill="url(#colorFat)"
                             strokeWidth={2}

@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }) => {
                 userData
             );
 
-            console.log('entrou');
             setToken(res.data.token);
             setUserId(res.data.id);
             setUserName(res.data.nome);
@@ -84,7 +83,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('parkmanager@auth_user');
         localStorage.removeItem('parkmanager@auth_token');
 
-        return <Navigate to="/login" />;
+        return <Navigate to="/parkmanager/" />;
     };
 
     const retrive_user_data = async () => {
