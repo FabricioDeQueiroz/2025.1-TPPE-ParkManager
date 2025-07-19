@@ -4,6 +4,7 @@ import PrivateRoute from './features/auth/PrivateRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Estacionamentos from './pages/Estacionamentos';
 
 function App() {
     return (
@@ -21,6 +22,14 @@ function App() {
                         element={
                             <PrivateRoute allowedTypes={[0, 1]}>
                                 <Dashboard />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/parkmanager/estacionamentos"
+                        element={
+                            <PrivateRoute allowedTypes={[0]}>
+                                <Estacionamentos />
                             </PrivateRoute>
                         }
                     />

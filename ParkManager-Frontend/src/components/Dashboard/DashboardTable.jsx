@@ -1,7 +1,10 @@
 import { DateConverter } from '../../util/DateConverter';
+import { useNavigate } from 'react-router-dom';
 
 export default function DashboardTable({ data, limit = 5 }) {
     const limitedData = data.slice(0, limit);
+
+    const navigate = useNavigate();
 
     return (
         <div className="bg-background-card-dashboard rounded-[20px] shadow-md w-[1050px] h-[350px]">
@@ -9,7 +12,10 @@ export default function DashboardTable({ data, limit = 5 }) {
                 <p className="text-lg font-bold text-card-dashboard-text">
                     Acessos recentes
                 </p>
-                <button className="hover:cursor-pointer rounded-lg text-base text-dashboard-create-button-text bg-background-option-button-ac hover:bg-background-option-button-ac-hover font-bold w-[110px] h-[40px]">
+                <button
+                    onClick={() => navigate('/parkmanager/estacionamentos')}
+                    className="hover:cursor-pointer rounded-lg text-base text-dashboard-create-button-text bg-background-option-button-ac hover:bg-background-option-button-ac-hover font-bold w-[110px] h-[40px]"
+                >
                     VER TUDO
                 </button>
             </div>

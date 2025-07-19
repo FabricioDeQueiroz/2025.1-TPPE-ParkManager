@@ -12,3 +12,9 @@ export const DateConverter = (dateString, isGmt, anoSlice) => {
 
     return `${day}/${month}/${year} ${hours}:${minutes}`;
 };
+
+export const formatHour = (hora) => {
+    if (!hora) return '';
+
+    return hora.split(':').slice(0, 2).join(':');
+};

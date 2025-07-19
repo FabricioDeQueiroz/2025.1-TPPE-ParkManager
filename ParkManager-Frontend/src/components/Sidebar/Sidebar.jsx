@@ -33,7 +33,7 @@ const Sidebar = () => {
                             />
                         </div>
                     </div>
-                    <p className="text-text-user-name mt-2.5 mb-1.5">
+                    <p className="text-text-user-name mt-2.5 mb-1.5 truncate w-[230px] text-center">
                         {userName}
                     </p>
                     <p className="text-text-user-role font-semibold">
@@ -56,11 +56,11 @@ const Sidebar = () => {
                             label="Estacionamentos"
                             to="/parkmanager/estacionamentos"
                         />
-                        <SidebarButton
+                        {/* <SidebarButton
                             icon={FaCalendarAlt}
                             label="Eventos"
                             to="/parkmanager/eventos"
-                        />
+                        /> */}
                     </>
                 ) : (
                     <>
